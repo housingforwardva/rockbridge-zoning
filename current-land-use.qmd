@@ -1,0 +1,20 @@
+# Current land use
+
+This section examines current residential land uses in the county.
+
+## Categories
+
+- Descriptions of residential land use categories
+
+## Distribution
+
+- Residential land uses by parcel
+- Residential land uses by land area
+
+## Trends
+
+- Notable changes in residential land use across county over time
+
+## Discussion
+
+...

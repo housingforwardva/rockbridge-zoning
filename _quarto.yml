@@ -16,6 +16,12 @@ book:
     - index.qmd
     - data-collection.qmd
     - doc-review.qmd
+    - current-land-use.qmd
+    - existing-zoning.qmd
+    - future-land-use.qmd
+    - subdivisions.qmd
+    - entitlements.qmd
+    - summary.qmd
 #    - references.qmd
 
 bibliography: references.bib

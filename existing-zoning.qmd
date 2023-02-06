@@ -1,0 +1,22 @@
+# Existing zoning
+
+This section describes and analyzes the county's existing residential zoning regimen.
+
+## Residential zoning districts
+
+- Descriptions of relevant zoning districts
+- By-right and conditional uses
+- Density and setback requirements
+
+## Distribution
+
+- Residential zoning by parcel
+- Residential zoning by land area
+
+## Development potential
+
+- Maps of where each housing type can be built by-right (and/or conditionally)
+
+## Discussion
+
+...
