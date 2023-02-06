@@ -1,0 +1,14 @@
+{
+  "hash": "982a2aa3d5dad10c953d7796cdd7d811",
+  "result": {
+    "markdown": "## About {.unnumbered}\n\n::: {.callout-caution}\n### Please note\nThis document is still under construction. It was last updated February 06, 2023 at 02:57 PM.\n:::\n\nThis report is an analysis of zoning and land use patterns in Rockbridge County, Virginia. This work supports the ongoing [regional housing study](https://www.cspdc.org/programs-services/housing/) that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC).\n\n## Objectives\n\nThis analysis in this report supports three county objectives:\n\n1. To better inform elected officials about housing development patterns, challenges, and opportunities,\n2. To attract and solicit developers, and\n3. To help apply for grants and other funding opportunities.\n\n## Process\n\nHFV will provide Rockbridge County with a comprehensive analysis of their current zoning regimen to determine challenges and opportunities related to the county’s housing needs as identified by VCHR.\n\nThis work will investigate and assess:\n\n- The county’s current comprehensive plan,\n- Existing residential and mixed-use zoning districts,\n- Subdivision ordinance and related regulations, and\n- Processes for rezonings, special use permits, and similar procedures to change the development potential of properties.\n\nHFV will synthesize this analysis and provide a summary of findings, as well as potential recommendations that would work in sync with solutions offered in the full regional report.",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

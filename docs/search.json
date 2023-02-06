@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "Rockbridge County Zoning Analysis",
+    "section": "About",
+    "text": "About\n\n\n\n\n\n\nPlease note\n\n\n\nThis document is still under construction. It was last updated February 06, 2023 at 02:57 PM.\n\n\nThis report is an analysis of zoning and land use patterns in Rockbridge County, Virginia. This work supports the ongoing regional housing study that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC)."
+  },
+  {
+    "objectID": "index.html#objectives",
+    "href": "index.html#objectives",
+    "title": "Rockbridge County Zoning Analysis",
+    "section": "Objectives",
+    "text": "Objectives\nThis analysis in this report supports three county objectives:\n\nTo better inform elected officials about housing development patterns, challenges, and opportunities,\nTo attract and solicit developers, and\nTo help apply for grants and other funding opportunities."
+  },
+  {
+    "objectID": "index.html#process",
+    "href": "index.html#process",
+    "title": "Rockbridge County Zoning Analysis",
+    "section": "Process",
+    "text": "Process\nHFV will provide Rockbridge County with a comprehensive analysis of their current zoning regimen to determine challenges and opportunities related to the county’s housing needs as identified by VCHR.\nThis work will investigate and assess:\n\nThe county’s current comprehensive plan,\nExisting residential and mixed-use zoning districts,\nSubdivision ordinance and related regulations, and\nProcesses for rezonings, special use permits, and similar procedures to change the development potential of properties.\n\nHFV will synthesize this analysis and provide a summary of findings, as well as potential recommendations that would work in sync with solutions offered in the full regional report."
+  },
+  {
+    "objectID": "data-collection.html#land-use-and-zoning",
+    "href": "data-collection.html#land-use-and-zoning",
+    "title": "1  Data collection",
+    "section": "1.1 Land use and zoning",
+    "text": "1.1 Land use and zoning\nGIS layers for:\n\nParcels\nCurrent zoning designations\nCurrent land use\nFuture land use"
+  },
+  {
+    "objectID": "data-collection.html#entitlements",
+    "href": "data-collection.html#entitlements",
+    "title": "1  Data collection",
+    "section": "1.2 Entitlements",
+    "text": "1.2 Entitlements\nRecords for all:\n\nResidential rezonings\nResidential variances\nResidential special use permits\nSubdivision plats\n\nIdeally, records should cover at least the past five years. If possible, records should also include proposed/pending and denied applications."
+  },
+  {
+    "objectID": "data-collection.html#infrastructure",
+    "href": "data-collection.html#infrastructure",
+    "title": "1  Data collection",
+    "section": "1.3 Infrastructure",
+    "text": "1.3 Infrastructure\nGIS layers for:\n\nWater and wastewater availability\nBroadband access"
+  },
+  {
+    "objectID": "doc-review.html#comprehensive-plan",
+    "href": "doc-review.html#comprehensive-plan",
+    "title": "2  Document review",
+    "section": "2.1 Comprehensive plan",
+    "text": "2.1 Comprehensive plan\nCounty of Rockbridge Comprehensive Plan 2016-2036 (PDF)\nadd more details"
+  },
+  {
+    "objectID": "doc-review.html#land-development-regulations",
+    "href": "doc-review.html#land-development-regulations",
+    "title": "2  Document review",
+    "section": "2.2 Land development regulations",
+    "text": "2.2 Land development regulations\nCounty of Rockbridge Land Development Regulations (PDF)\nThese regulations include the zoning and subdivision ordinances in a single document.\n\n2.2.1 Zoning ordinance\nZoning district uses and use regulations are covered in Articles 6 and 7.\nadd more details\n\n\n2.2.2 Subdivision ordinance\nThe process and requirements for subdivision of land are covered in Article 9.\nadd more details"
+  },
+  {
+    "objectID": "doc-review.html#short-term-rental-regulations",
+    "href": "doc-review.html#short-term-rental-regulations",
+    "title": "2  Document review",
+    "section": "2.3 Short-term rental regulations",
+    "text": "2.3 Short-term rental regulations\nShort-Term Rental Zoning Regulations (PDF)\nadd more details"
+  }
+]

@@ -1,0 +1,43 @@
+project:
+  type: book
+  execute-dir: file
+  output-dir: docs
+
+execute: 
+  freeze: auto
+
+book:
+  title: "Rockbridge County Zoning Analysis"
+  author:
+    - name: HousingForward Virginia
+      url: https://www.housingforwardva.org
+  date: today
+  chapters:
+    - index.qmd
+    - data-collection.qmd
+    - doc-review.qmd
+#    - references.qmd
+
+bibliography: references.bib
+
+knitr:
+  opts_chunk: 
+    echo: false
+    warning: false
+    message: false
+
+format:
+  html:
+    theme: lumen
+    mainfont: "Open Sans"
+  # pdf:
+  #   documentclass: scrreprt
+  #   mainfont: "Open Sans"
+  #   fig-pos: "H"
+  #   include-in-header:
+  #     text: |
+  #       \usepackage{float}
+  #       \raggedbottom
+
+
+

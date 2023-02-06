@@ -1,0 +1,30 @@
+# Data collection
+
+This section outlines the process for collecting and preparing the data required for the analysis.
+
+## Land use and zoning
+
+GIS layers for:
+
+- Parcels
+- Current zoning designations
+- Current land use
+- Future land use
+
+## Entitlements
+
+Records for all:
+
+- Residential rezonings
+- Residential variances
+- Residential special use permits
+- Subdivision plats
+
+Ideally, records should cover at least the past five years. If possible, records should also include proposed/pending and denied applications.
+
+## Infrastructure
+
+GIS layers for:
+
+- Water and wastewater availability
+- Broadband access
