@@ -32,3 +32,12 @@ leaflet(rock_zmap) %>%
   addTiles() %>% 
   addPolygons()
 
+# Import Rockbridge County PSA features
+
+rock_psa_layers <- st_layers("data/rockbridge/RockbridgePSA.gdb")
+
+rock_water <- st_read(dsn = "data/rockbridge/RockbridgePSA.gdb", layer = "County_Water_20130522")
+
+rock_sewer <- st_read(dsn = "data/rockbridge/RockbridgePSA.gdb", layer = "County_Sewer_20130522")
+
+mapview(rock_water)
