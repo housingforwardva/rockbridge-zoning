@@ -8,7 +8,7 @@ library(leaflet)
 
 # Import Rockbridge County parcel shapefile
 
-rock_parcels <- st_read("data/rockbridge/ParcelsNovember2022.shp")
+rock_parcels <- st_read("data/rockbridge/Rockbridge_ParcelsFebruary2023.shp")
 
 # Import Rockbridge County zoning shapefile
 
