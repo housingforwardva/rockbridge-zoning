@@ -26,7 +26,14 @@ rock_ruralvillage <- st_read("data/rockbridge/Rockbridge_RuralVillageAreas.shp")
 
 # Join parcels to zoning.
 
-rock_parcels_z <- st_join(rock_parcels, rock_zoning, join = st_within, left = TRUE)
+rock_parcels_z <- rock_parcels %>% 
+  st_join(left = FALSE, rock_zoning["ZONING"])
+rock_parcels_match <- rock_parcels_z %>% 
+  mutate(match = case_when(
+    ZONING == MZONE ~ "Match",
+    ZONING != MZONE ~ "Mismatch"
+  )) %>% 
+  select(match, zoning = ZONING, parcel_zoning = MZONE, OWNERNAME)
 
 # Below dissolves polygons by zoning district and sums the acre field, which may be incorrect.
 
