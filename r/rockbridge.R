@@ -6,17 +6,27 @@ library(mapview)
 library(units)
 library(leaflet)
 
-# Import Rockbridge County parcel shapefile
+# Import parcel shapefile
 
 rock_parcels <- st_read("data/rockbridge/Rockbridge_ParcelsFebruary2023.shp")
 
-# Import Rockbridge County zoning shapefile
+# Import zoning shapefile
 
 rock_zoning <- st_read("data/rockbridge/Rockbridge_Zoning20230126.shp")
 
-# Join parcels to zoning. 
-rock_parcels_z <- st_join(rock_parcels, rock_zoning, join = st_within, left = TRUE)
+# Import future land use shapefiles
 
+rock_suburb <- st_read("data/rockbridge/Rockbridge_SuburbanArea.shp")
+
+rock_village <- st_read("data/rockbridge/Rockbridge_VillageAreas.shp")
+
+rock_rural <- st_read("data/rockbridge/Rockbridge_RuralArea.shp")
+
+rock_ruralvillage <- st_read("data/rockbridge/Rockbridge_RuralVillageAreas.shp")
+
+# Join parcels to zoning.
+
+rock_parcels_z <- st_join(rock_parcels, rock_zoning, join = st_within, left = TRUE)
 
 # Below dissolves polygons by zoning district and sums the acre field, which may be incorrect.
 
@@ -49,4 +59,6 @@ rock_water <- st_read(dsn = "data/rockbridge/RockbridgePSA.gdb", layer = "County
 
 rock_sewer <- st_read(dsn = "data/rockbridge/RockbridgePSA.gdb", layer = "County_Sewer_20130522")
 
-mapview(rock_water, color = "blue") + mapview(rock_sewer, color = "lightblue")  + mapview(rock_parcels, zcol = "MZONE")
+mapview(rock_water, color = "blue") +
+  mapview(rock_sewer, color = "lightblue")  +
+  mapview(rock_parcels, zcol = "MZONE")

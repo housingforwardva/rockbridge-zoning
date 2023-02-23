@@ -1,28 +1,28 @@
-type	data	locality	status	notes
-GIS	Parcels	Rockbridge	Received	
-GIS	Current zoning	Rockbridge	Received	
-GIS	Current land use	Rockbridge	Received	MOCCUP field in parcels shp
-GIS	Future land use	Rockbridge	Received	
-GIS	Water	Rockbridge	Requested	
-GIS	Wastewater	Rockbridge	Requested	
-Entitlements	Rezonings	Rockbridge	Received	
-Entitlements	Special use permits	Rockbridge	Received	
-Entitlements	Subdivisions	Rockbridge	Received	
-GIS	Parcels	Lexington	Received	
-GIS	Current zoning	Lexington	Received	
-GIS	Current land use	Lexington	Requested	Use assessment data and join to parcels
-GIS	Future land use	Lexington	Received	
-GIS	Water	Lexington	Requested	
-GIS	Wastewater	Lexington	Received	
-Entitlements	Rezonings	Lexington		
-Entitlements	Special use permits	Lexington		
-Entitlements	Subdivisions	Lexington		
-GIS	Parcels	Buena Vista	Received	
-GIS	Current zoning	Buena Vista	Received	
-GIS	Current land use	Buena Vista		
-GIS	Future land use	Buena Vista	Received	
-GIS	Water	Buena Vista		
-GIS	Wastewater	Buena Vista	Received	
-Entitlements	Rezonings	Buena Vista		
-Entitlements	Special use permits	Buena Vista		
-Entitlements	Subdivisions	Buena Vista		
+type,data,locality,status,notes
+GIS,Parcels,Rockbridge,"Received	",
+GIS,Current zoning,Rockbridge,"Received	",
+GIS,Current land use,Rockbridge,Received,MOCCUP field in parcels shp
+GIS,Future land use,Rockbridge,"Received	",
+GIS,Water,Rockbridge,"Requested	",
+GIS,Wastewater,Rockbridge,"Requested	",
+Entitlements,Rezonings,Rockbridge,"Received	",
+Entitlements,Special use permits,Rockbridge,"Received	",
+Entitlements,Subdivisions,Rockbridge,"Received	",
+GIS,Parcels,Lexington,"Received	",
+GIS,Current zoning,Lexington,"Received	",
+GIS,Current land use,Lexington,Requested,Use assessment data and join to parcels
+GIS,Future land use,Lexington,"Received	",
+GIS,Water,Lexington,"Requested	",
+GIS,Wastewater,Lexington,"Received	",
+Entitlements,Rezonings,"Lexington		",,
+Entitlements,Special use permits,"Lexington		",,
+Entitlements,Subdivisions,"Lexington		",,
+GIS,Parcels,Buena Vista,"Received	",
+GIS,Current zoning,Buena Vista,"Received	",
+GIS,Current land use,"Buena Vista		",,
+GIS,Future land use,Buena Vista,"Received	",
+GIS,Water,"Buena Vista		",,
+GIS,Wastewater,Buena Vista,"Received	",
+Entitlements,Rezonings,"Buena Vista		",,
+Entitlements,Special use permits,"Buena Vista		",,
+Entitlements,Subdivisions,"Buena Vista		",,
