@@ -1,0 +1,19 @@
+code,category,group,description
+5,Vacant,Vacant,Exempt
+10,Residential,Dwelling,Dwelling
+11,Residential,Apartment,Apartment
+12,Agricultural,Other,Farm
+13,Commercial,Commercial,Commercial
+14,Industrial,Other,Industrial
+15,Vacant,Vacant,Land
+16,Other,Other,Fair value
+17,Other,Other,Exempt
+20,Residential,Townhouse/condo,Townhouse/condo
+21,Residential,Mobile home,Single-wide MH
+22,Residential,Mobile home,Double-wide MH
+23,Vacant,Vacant,Mobile home
+24,Residential,Mobile home,Triple-wide MH
+25,Vacant,Vacant,Commercial
+26,Commercial,Commercial,Fair value commercial
+30,Delete,Other,Delete
+0,Unknown,Other,Unknown
