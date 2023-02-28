@@ -1,16 +1,30 @@
+# -------------------------------------
+#
 # Buena Vista City data prep
+#
+# -------------------------------------
+
+# Load libraries ----------------------
 
 library(tidyverse)
 library(sf)
 library(mapview)
 
-# Import Buena Vista City parcel shapefile
+# Import data -------------------------
 
-bv_parcels <- st_read("data/buena-vista/Parcel20211201.shp")
+# Parcels
 
-# Import Buena Vista City zoning shapefile
+bv_parcels <- st_read("data/buena-vista/Parcel20211201.shp") |>
+  
+  # Remove streets and river
+  
+    filter(!OBJECTID %in% c(3621, 3622, 3648, 3649))
+
+# Zoning
 
 bv_zoning <- st_read("data/buena-vista/Zoning20211201.shp")
 
-mapview(bv_zoning)
+# View data ---------------------------
+
+mapview(bv_parcels, zcol = "CLASS")
 
