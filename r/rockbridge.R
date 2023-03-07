@@ -71,20 +71,16 @@ rock_towns <- rock_zoning |>
 rock_landuse <- rock_parcels |> 
   
   # Drop duplicate polygons
-  
   distinct(geometry, .keep_all = TRUE) |> 
   
   # Keep only relevant columns
-  
   select(LABEL, OWNERNAME, MOCCUP,
          MZONE, CALCACRES, Shape_Area) |>  
   
   # Join with county parcel occupancy codes
-  
   left_join(rock_occ, by = join_by(MOCCUP == code)) |> 
   
   # Classify publicly-owned parcels
-  
   mutate(group = case_when(
     str_detect(LABEL, "GWNF") ~ "Federal land", # George Washington National Forest
     str_detect(OWNERNAME, "GEO WASH") ~ "Federal land", # George Washington National Forest
@@ -103,7 +99,6 @@ rock_landuse <- rock_parcels |>
   )) |> 
   
   # Create new public property category
-  
   mutate(category = case_when(
     str_detect(group, "Federal|State|City|County") ~ "Public property",
     TRUE ~ category
@@ -111,12 +106,9 @@ rock_landuse <- rock_parcels |>
 
 # Clean up and classify zoning
 
-not_within  = function(x, y) !st_within(x, y)
-
 rock_landuse_zoning <- rock_landuse |> 
 
   # Fix zoning codes
-  
   mutate(MZONE = case_when(
     MZONE == "A1" ~ "A-1",
     MZONE == "A2" ~ "A-2",
@@ -140,96 +132,36 @@ rock_landuse_zoning <- rock_landuse |>
   )) |> 
   
   # Remove parcels with town zoning designation
-  
   filter(!MZONE == "TG") |> 
   
   # Filter out all other parcels within town boundaries
-  
   st_join(rock_towns, join = st_within) |> 
   filter(is.na(ZONING))
 
+# View results
+# mapview(rock_landuse_zoning, zcol = "MZONE", col.regions = RColorBrewer::brewer.pal(10, "Paired"))
+# rock_landuse_zoning |> filter(MZONE == "NA") |> mapview()
 
-mapview(rock_landuse_zoning, zcol = "MZONE", lwd = 0)
-
-## Summarize area by zoning and land use  
+# Summarize area by zoning and land use  
   
 rock_area <- rock_landuse_zoning |> 
+  
+  # Drop geometry
   st_drop_geometry() |> 
+  
+  # Convert sqft into acres
   mutate(acres = Shape_Area/43560) |> 
+  
+  # Summarize number of parcels and area by groups
   group_by(category, group, MZONE) |> 
   summarise(parcels = n(),
             area = sum(acres)) |> 
   ungroup() |> 
+  
+  # Calculate percentage shares for parcels and area
   mutate(parcels_pct = parcels/sum(parcels),
          area_pct = area/sum(area))
 
+## Save data --------------------------
 
-
-
-
-
-# Join parcels to zoning.
-
-rock_parcels_z <- rock_parcels |> 
-  st_join(left = FALSE, rock_zoning["ZONING"])
-
-rock_parcels_lu <- rock_parcels_z |> 
-  rowid_to_column("ID") |> 
-  select(ID, OWNERNAME, MZONE, ZONING) |> 
-  mutate(area = set_units(st_area(rock_parcels_z), "acre")) |> 
-  filter(ZONING != "City/Town") |> 
-  mutate(LU = case_when(
-    str_detect(MZONE, "A") ~ "Agricultural",
-    str_detect(MZONE, "R") ~ "Residential",
-    str_detect(MZONE, "C") ~ "Conservation",
-    str_detect(MZONE, "B") ~ "Business",
-    str_detect(MZONE, "I") ~ "Industrial")) |> 
-  st_drop_geometry() |> 
-  group_by(LU) |> 
-  summarise(area = sum(area),
-            count = n_distinct(ID))
-
-    
-  #   MZONE == "A1" ~ "A-1",
-  #   MZONE == "A2" ~ "A-2",
-  #   MZONE =="A22" ~ "A-2",
-  #   MZONE == "AG" ~ "A-1",
-  #   MZONE == "AL" ~ "A-1",
-  #   MZONE == "AT" ~ "A-T",
-  #   MZONE == "B1" ~ "B-1",
-  #   MZONE == "B2" ~ "B-2",
-  #   MZONE == "RG" ~ "R-1",
-  #   MZONE == "R" ~ "R-1",
-  #   MZONE == "BG" ~ "B-1",
-  #   MZONE == "C1" ~ "C-1",
-  #   MZONE == "C-1" ~ "C-1",
-  #   
-  # mutate(match = case_when(
-  #   ZONING == MZONE ~ "Match",
-  #   ZONING != MZONE ~ "Mismatch"
-  # )) |> 
-  # select(match, zoning = ZONING, parcel_zoning = MZONE, OWNERNAME)
-
-# Below dissolves polygons by zoning district and sums the acre field, which may be incorrect.
-
-rock_zsimplified <- rock_zoning |> 
-  group_by(ZONING) |> 
-  summarise(acres = sum(ACRES)) |> 
-  filter(ZONING != "City/Town") # Filter out the towns and cities.
-  
-
-# Below creates a column that calculates area based on the units set.
-
-rock_zsimplified$area <- set_units(st_area(rock_zsimplified), "acre")
-
-rock_zsimplified_pct <- rock_zsimplified |> 
-  mutate(pct = area/sum(area))
-  
-
-rock_zmap <- rock_zsimplified |> st_transform(crs = 4326)
-
-
-
-mapview(rock_water, color = "blue") +
-  mapview(rock_sewer, color = "lightblue")  +
-  mapview(rock_parcels, zcol = "MZONE")
+write_rds(rock_area, "data/rockbridge/rock_area.rds")
