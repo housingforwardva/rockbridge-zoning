@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.3.319">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -68,11 +68,16 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Document review</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./doc-review.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Document review</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -80,80 +85,86 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Rockbridge County Zoning Analysis</a> 
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">About</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data-collection.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data collection</span></a>
+  <a href="./data-collection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data collection</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./doc-review.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Document review</span></a>
+  <a href="./doc-review.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Document review</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./current-land-use.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Current land use</span></a>
+  <a href="./current-land-use.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Current land use</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./existing-zoning.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Existing zoning</span></a>
+  <a href="./existing-zoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Existing zoning</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./future-land-use.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Future land use</span></a>
+  <a href="./future-land-use.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Future land use</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./subdivisions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Subdivisions</span></a>
+  <a href="./subdivisions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Subdivisions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./entitlements.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Entitlements</span></a>
+  <a href="./entitlements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Entitlements</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#comprehensive-plan" id="toc-comprehensive-plan" class="nav-link active" data-scroll-target="#comprehensive-plan"><span class="toc-section-number">2.1</span>  Comprehensive plan</a></li>
-  <li><a href="#land-development-regulations" id="toc-land-development-regulations" class="nav-link" data-scroll-target="#land-development-regulations"><span class="toc-section-number">2.2</span>  Land development regulations</a>
-  <ul class="collapse">
-  <li><a href="#zoning-ordinance" id="toc-zoning-ordinance" class="nav-link" data-scroll-target="#zoning-ordinance"><span class="toc-section-number">2.2.1</span>  Zoning ordinance</a></li>
-  <li><a href="#subdivision-ordinance" id="toc-subdivision-ordinance" class="nav-link" data-scroll-target="#subdivision-ordinance"><span class="toc-section-number">2.2.2</span>  Subdivision ordinance</a></li>
-  </ul></li>
-  <li><a href="#short-term-rental-regulations" id="toc-short-term-rental-regulations" class="nav-link" data-scroll-target="#short-term-rental-regulations"><span class="toc-section-number">2.3</span>  Short-term rental regulations</a></li>
+  <li><a href="#rockbridge-county" id="toc-rockbridge-county" class="nav-link active" data-scroll-target="#rockbridge-county"><span class="header-section-number">2.1</span> Rockbridge County</a></li>
+  <li><a href="#city-of-lexington" id="toc-city-of-lexington" class="nav-link" data-scroll-target="#city-of-lexington"><span class="header-section-number">2.2</span> City of Lexington</a></li>
+  <li><a href="#city-of-buena-vista" id="toc-city-of-buena-vista" class="nav-link" data-scroll-target="#city-of-buena-vista"><span class="header-section-number">2.3</span> City of Buena Vista</a></li>
   </ul>
 </nav>
     </div>
@@ -162,7 +173,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Document review</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Document review</span></h1>
 </div>
 
 
@@ -177,31 +188,47 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>This section outlines the policy and regulatory documents used in the analysis.</p>
-<section id="comprehensive-plan" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="comprehensive-plan"><span class="header-section-number">2.1</span> Comprehensive plan</h2>
-<p>County of Rockbridge Comprehensive Plan 2016-2036 (<a href="https://www.co.rockbridge.va.us/DocumentCenter/View/1301/Rockbridge-Comp-Plan-2016?bidId=">PDF</a>)</p>
-<p><code>add more details</code></p>
-</section>
-<section id="land-development-regulations" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="land-development-regulations"><span class="header-section-number">2.2</span> Land development regulations</h2>
-<p>County of Rockbridge Land Development Regulations (<a href="https://www.co.rockbridge.va.us/DocumentCenter/View/240/LDR?bidId=%5D">PDF</a>)</p>
+<p>Decisions about which, when, and how parcels are developed in every locality are guided by a collection of long-range plans and specific regulations. This section outlines the policy and regulatory texts used in the analysis.</p>
+<section id="rockbridge-county" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="rockbridge-county"><span class="header-section-number">2.1</span> Rockbridge County</h2>
+<p>County of Rockbridge Comprehensive Plan 2016-2036 (<a href="https://www.co.rockbridge.va.us/DocumentCenter/View/1301/Rockbridge-Comp-Plan-2016?bidId=">PDF</a>)<br>
+<em>Adopted November 2016</em></p>
+<p>County of Rockbridge Land Development Regulations (<a href="https://www.co.rockbridge.va.us/DocumentCenter/View/240/LDR?bidId=%5D">PDF</a>)<br>
+<em>Adopted 1982, amended through March 2023</em></p>
 <p>These regulations include the zoning and subdivision ordinances in a single document.</p>
-<section id="zoning-ordinance" class="level3" data-number="2.2.1">
-<h3 data-number="2.2.1" class="anchored" data-anchor-id="zoning-ordinance"><span class="header-section-number">2.2.1</span> Zoning ordinance</h3>
-<p>Zoning district uses and use regulations are covered in Articles 6 and 7.</p>
-<p><code>add more details</code></p>
+<ul>
+<li>Zoning district uses and use regulations are covered in Articles 6 and 7.</li>
+<li>The process and requirements for subdivision of land are covered in Article 9.</li>
+</ul>
+<p>County of Rockbridge Short-Term Rental Zoning Regulations (<a href="https://www.co.rockbridge.va.us/DocumentCenter/View/2797/Short-Term-Zoning-Regulations%5D">PDF</a>)<br>
+<em>Adopted October 2021</em></p>
 </section>
-<section id="subdivision-ordinance" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="subdivision-ordinance"><span class="header-section-number">2.2.2</span> Subdivision ordinance</h3>
-<p>The process and requirements for subdivision of land are covered in Article 9.</p>
-<p><code>add more details</code></p>
+<section id="city-of-lexington" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="city-of-lexington"><span class="header-section-number">2.2</span> City of Lexington</h2>
+<p>Lexington Comprehensive Plan 2040 (<a href="https://www.lexingtonva.gov/home/showpublisheddocument/1496/637661126752770000">PDF</a>)<br>
+<em>Adopted November 2020</em></p>
+<p>City of Lexington Zoning Ordinance (<a href="https://ecode360.com/9735726">Link</a>)<br>
+<em>Adopted October 2017, amended through February 2023</em></p>
+<p>City of Lexington Subdivision Ordinance (<a href="https://ecode360.com/9734671">Link</a>)<br>
+<em>Adopted 1981, amended through December 2010</em></p>
+<p>Draft amendments for Accessory Dwelling Units (<a href="https://www.lexingtonva.gov/home/showpublisheddocument/2732/638176869976465746">PDF</a> pages 9-17)<br>
+<em>Last revised April 27, 2023</em></p>
 </section>
-</section>
-<section id="short-term-rental-regulations" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="short-term-rental-regulations"><span class="header-section-number">2.3</span> Short-term rental regulations</h2>
-<p>Short-Term Rental Zoning Regulations (<a href="https://www.co.rockbridge.va.us/DocumentCenter/View/2797/Short-Term-Zoning-Regulations%5D">PDF</a>)</p>
-<p><code>add more details</code></p>
+<section id="city-of-buena-vista" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="city-of-buena-vista"><span class="header-section-number">2.3</span> City of Buena Vista</h2>
+<p>Buena Vista Comprehensive Plan (<a href="https://www.buenavistava.org/wp-content/uploads/2020/12/2012-Viewpoints-Buena-Vista-Comprehensive-Plan.pdf">PDF</a>)<br>
+<em>Adopted November 2011</em></p>
+<p>City of Buena Vista Zoning Ordinance and Subdivision Regulations (<a href="https://library.municode.com/va/buena_vista/codes/code_of_ordinances?nodeId=PTIIILADERE">Link</a>)<br>
+<em>Adopted July 1985, amended through February 2022</em></p>
+<p>These regulations include the zoning and subdivision ordinances in a single document.</p>
+<ul>
+<li>Zoning district uses and use regulations are covered in Articles 6 and 7.</li>
+<li>The process and requirements for subdivision of land are covered in Article 9.</li>
+</ul>
+<p>City of Buena Vista Residential Land Use Regulation Guide (<a href="https://www.buenavistava.org/wp-content/uploads/2020/07/RRRGuide_20200710.pdf">PDF</a>)<br>
+<em>Updated July 2020</em></p>
+<p>Short Term Rental Regulations Guide for Property Owners(<a href="https://www.buenavistava.org/wp-content/uploads/2021/03/STR-owner-guide-20221031.pdf">PDF</a>)<br>
+<em>Regulations adopted February 2022, guide updated October 2022</em></p>
 
 
 </section>
@@ -234,9 +261,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -301,6 +342,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

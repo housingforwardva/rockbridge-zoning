@@ -1,0 +1,14 @@
+{
+  "hash": "c13555f46762436ccf81adc57487a920",
+  "result": {
+    "markdown": "# Existing zoning\n\n\n::: {.cell}\n\n:::\n\n\nThis section describes and analyzes the county's existing residential zoning regimen.\n\n\n::: {.cell}\n\n:::\n\n\n## Residential zoning districts\n\n- Descriptions of relevant zoning districts\n- By-right and conditional uses\n- Density and setback requirements\n\n## Distribution\n\n- Residential zoning by parcel\n- Residential zoning by land area\n\n## Development potential\n\n- Maps of where each housing type can be built by-right (and/or conditionally)\n\n## Discussion\n\n...",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

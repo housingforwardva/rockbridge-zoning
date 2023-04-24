@@ -31,7 +31,7 @@ knitr:
     echo: false
     warning: false
     message: false
-
+    
 format:
   html:
     theme: lumen

@@ -1,33 +1,52 @@
 # Document review
 
-This section outlines the policy and regulatory documents used in the analysis.
+Decisions about which, when, and how parcels are developed in every locality are guided by a collection of long-range plans and specific regulations. This section outlines the policy and regulatory texts used in the analysis.
 
-## Comprehensive plan
+## Rockbridge County
 
-County of Rockbridge Comprehensive Plan 2016-2036 ([PDF](https://www.co.rockbridge.va.us/DocumentCenter/View/1301/Rockbridge-Comp-Plan-2016?bidId=))
+County of Rockbridge Comprehensive Plan 2016-2036 ([PDF](https://www.co.rockbridge.va.us/DocumentCenter/View/1301/Rockbridge-Comp-Plan-2016?bidId=))  
+*Adopted November 2016*
+ 
+County of Rockbridge Land Development Regulations ([PDF](https://www.co.rockbridge.va.us/DocumentCenter/View/240/LDR?bidId=]))  
+*Adopted 1982, amended through March 2023*
+ 
+These regulations include the zoning and subdivision ordinances in a single document.
 
-`add more details`
+- Zoning district uses and use regulations are covered in Articles 6 and 7.
+- The process and requirements for subdivision of land are covered in Article 9.
 
-## Land development regulations
+County of Rockbridge Short-Term Rental Zoning Regulations ([PDF](https://www.co.rockbridge.va.us/DocumentCenter/View/2797/Short-Term-Zoning-Regulations]))  
+*Adopted October 2021*
 
-County of Rockbridge Land Development Regulations ([PDF](https://www.co.rockbridge.va.us/DocumentCenter/View/240/LDR?bidId=]))
+## City of Lexington
+
+Lexington Comprehensive Plan 2040 ([PDF](https://www.lexingtonva.gov/home/showpublisheddocument/1496/637661126752770000))  
+*Adopted November 2020*
+
+City of Lexington Zoning Ordinance ([Link](https://ecode360.com/9735726))  
+*Adopted October 2017, amended through February 2023*
+
+City of Lexington Subdivision Ordinance ([Link](https://ecode360.com/9734671))  
+*Adopted 1981, amended through December 2010*
+
+Draft amendments for Accessory Dwelling Units ([PDF](https://www.lexingtonva.gov/home/showpublisheddocument/2732/638176869976465746) pages 9-17)  
+*Last revised April 27, 2023*
+
+## City of Buena Vista
+
+Buena Vista Comprehensive Plan ([PDF](https://www.buenavistava.org/wp-content/uploads/2020/12/2012-Viewpoints-Buena-Vista-Comprehensive-Plan.pdf))  
+*Adopted November 2011*
+
+City of Buena Vista Zoning Ordinance and Subdivision Regulations ([Link](https://library.municode.com/va/buena_vista/codes/code_of_ordinances?nodeId=PTIIILADERE))  
+*Adopted July 1985, amended through February 2022*
 
 These regulations include the zoning and subdivision ordinances in a single document.
 
-### Zoning ordinance
+- Zoning district uses and use regulations are covered in Articles 6 and 7.
+- The process and requirements for subdivision of land are covered in Article 9.
 
-Zoning district uses and use regulations are covered in Articles 6 and 7.
+City of Buena Vista Residential Land Use Regulation Guide ([PDF](https://www.buenavistava.org/wp-content/uploads/2020/07/RRRGuide_20200710.pdf))  
+*Updated July 2020*
 
-`add more details`
-
-### Subdivision ordinance
-
-The process and requirements for subdivision of land are covered in Article 9.
-
-`add more details`
-
-## Short-term rental regulations
-
-Short-Term Rental Zoning Regulations ([PDF](https://www.co.rockbridge.va.us/DocumentCenter/View/2797/Short-Term-Zoning-Regulations]))
-
-`add more details`
+Short Term Rental Regulations Guide for Property Owners([PDF](https://www.buenavistava.org/wp-content/uploads/2021/03/STR-owner-guide-20221031.pdf))  
+*Regulations adopted February 2022, guide updated October 2022*

@@ -1,7 +1,12 @@
+---
+engine: knitr
+---
+
 ## About {.unnumbered}
 
 ::: {.callout-caution}
 ### Please note
+
 This document is still under construction. It was last updated `r format(Sys.time(), format = "%B %d, %Y")` at `r format(Sys.time(), "%I:%M %p")`.
 :::
 
@@ -9,7 +14,7 @@ This report is an analysis of zoning and land use patterns in Rockbridge County,
 
 ## Objectives
 
-This analysis in this report supports three county objectives:
+This analysis in this report supports three objectives:
 
 1. To better inform elected officials about housing development patterns, challenges, and opportunities,
 2. To attract and solicit developers, and
@@ -17,13 +22,13 @@ This analysis in this report supports three county objectives:
 
 ## Process
 
-HFV will provide Rockbridge County with a comprehensive analysis of their current zoning regimen to determine challenges and opportunities related to the county’s housing needs as identified by VCHR.
+HFV will provide these localities with a comprehensive analysis of their current zoning regimens to determine challenges and opportunities related to housing needs as identified by VCHR.
 
 This work will investigate and assess:
 
-- The county’s current comprehensive plan,
+- Current comprehensive plans,
 - Existing residential and mixed-use zoning districts,
-- Subdivision ordinance and related regulations, and
+- Subdivision ordinances and related regulations, and
 - Processes for rezonings, special use permits, and similar procedures to change the development potential of properties.
 
 HFV will synthesize this analysis and provide a summary of findings, as well as potential recommendations that would work in sync with solutions offered in the full regional report.

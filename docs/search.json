@@ -4,7 +4,7 @@
     "href": "index.html#about",
     "title": "Rockbridge County Zoning Analysis",
     "section": "About",
-    "text": "About\n\n\n\n\n\n\nPlease note\n\n\n\nThis document is still under construction. It was last updated February 06, 2023 at 02:57 PM.\n\n\nThis report is an analysis of zoning and land use patterns in Rockbridge County, Virginia. This work supports the ongoing regional housing study that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC)."
+    "text": "About\n\n\n\n\n\n\nPlease note\n\n\n\nThis document is still under construction. It was last updated April 24, 2023 at 06:35 PM.\n\n\nThis report is an analysis of zoning and land use patterns in Rockbridge County, the City of Lexington, and the City of Buena Vista. This work supports the ongoing regional housing study that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC)."
   },
   {
     "objectID": "index.html#objectives",
@@ -25,42 +25,42 @@
     "href": "data-collection.html#land-use-and-zoning",
     "title": "1  Data collection",
     "section": "1.1 Land use and zoning",
-    "text": "1.1 Land use and zoning\nGIS layers for:\n\nParcels\nCurrent zoning designations\nCurrent land use\nFuture land use"
+    "text": "1.1 Land use and zoning\nThis group includes the following types of GIS data:\n\nParcels: All real property lots within a locality\nCurrent zoning: Boundaries of current zoning districts\nCurrent land use: Existing use of parcels (e.g. single-family, industrial, etc.)\nFuture land use: Designated future land use categories based on current comprehensive plan\n\nAll three localities have provided sufficient forms of these datasets. However, the data structures are not consistent. For example, the current land use designations for each parcel may be a field included in the parcel shapefile, or they must instead be joined using separate non-spatial real estate assessment records."
   },
   {
     "objectID": "data-collection.html#entitlements",
     "href": "data-collection.html#entitlements",
     "title": "1  Data collection",
     "section": "1.2 Entitlements",
-    "text": "1.2 Entitlements\nRecords for all:\n\nResidential rezonings\nResidential variances\nResidential special use permits\nSubdivision plats\n\nIdeally, records should cover at least the past five years. If possible, records should also include proposed/pending and denied applications."
+    "text": "1.2 Entitlements\nThis group includes public records of residential land use and zoning changes requested by property owners, categorized by specific regulatory process:\n\nResidential rezonings: Underlying zoning designation is changed\nResidential variances: Property receives a specific exemption from the zoning code\nResidential special/conditional use permits: Locality grants special permission for property use to deviate from zoning code with certain qualifications\nSubdivision plats: Development creates homes on new parcels in accordance with subdivision ordinance\n\nAll three localities have provided sufficient records of these applications and their results. Data from Lexington and Buena Vista also include planned unit developments (PUDs).\nLike the GIS data, however, data structures are very different for each of the jurisdiction’s records. Significant effort is required to assess and rework the data to provide comparable analysis across all localities."
   },
   {
     "objectID": "data-collection.html#infrastructure",
     "href": "data-collection.html#infrastructure",
     "title": "1  Data collection",
     "section": "1.3 Infrastructure",
-    "text": "1.3 Infrastructure\nGIS layers for:\n\nWater and wastewater availability\nBroadband access"
+    "text": "1.3 Infrastructure\nData in this group include public and private infrastructure that strongly influence where new housing can or cannot be developed.\n\nPublic water: Boundaries of current publicly-provided drinking water service\nPublic sewer: Boundaries of current publicly-provided wastewater service\nBroadband internet: Extent and quality of broadband internet connectivity\n\nAll localities have provided spatial data for public wastewater service. Public water service data has been received from Rockbridge and Buena Vista.\nMost local governments have limited or no in-house data on broadband coverage. However, the Virginia Department of Housing and Community Development (DHCD) is now required by code to collect and publish anonymized address-level records of broadband availability. The current dataset is published on the Virginia Open Data Portal:\nVirginia Locations Unserved by Broadband (last updated November 9, 2022)\nWe will use this spatial data to evaluate level of broadband service for all three localities."
   },
   {
-    "objectID": "doc-review.html#comprehensive-plan",
-    "href": "doc-review.html#comprehensive-plan",
+    "objectID": "doc-review.html#rockbridge-county",
+    "href": "doc-review.html#rockbridge-county",
     "title": "2  Document review",
-    "section": "2.1 Comprehensive plan",
-    "text": "2.1 Comprehensive plan\nCounty of Rockbridge Comprehensive Plan 2016-2036 (PDF)\nadd more details"
+    "section": "2.1 Rockbridge County",
+    "text": "2.1 Rockbridge County\nCounty of Rockbridge Comprehensive Plan 2016-2036 (PDF)\nAdopted November 2016\nCounty of Rockbridge Land Development Regulations (PDF)\nAdopted 1982, amended through March 2023\nThese regulations include the zoning and subdivision ordinances in a single document.\n\nZoning district uses and use regulations are covered in Articles 6 and 7.\nThe process and requirements for subdivision of land are covered in Article 9.\n\nCounty of Rockbridge Short-Term Rental Zoning Regulations (PDF)\nAdopted October 2021"
   },
   {
-    "objectID": "doc-review.html#land-development-regulations",
-    "href": "doc-review.html#land-development-regulations",
+    "objectID": "doc-review.html#city-of-lexington",
+    "href": "doc-review.html#city-of-lexington",
     "title": "2  Document review",
-    "section": "2.2 Land development regulations",
-    "text": "2.2 Land development regulations\nCounty of Rockbridge Land Development Regulations (PDF)\nThese regulations include the zoning and subdivision ordinances in a single document.\n\n2.2.1 Zoning ordinance\nZoning district uses and use regulations are covered in Articles 6 and 7.\nadd more details\n\n\n2.2.2 Subdivision ordinance\nThe process and requirements for subdivision of land are covered in Article 9.\nadd more details"
+    "section": "2.2 City of Lexington",
+    "text": "2.2 City of Lexington\nLexington Comprehensive Plan 2040 (PDF)\nAdopted November 2020\nCity of Lexington Zoning Ordinance (Link)\nAdopted October 2017, amended through February 2023\nCity of Lexington Subdivision Ordinance (Link)\nAdopted 1981, amended through December 2010\nDraft amendments for Accessory Dwelling Units (PDF pages 9-17)\nLast revised April 27, 2023"
   },
   {
-    "objectID": "doc-review.html#short-term-rental-regulations",
-    "href": "doc-review.html#short-term-rental-regulations",
+    "objectID": "doc-review.html#city-of-buena-vista",
+    "href": "doc-review.html#city-of-buena-vista",
     "title": "2  Document review",
-    "section": "2.3 Short-term rental regulations",
-    "text": "2.3 Short-term rental regulations\nShort-Term Rental Zoning Regulations (PDF)\nadd more details"
+    "section": "2.3 City of Buena Vista",
+    "text": "2.3 City of Buena Vista\nBuena Vista Comprehensive Plan (PDF)\nAdopted November 2011\nCity of Buena Vista Zoning Ordinance and Subdivision Regulations (Link)\nAdopted July 1985, amended through February 2022\nThese regulations include the zoning and subdivision ordinances in a single document.\n\nZoning district uses and use regulations are covered in Articles 6 and 7.\nThe process and requirements for subdivision of land are covered in Article 9.\n\nCity of Buena Vista Residential Land Use Regulation Guide (PDF)\nUpdated July 2020\nShort Term Rental Regulations Guide for Property Owners(PDF)\nRegulations adopted February 2022, guide updated October 2022"
   },
   {
     "objectID": "current-land-use.html#categories",

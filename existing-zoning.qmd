@@ -1,6 +1,7 @@
 # Existing zoning
 
 ```{r}
+#| eval: false
 
 library(sf)
 library(sp)
@@ -13,16 +14,14 @@ library(leaflet)
 This section describes and analyzes the county's existing residential zoning regimen.
 
 ```{r}
+#| eval: false
 
 zoning <- st_read("data/Rockbridge/RockbridgeZoning20221003.shp", quiet = TRUE) %>% st_transform(4326)
-
 
 leaflet(zoning) %>% 
   addTiles() %>% 
   addPolygons()
   
-
-
 ```
 
 ## Residential zoning districts
