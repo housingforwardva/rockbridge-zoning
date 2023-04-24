@@ -1,30 +1,44 @@
 # Data collection
 
-This section outlines the process for collecting and preparing the data required for the analysis.
+To complete the goals of this analysis, all three localities have provided data related to their land use regimens. Both spatial and non-spatial data is included. This section outlines what types of data have been collected so far from each locality.
 
 ## Land use and zoning
 
-GIS layers for:
+This group includes the following types of GIS data:
 
-- Parcels
-- Current zoning designations
-- Current land use
-- Future land use
+- **Parcels**: All real property lots within a locality
+- **Current zoning**: Boundaries of current zoning districts
+- **Current land use**: Existing use of parcels (e.g. single-family, industrial, etc.)
+- **Future land use**: Designated future land use categories based on current comprehensive plan
+
+All three localities have provided sufficient forms of these datasets. However, the data structures are not consistent. For example, the current land use designations for each parcel may be a field included in the parcel shapefile, or they must instead be joined using separate non-spatial real estate assessment records.
 
 ## Entitlements
 
-Records for all:
+This group includes public records of residential land use and zoning changes requested by property owners, categorized by specific regulatory process:
 
-- Residential rezonings
-- Residential variances
-- Residential special use permits
-- Subdivision plats
+- **Residential rezonings**: Underlying zoning designation is changed
+- **Residential variances**: Property receives a specific exemption from the zoning code
+- **Residential special/conditional use permits**: Locality grants special permission for property use to deviate from zoning code with certain qualifications
+- **Subdivision plats**: Development creates homes on new parcels in accordance with subdivision ordinance
 
-Ideally, records should cover at least the past five years. If possible, records should also include proposed/pending and denied applications.
+All three localities have provided sufficient records of these applications and their results. Data from Lexington and Buena Vista also include planned unit developments (PUDs).
+
+Like the GIS data, however, data structures are very different for each of the jurisdiction's records. Significant effort is required to assess and rework the data to provide comparable analysis across all localities.
 
 ## Infrastructure
 
-GIS layers for:
+Data in this group include public and private infrastructure that strongly influence where new housing can or cannot be developed. 
 
-- Water and wastewater availability
-- Broadband access
+- **Public water**: Boundaries of current publicly-provided drinking water service
+- **Public sewer**: Boundaries of current publicly-provided wastewater service
+- **Broadband internet**: Extent and quality of broadband internet connectivity
+
+All localities have provided spatial data for public wastewater service. Public water service data has been received from Rockbridge and Buena Vista.
+
+Most local governments have limited or no in-house data on broadband coverage. However, the Virginia Department of Housing and Community Development (DHCD) is now required by code to collect and publish anonymized address-level records of broadband availability. The current dataset is published on the Virginia Open Data Portal:
+
+[Virginia Locations Unserved by Broadband](https://data.virginia.gov/Government/Virginia-Locations-Unserved-by-Broadband/tu9g-ra7v) (last updated November 9, 2022)
+
+We will use this spatial data to evaluate level of broadband service for all three localities.
+

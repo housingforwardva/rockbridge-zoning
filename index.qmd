@@ -5,7 +5,7 @@
 This document is still under construction. It was last updated `r format(Sys.time(), format = "%B %d, %Y")` at `r format(Sys.time(), "%I:%M %p")`.
 :::
 
-This report is an analysis of zoning and land use patterns in Rockbridge County, Virginia. This work supports the ongoing [regional housing study](https://www.cspdc.org/programs-services/housing/) that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC).
+This report is an analysis of zoning and land use patterns in Rockbridge County, the City of Lexington, and the City of Buena Vista. This work supports the ongoing [regional housing study](https://www.cspdc.org/programs-services/housing/) that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC).
 
 ## Objectives
 
