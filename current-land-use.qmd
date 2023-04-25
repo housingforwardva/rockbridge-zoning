@@ -1,20 +1,270 @@
 # Current land use
 
-This section examines current residential land uses in the county.
+This section examines current residential land uses in each of the three localities. The towns of Glasgow and Goshen are not included.
 
-## Categories
+```{r}
+
+library(tidyverse)
+library(hdatools)
+library(scales)
+library(mapview)
+library(kableExtra)
+
+```
+
+
+## Rockbridge County
+
+```{r}
+
+# Load Rockbridge zoning and land use data
+
+rock_occ <- read_csv("data/rockbridge/rb-occupancy-codes.csv")
+rock_landuse_zoning <- read_rds("data/rockbridge/rock_landuse_zoning.rds")
+rock_area <- read_rds("data/rockbridge/rock_area.rds")
+
+```
+
+### Categories
+
+Parcels in the county are assigned one of 19 unique land use codes in the real property assessment data. To standardize these specific descriptions, we can assign new summary groups and categories, as shown in the table below. Residential land uses are highlighted.
+
+```{r}
+#| label: tbl-lu-desc
+#| tbl-cap: "Land use codes and descriptions assigned by county"
+
+rock_occ |> 
+  mutate(category = fct_relevel(category, "Residential", "Commercial",
+                                "Agricultural", "Industrial")) |> 
+  arrange(category) |> 
+  select(code, description, group, category) |> 
+  kable(
+    col.names = c("Code", "Description", "Group", "Category"),
+    align = "clll"
+    ) |>
+  kableExtra::row_spec(1:6, bold = TRUE, color = "#011e41") |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+Rockbridge County includes large tracts of state and federal land, such as the George Washington National Forest and Moore's Creek State Forest. To account for these preserved areas, all parcels under public ownership were designated a new public property category by hand. The category is grouped according to which level of government owns the parcel.
+
+The table below shows the revised land use categories and groups.
+
+```{r}
+#| label: tbl-lu-rev
+#| tbl-cap: "Revised land use categories and groups"
+
+rock_area |> 
+  select(1, 2) |> 
+  distinct() |> 
+  mutate(category = fct_relevel(category, "Residential", "Public property",
+                                "Commercial", "Agricultural", "Industrial")) |> 
+  arrange(category) |> 
+  kable(col.names = c("Category", "Group")) |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+### Distribution
+
+```{r}
+#| label: rock-dist
+
+rock_category <- rock_area |> 
+  summarise(parcels = sum(parcels),
+            area = sum(area),
+            parcels_pct = sum(parcels_pct),
+            area_pct = sum(area_pct),
+            .by = c(group, category))
+
+rock_residential <- rock_area |> 
+  filter(category == "Residential") |>
+  summarise(parcels = sum(parcels),
+            area = sum(area),
+             .by = c(group)) |> 
+  mutate(parcels_pct = parcels/sum(parcels),
+         area_pct = area/sum(area))
+
+```
+
+There are a total of 22,777 individual parcels across Rockbridge County. Nearly all of them are either residential (46.6 percent) or vacant (45.3 percent). All other uses comprise less than 3 percent on their own.
+
+```{r}
+#| label: fig-rock-dist-parcel
+#| fig-cap: "Percent of all parcels in Rockbridge County by land use category"
+
+rock_category |> 
+  summarise(parcels_pct = sum(parcels_pct), .by = c(category)) |> 
+  mutate(category = fct_reorder(category, parcels_pct, .fun = sum)) |> 
+  ggplot(aes(y = category)) +
+  geom_col(
+    aes(x = parcels_pct),
+    just = 1,
+    width = 0.4,
+    fill = "#011e41"
+    ) +
+  geom_text(
+    aes(
+      x = parcels_pct + 0.005,
+      y = category,
+      label = label_percent(accuracy = 0.1)(parcels_pct)
+      ),
+    color = "grey50",
+    hjust = 0,
+    vjust = 1,
+    nudge_y = -0.1
+    ) +
+  geom_text(
+    aes(
+      x = 0,
+      y = category,
+      label = category
+      ),
+    color = "#011e41",
+    hjust = 0,
+    vjust = 0,
+    nudge_y = 0.1,
+    nudge_x = 0.002
+    ) +
+  scale_x_continuous(
+    limits = c(0, 0.49),
+    expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Over 9 in 10 parcels are residential or vacant",
+    subtitle = "Percent of all parcels in Rockbridge County by land use category",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  theme_hfv() +
+  add_zero_line("x") +
+  theme(
+    axis.text = element_blank(),
+    panel.grid.major.y = element_blank()
+    )
+
+```
+
+::: {.callout-warning}
+## Interpreting the lack of "agricultural" parcels
+According to county assessment records, only two parcels were designated with the "farm" description, and thus assigned to the "agricultural" category. However, we know that many more parcels in the county are used for agricultural purposes, so it is reasonable to interpret that a significant share of the "residential" and "vacant" parcels include farming activities.
+
+For more information on agricultural parcels in the county, see analysis of the A-1 and A-2 zoning districts in [Chapter 4](existing-zoning.qmd).
+:::
+
+Within just the 10,610 residential parcels, nearly all (90.3 percent) are single-family homes. Mobile homes on individual lots make up just under 8 percent; these include single-wides and double-wides. Only 173 parcels (1.6 percent) have townhomes or condos, and 27 parcels (0.3 percent) have apartments.
+
+```{r}
+#| label: fig-rock-dist-res-parcel
+#| fig-cap: "Percent of all residential parcels in Rockbridge County by land use group"
+
+rock_residential |> 
+  mutate(group = fct_reorder(group, parcels_pct)) |> 
+  ggplot(aes(y = group)) +
+  geom_col(
+    aes(x = parcels_pct),
+    just = 1,
+    width = 0.6,
+    fill = "#011e41"
+    ) +
+  geom_text(
+    aes(
+      x = parcels_pct + 0.005,
+      y = group,
+      label = label_percent(accuracy = 0.1)(parcels_pct)
+      ),
+    color = "grey50",
+    hjust = 0,
+    vjust = 1,
+    nudge_y = -0.15
+    ) +
+  geom_text(
+    aes(
+      x = parcels_pct + 0.005,
+      y = group,
+      label = paste(number(parcels, big.mark = ","), "parcels")
+      ),
+    color = "grey50",
+    hjust = 0,
+    vjust = 1,
+    nudge_y = -0.35
+    ) +
+  geom_text(
+    aes(
+      x = 0,
+      y = group,
+      label = group
+      ),
+    color = "#011e41",
+    hjust = 0,
+    vjust = 0,
+    nudge_y = 0.1,
+    nudge_x = 0.002
+    ) +
+  scale_x_continuous(
+    limits = c(0, 0.95),
+    expand = expansion(mult = c(0,0.1))
+    ) +
+  scale_y_discrete(
+    expand = expansion(mult = c(0.1,0.1))
+  ) +
+  labs(
+    title = "Less than 2 percent of residential parcels are multifamily",
+    subtitle = "Percent of all residential parcels in Rockbridge County by land use group",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  theme_hfv() +
+  add_zero_line("x") +
+  theme(
+    axis.text = element_blank(),
+    panel.grid.major.y = element_blank()
+    )
+
+```
+
+:::{.callout-tip}
+## Single-family compared to multifamily parcels
+For every parcel with a townhome, condo, or apartment building, there are another 48 parcels with single-family homes.
+:::
+
+Percent of all land by land use category
+
+Percent of all residential land by land use group
+
+### Analysis
+
+- Notable changes in residential land use across county over time
+
+## City of Lexington
+
+### Categories
 
 - Descriptions of residential land use categories
 
-## Distribution
+### Distribution
 
 - Residential land uses by parcel
 - Residential land uses by land area
 
-## Trends
+### Analysis
 
 - Notable changes in residential land use across county over time
 
-## Discussion
+## City of Buena Vista
 
-...
+### Categories
+
+- Descriptions of residential land use categories
+
+### Distribution
+
+- Residential land uses by parcel
+- Residential land uses by land area
+
+### Analysis
+
+- Notable changes in residential land use across county over time

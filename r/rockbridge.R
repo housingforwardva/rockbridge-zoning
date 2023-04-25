@@ -164,4 +164,5 @@ rock_area <- rock_landuse_zoning |>
 
 ## Save data --------------------------
 
+write_rds(rock_landuse_zoning, "data/rockbridge/rock_landuse_zoning.rds")
 write_rds(rock_area, "data/rockbridge/rock_area.rds")
