@@ -7,6 +7,7 @@ This section examines current residential land uses in each of the three localit
 library(tidyverse)
 library(hdatools)
 library(scales)
+library(sf)
 library(mapview)
 library(kableExtra)
 
@@ -92,6 +93,8 @@ rock_residential <- rock_area |>
 
 ```
 
+#### As share of parcels {.unnumbered}
+
 There are a total of 22,777 individual parcels across Rockbridge County. Nearly all of them are either residential (46.6 percent) or vacant (45.3 percent). All other uses comprise less than 3 percent on their own.
 
 ```{r}
@@ -106,7 +109,7 @@ rock_category |>
     aes(x = parcels_pct),
     just = 1,
     width = 0.4,
-    fill = "#011e41"
+    fill = "#334a66"
     ) +
   geom_text(
     aes(
@@ -137,7 +140,7 @@ rock_category |>
     ) +
   labs(
     title = "Over 9 in 10 parcels are residential or vacant",
-    subtitle = "Percent of all parcels in Rockbridge County by land use category",
+    subtitle = "Percent of all <span style='color:#011e41;'>**parcels**</span> in Rockbridge County by land use category",
     caption = "**Source:** Rockbridge County GIS records."
   ) +
   theme_hfv() +
@@ -169,7 +172,7 @@ rock_residential |>
     aes(x = parcels_pct),
     just = 1,
     width = 0.6,
-    fill = "#011e41"
+    fill = "#334a66"
     ) +
   geom_text(
     aes(
@@ -214,7 +217,7 @@ rock_residential |>
   ) +
   labs(
     title = "Less than 2 percent of residential parcels are multifamily",
-    subtitle = "Percent of all residential parcels in Rockbridge County by land use group",
+    subtitle = "Percent of all <span style='color:#011e41;'>**residential parcels**</span> in Rockbridge County by land use group",
     caption = "**Source:** Rockbridge County GIS records."
   ) +
   theme_hfv() +
@@ -231,13 +234,257 @@ rock_residential |>
 For every parcel with a townhome, condo, or apartment building, there are another 48 parcels with single-family homes.
 :::
 
-Percent of all land by land use category
+#### As share of land area {.unnumbered}
 
-Percent of all residential land by land use group
+Excluding Lexington and both towns, Rockbridge County is approximately 376,900 total acres. Residential and vacant parcels comprise the majority of this area, each accounting for about 35 percent of all land in the county.
+
+Publicly-owned lands make up nearly 25 percent of the county's area, but just 1.3 percent of all parcels. These large tracts---including national forests and wildlife management areas---are permanently off limits to new development.
+
+```{r}
+#| label: fig-rock-dist-land
+#| fig-cap: "Percent of all land area in Rockbridge County by land use category"
+
+rock_category |> 
+  summarise(area_pct = sum(area_pct), .by = c(category)) |> 
+  mutate(category = fct_reorder(category, area_pct, .fun = sum)) |> 
+  ggplot(aes(y = category)) +
+  geom_col(
+    aes(x = area_pct),
+    just = 1,
+    width = 0.4,
+    fill = "#a29dd4"
+    ) +
+  geom_text(
+    aes(
+      x = area_pct + 0.005,
+      y = category,
+      label = label_percent(accuracy = 0.1)(area_pct)
+      ),
+    color = "grey50",
+    hjust = 0,
+    vjust = 1,
+    nudge_y = -0.1
+    ) +
+  geom_text(
+    aes(
+      x = 0,
+      y = category,
+      label = category
+      ),
+    color = "#8b85ca",
+    hjust = 0,
+    vjust = 0,
+    nudge_y = 0.1,
+    nudge_x = 0.002
+    ) +
+  scale_x_continuous(
+    limits = c(0, 0.38),
+    expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Large areas of the county are non-developable public land",
+    subtitle = "Percent of all <span style='color:#8b85ca;'>**land area**</span> in Rockbridge County by land use category",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  theme_hfv() +
+  add_zero_line("x") +
+  theme(
+    axis.text = element_blank(),
+    panel.grid.major.y = element_blank()
+    )
+
+```
+
+The total area of residential parcels in the county is about 132,850 acres. Single-family home properties account for nearly every acre---over 97 percent---of that land. The remaining land is almost exclusively parcels with mobile homes (2.8 percent).
+
+The few properties with apartments, townhomes, or condos make up just over 200 acres. This is less than 0.2 percent of all the residential land in Rockbridge County.
+
+```{r}
+#| label: fig-rock-dist-res-area
+#| fig-cap: "Percent of all residential land area in Rockbridge County by land use group"
+
+rock_residential |> 
+  mutate(group = fct_reorder(group, area_pct)) |> 
+  ggplot(aes(y = group)) +
+  geom_col(
+    aes(x = area_pct),
+    just = 1,
+    width = 0.6,
+    fill = "#a29dd4"
+    ) +
+  geom_text(
+    aes(
+      x = area_pct + 0.005,
+      y = group,
+      label = label_percent(accuracy = 0.1)(area_pct)
+      ),
+    color = "grey50",
+    hjust = 0,
+    vjust = 1,
+    nudge_y = -0.15
+    ) +
+  geom_text(
+    aes(
+      x = area_pct + 0.005,
+      y = group,
+      label = paste(number(area, big.mark = ","), "acres")
+      ),
+    color = "grey50",
+    hjust = 0,
+    vjust = 1,
+    nudge_y = -0.35
+    ) +
+  geom_text(
+    aes(
+      x = 0,
+      y = group,
+      label = group
+      ),
+    color = "#8b85ca",
+    hjust = 0,
+    vjust = 0,
+    nudge_y = 0.1,
+    nudge_x = 0.002
+    ) +
+  scale_x_continuous(
+    limits = c(0, 1.1),
+    expand = expansion(mult = c(0,0.1))
+    ) +
+  scale_y_discrete(
+    expand = expansion(mult = c(0.1,0.1))
+  ) +
+  labs(
+    title = "Almost every acre of residential land in the county is used by properties with single-family homes",
+    subtitle = "Percent of all <span style='color:#8b85ca;'>**residential land area**</span> in Rockbridge County by land use group",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  theme_hfv() +
+  add_zero_line("x") +
+  theme(
+    axis.text = element_blank(),
+    panel.grid.major.y = element_blank()
+    )
+
+```
 
 ### Analysis
 
-- Notable changes in residential land use across county over time
+The chart below shows the average and median lot sizes for the four different types of residential parcels found in the county. 
+
+```{r}
+#| label: fig-rock-lot-avg
+#| fig-cap: "Average and median residential lot sizes in Rockbridge County by land use group"
+
+rock_lot_avg <- rock_landuse_zoning |> 
+  st_drop_geometry() |> 
+  filter(category == "Residential",
+         CALCACRES > 0) |> 
+  summarise(
+    count = n(),
+    Median = median(CALCACRES),
+    Average = mean(CALCACRES),
+    .by = group
+    ) |> 
+  pivot_longer(cols = 2:4, names_to = "lot_size")
+
+rock_lot_avg |> 
+  filter(lot_size != "count") |> 
+  mutate(group = fct_reorder(group, value, .desc = FALSE)) |> 
+  ggplot(aes(group, fct_rev(lot_size), color = lot_size)) +
+  geom_point(
+    aes(size = value),
+    shape = 15
+  ) + 
+  geom_text(
+    aes(label = paste(number(value, accuracy = 0.01), "acres")),
+    vjust = 6.5
+  ) +
+  scale_size(range = c(2, 34)) +
+  scale_color_hfv() +
+  scale_y_discrete(expand = expansion(c(0.6,0.4))) +
+  labs(
+    title = "The average single-family home property is almost twice the size of the average apartment property",
+    subtitle = "Average and median residential lot sizes in Rockbridge County by land use group",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.x = element_text(vjust = 5)
+   )
+
+```
+
+At almost 14 acres, the average size of a single-family lot is about twice as large as the average apartment property (6.83 acres), despite the latter accommodating multiple homes on each lot. However, these values are right-skewed due to a small number of very large lots. Still, when using medians to account for this skew, the typical single-family lot is more than 60 percent larger than the typical lot with an apartment building.
+
+The chart below shows the distribution of residential lot sizes by land use group.
+
+```{r}
+#| label: fig-rock-lot-avg
+#| fig-cap: "Lot size distribution of residential parcels in Rockbridge County by land use group"
+
+library(ggridges)
+
+rock_lot_dist <- rock_landuse_zoning |> 
+  st_drop_geometry() |> 
+  filter(category == "Residential",
+         CALCACRES > 0) |> 
+  filter(
+    case_when(
+      group == "Single-family" ~ CALCACRES < 20,
+      group == "Apartment" ~ CALCACRES < 50,
+      group == "Mobile home" ~ CALCACRES < 20,
+      group == "Townhouse/condo" ~ CALCACRES < 2
+    )
+  )
+
+rock_lot_quantiles <- rock_landuse_zoning |> 
+  st_drop_geometry() |> 
+  filter(category == "Residential",
+         CALCACRES > 0) |>  
+  summarise(median = quantile(CALCACRES, probs = 0.5),
+            upper = quantile(CALCACRES, probs = 0.75),
+            .by = group)
+
+rock_lot_dist |> 
+  mutate(group = fct_reorder(group, CALCACRES, .fun = mean, .desc = TRUE)) |> 
+  ggplot(aes(CALCACRES, color = group, fill = group)) +
+  facet_wrap(~group, scales = "free") +
+  geom_density(alpha = 0.5, linewidth = 1) +
+  geom_vline(
+    data = rock_lot_quantiles,
+    aes(
+      xintercept = upper,
+      color = group
+      ),
+    linewidth = 1,
+    alpha = 0.4,
+    linetype = "dashed"
+    ) +
+  scale_fill_hfv() +
+  scale_color_hfv() +
+  scale_x_continuous(
+    name = "Lot size (acres)",
+    limits = c(0, NA),
+    expand = c(0,0)
+    ) +
+  theme_hfv(flip_gridlines = TRUE) +
+  add_zero_line("x") +
+  theme(
+    panel.spacing.x = unit(2, "lines"),
+    panel.spacing.y = unit(1, "lines"),
+    axis.title.x = element_text(face = "italic", vjust = -1, hjust = 0, margin = margin(t=3, b=5)),
+    axis.text.y = element_blank(),
+    strip.text.x = element_text(vjust = 1, hjust = 0, margin = margin(l=0, b=5))
+  ) +
+  labs(
+    title = "Almost all residential lots are less than 2 acres in size",
+    subtitle = "Lot size distribution of residential parcels in Rockbridge County by land use group",
+    caption = "**Source:** Rockbridge County GIS records.<br>**Note:** Different x-axis scales are used in each panel."
+  )
+
+```
+
 
 ## City of Lexington
 
