@@ -20,7 +20,7 @@ book:
     - existing-zoning.qmd
     - future-land-use.qmd
     - subdivisions.qmd
-    - entitlements.qmd
+#    - entitlements.qmd
     - summary.qmd
 #    - references.qmd
 

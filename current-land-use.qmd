@@ -420,7 +420,7 @@ At almost 14 acres, the average size of a single-family lot is about twice as la
 The chart below shows the distribution of residential lot sizes by land use group.
 
 ```{r}
-#| label: fig-rock-lot-avg
+#| label: fig-rock-lot-dist
 #| fig-cap: "Lot size distribution of residential parcels in Rockbridge County by land use group"
 
 library(ggridges)
@@ -483,8 +483,9 @@ rock_lot_dist |>
     caption = "**Source:** Rockbridge County GIS records.<br>**Note:** Different x-axis scales are used in each panel."
   )
 
-```
 
+
+```
 
 ## City of Lexington
 
