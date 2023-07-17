@@ -10,6 +10,8 @@ library(scales)
 library(sf)
 library(mapview)
 library(kableExtra)
+library(htmltools)
+library(htmlwidgets)
 
 ```
 
@@ -67,6 +69,51 @@ rock_area |>
   kable(col.names = c("Category", "Group")) |> 
   kableExtra::kable_styling(
     bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+This map shows general land use categories by parcel across Rockbridge County.
+
+```{r}
+#| eval: false
+
+rb_landuse_map <- mapview(
+  rock_landuse_zoning,
+  layer.name = "Land use",
+  zcol = "category",
+  col.regions = RColorBrewer::brewer.pal(8, "Paired")
+  )
+
+rb_landuse_map <- leaflet(rock_landuse_zoning) |> 
+  addTiles() |> 
+  addPolygons(fill)
+
+saveWidget(rb_landuse_map, "maps/rb_landuse_map.html")
+
+```
+
+
+```{r}
+#| label: fig-lu-map
+#| fig-cap: "Land use categories in Rockbridge County"
+
+
+
+```
+
+This map shows the specific residential use groups for current residential parcels only. All other uses are excluded.
+
+```{r}
+#| label: fig-lu-res-map
+#| fig-cap: "Residential land use groups in Rockbridge County"
+
+rock_landuse_zoning |> 
+  filter(category == "Residential") |> 
+  mapview(
+    layer.name = "Residential use",
+    zcol = "group",
+    col.regions = RColorBrewer::brewer.pal(4, "Paired")
     )
 
 ```

@@ -1,4 +1,4 @@
-label,locality,name,overlay,type,treat_1fd,treat_1fa,treat_2f,treat_mf,treat_mh,treat_mhp,frontage,minlot_1f,setback_1f,setback_side_1f,setback_rear_1f,parking_1f,height_1f,minlot_2f,setback_2f,setback_side_2f,setback_rear_2f,parking_1br_2f,parking_2br_2f,height_2f,minlot_4f,setback_4f,setback_side_4f,setback_rear_4f,parking_1br_4f,parking_2br_4f,height_4f,treat_adu,adu_max_pct,adu_max_sf,treat_prd,mhp,minlot_prd,maxdens_prd,notes
+zone,locality,name,overlay,type,treat_1fd,treat_1fa,treat_2f,treat_mf,treat_mh,treat_mhp,frontage,minlot_1f,setback_1f,setback_side_1f,setback_rear_1f,parking_1f,height_1f,minlot_2f,setback_2f,setback_side_2f,setback_rear_2f,parking_1br_2f,parking_2br_2f,height_2f,minlot_4f,setback_4f,setback_side_4f,setback_rear_4f,parking_1br_4f,parking_2br_4f,height_4f,treat_adu,adu_max_pct,adu_max_sf,treat_prd,mhp,minlot_prd,maxdens_prd,notes
 C-1,Rockbridge County,Conservation,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,Prohibited,,,Not Mentioned,,,,
 A-1,Rockbridge County,Agricultural and Limited Uses,No,Primarily Residential,Allowed,Prohibited,Prohibited,Prohibited,Conditional,Prohibited,175,2,65,50,50,2,35,,,,,,,,,,,,,,,Public Hearing,,,Not Mentioned,,,,
 A-2,Rockbridge County,Agricultural and General Uses,No,Primarily Residential,Allowed,Prohibited,Prohibited,Prohibited,Conditional,Special Exemption,175,2,65,50,50,2,35,,,,,,,,,,,,,,,Public Hearing,,,Not Mentioned,,,,
@@ -9,7 +9,7 @@ B-1,Rockbridge County,General Business,No,Mixed with Residential,Conditional,Pro
 B-2,Rockbridge County,Planned Business,No,Mixed with Residential,Special Exemption,Prohibited,Special Exemption,Special Exemption,Special Exemption,Prohibited,,,20,20,20,2,35,,20,20,20,,,35,0.5,20,20,20,1.5,1.5,35,Public Hearing,,,Not Mentioned,,,,
 I-1,Rockbridge County,General Industrial,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,Prohibited,,,Not Mentioned,,,,
 FH-1,Rockbridge County,Flood Hazard,Yes,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,Prohibited,,,Not Mentioned,,,,
-Historical Overlay,Rockbridge County,Historical Overlay,Yes,Mixed with Residential,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,Overlay,,,Not Mentioned,,,,
-Agricultural/Forestal Overlay,Rockbridge County,Agricultural/Forestal Overlay,Yes,Mixed with Residential,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,Overlay,,,Not Mentioned,,,,
+Historical Overlay,Rockbridge County,-,Yes,Mixed with Residential,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,Overlay,,,Not Mentioned,,,,
+Agricultural/Forestal Overlay,Rockbridge County,-,Yes,Mixed with Residential,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,Overlay,,,Not Mentioned,,,,
 TC-O,Rockbridge County,Tourism Corridor Overlay,Yes,Mixed with Residential,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,Overlay,,,Not Mentioned,,,,
-Source Water Protection Overlay,Rockbridge County,Source Water Protection Overlay,Yes,Mixed with Residential,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,Overlay,,,Not Mentioned,,,,
+Source Water Protection Overlay,Rockbridge County,-,Yes,Mixed with Residential,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,Overlay,,,Not Mentioned,,,,

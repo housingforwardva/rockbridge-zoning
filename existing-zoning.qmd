@@ -1,44 +1,147 @@
 # Existing zoning
 
 ```{r}
-#| eval: false
 
+library(tidyverse)
+library(hdatools)
+library(scales)
 library(sf)
-library(sp)
-library(rgdal)
-library(dplyr)
-library(leaflet)
+library(mapview)
+library(kableExtra)
 
 ```
 
-This section describes and analyzes the county's existing residential zoning regimen.
+This section examines current residential zoning patterns in each of the three localities. The towns of Glasgow and Goshen are not included.
+
+## Rockbridge County
 
 ```{r}
-#| eval: false
 
-zoning <- st_read("data/Rockbridge/RockbridgeZoning20221003.shp", quiet = TRUE) %>% st_transform(4326)
+# Load Rockbridge zoning and land use data
 
-leaflet(zoning) %>% 
-  addTiles() %>% 
-  addPolygons()
-  
+rock_landuse_zoning <- read_rds("data/rockbridge/rock_landuse_zoning.rds")
+rock_zoning_districts <- read_csv("data/rockbridge/rb-zoning-districts.csv")
+rock_area <- read_rds("data/rockbridge/rock_area.rds")
+
 ```
 
-## Residential zoning districts
+### Residential zoning districts
 
-- Descriptions of relevant zoning districts
-- By-right and conditional uses
-- Density and setback requirements
+Rockbridge County has nine base zoning districts and five overlay districts.
 
-## Distribution
+```{r}
+#| label: tbl-zoning-districts
+#| tbl-cap: "Zoning districts in Rockbridge County"
+
+rock_zoning_districts |> 
+  select(zone, name, overlay, type) |> 
+  kable(
+    col.names = c("Zone", "Name", "Overlay", "Type"),
+    align = "clll"
+    ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+Of those nine base districts, all but two (C-1 and I-1) allow some form residential uses either by right, conditionally, or via special exemption.
+
+The table below shows the allowances for different residential uses in those seven districts.
+
+```{r}
+#| label: tbl-residential-uses
+#| tbl-cap: "Residential use allowances"
+
+rock_zoning_districts |> 
+  filter(overlay == "No",
+         type != "Nonresidential") |> 
+  mutate(
+    across(
+      c(6:11),
+      ~ case_match(
+        .x,
+        "Prohibited" ~ "P",
+        "Allowed" ~ "A",
+        "Conditional" ~ "C",
+        "Special Exemption" ~ "S"
+      )
+      )
+    ) |> 
+  mutate(
+    across(
+      c(6:11),
+      ~ cell_spec(
+        .x,
+        bold = TRUE,
+        color = case_match(
+          .x,
+          "P" ~ "#b1005f",
+          "A" ~ "#259591",
+          "C" ~ "#8b85ca",
+          "S" ~ "#e0592a"
+        )
+      )
+    )
+  ) |> 
+  select(1, 6:11) |> 
+  kable(
+    col.names = c("Zone", "SF detached", "Townhome", "Duplex", "Multifamily", "MH", "MHP"),
+    align = "lcccccc",
+    escape = FALSE
+    ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+Allowance key:
+
+* A = Allowed by-right
+* C = Conditional (by-right if additional conditions met)
+* S = Special exception (permit application and public hearing required)
+* P = Prohibited
+
+Residential use definitions:
+
+* SF detached = Single-family home with no walls shared with other dwelling units
+* Townhome = Single-family home with at least one wall shared with other dwelling unit
+* Duplex = Building with two separate dwelling units
+* Multifamily = Building with three or more separate dwelling units
+* MH = Manufactured home (built off-site in accordance with federal codes)
+* MHP = Manufactured home park (development with three or more manufactured homes on leased lots)
+
+**Single-family detached** homes are by-right in five of the seven districts. In B-1, they are conditionally permitted by-right if the structure meets the "area and setback requirements of the R-2 District if public water and sewer are available or the R-1 District if on a private drainfield and well or public water" [605.02-04]. This same rule applies to B-2; however, all B-2 developments must be approved via special exemption.
+
+**Townhomes** are only allowed conditionally in the R-2 district, and prohibited in all other zones. Townhome developments must meet special regulations found in section 709 of the zoning ordinance to be approved by-right.
+
+**Duplexes** are by-right in R-1 and R-2 and conditional in B-1, where the same area, setback, and utility requirements apply as described for single-family homes above. Duplexes are allowed via special exception in A-T and B-2.
+
+**Multifamily** developments are by-right only in R-2. In B-1, multifamily is possible only via apartments or condos included as basement or upper-story units included in structures that include other permitted uses. At least 90% of street-level space must be non-residential. Multifamily is possible via special exception in A-T and B-2.
+
+**Manufactured homes** are allowed in all districts other than B-1 and B-2 if conditions in section 707 are met. That section requires new units be built according to HUD code (no pre-1976 units), placed on permanent foundation, titled as real estate, among other stipulations. Manufactured homes are allowed only via special exception in B-1 and B-2.
+
+**Manufactured home parks** are prohibited in all districts except for A-2 and A-T, where they are allowed only via special exception. New MHP developments must meet the design and site plan requirements outlined in sections 707.02 through 707.06.
+
+### Distribution
+
+```{r}
+
+
+
+```
+
 
 - Residential zoning by parcel
 - Residential zoning by land area
 
-## Development potential
+### Development potential
 
 - Maps of where each housing type can be built by-right (and/or conditionally)
 
-## Discussion
+### Analysis
 
-...
+The existing zoning ordinance dictating land use and development in Rockbridge County has not been comprehensively rewritten since 1982. At this time, the County population was 17,856---about 5,000 people less than its population today. 
+
+Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged. 
