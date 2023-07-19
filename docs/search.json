@@ -1,0 +1,163 @@
+[
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "Rockbridge County Zoning Analysis",
+    "section": "About",
+    "text": "About\n\n\n\n\n\n\nPlease note\n\n\n\nThis document is still under construction. It was last updated July 13, 2023 at 12:27 PM.\n\n\nThis report is an analysis of zoning and land use patterns in Rockbridge County, the City of Lexington, and the City of Buena Vista. This work supports the ongoing regional housing study that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC)."
+  },
+  {
+    "objectID": "index.html#objectives",
+    "href": "index.html#objectives",
+    "title": "Rockbridge County Zoning Analysis",
+    "section": "Objectives",
+    "text": "Objectives\nThis analysis in this report supports three objectives:\n\nTo better inform elected officials about housing development patterns, challenges, and opportunities,\nTo attract and solicit developers, and\nTo help apply for grants and other funding opportunities."
+  },
+  {
+    "objectID": "index.html#process",
+    "href": "index.html#process",
+    "title": "Rockbridge County Zoning Analysis",
+    "section": "Process",
+    "text": "Process\nHFV will provide these localities with a comprehensive analysis of their current zoning regimens to determine challenges and opportunities related to housing needs as identified by VCHR.\nThis work will investigate and assess:\n\nCurrent comprehensive plans,\nExisting residential and mixed-use zoning districts,\nSubdivision ordinances and related regulations, and\nProcesses for rezonings, special use permits, and similar procedures to change the development potential of properties.\n\nHFV will synthesize this analysis and provide a summary of findings, as well as potential recommendations that would work in sync with solutions offered in the full regional report."
+  },
+  {
+    "objectID": "data-collection.html#land-use-and-zoning",
+    "href": "data-collection.html#land-use-and-zoning",
+    "title": "1  Data collection",
+    "section": "1.1 Land use and zoning",
+    "text": "1.1 Land use and zoning\nThis group includes the following types of GIS data:\n\nParcels: All real property lots within a locality\nCurrent zoning: Boundaries of current zoning districts\nCurrent land use: Existing use of parcels (e.g. single-family, industrial, etc.)\nFuture land use: Designated future land use categories based on current comprehensive plan\n\nAll three localities have provided sufficient forms of these datasets. However, the data structures are not consistent. For example, the current land use designations for each parcel may be a field included in the parcel shapefile, or they must instead be joined using separate non-spatial real estate assessment records."
+  },
+  {
+    "objectID": "data-collection.html#entitlements",
+    "href": "data-collection.html#entitlements",
+    "title": "1  Data collection",
+    "section": "1.2 Entitlements",
+    "text": "1.2 Entitlements\nThis group includes public records of residential land use and zoning changes requested by property owners, categorized by specific regulatory process:\n\nResidential rezonings: Underlying zoning designation is changed\nResidential variances: Property receives a specific exemption from the zoning code\nResidential special/conditional use permits: Locality grants special permission for property use to deviate from zoning code with certain qualifications\nSubdivision plats: Development creates homes on new parcels in accordance with subdivision ordinance\n\nAll three localities have provided sufficient records of these applications and their results. Data from Lexington and Buena Vista also include planned unit developments (PUDs).\nLike the GIS data, however, data structures are very different for each of the jurisdiction’s records. Significant effort is required to assess and rework the data to provide comparable analysis across all localities."
+  },
+  {
+    "objectID": "data-collection.html#infrastructure",
+    "href": "data-collection.html#infrastructure",
+    "title": "1  Data collection",
+    "section": "1.3 Infrastructure",
+    "text": "1.3 Infrastructure\nData in this group include public and private infrastructure that strongly influence where new housing can or cannot be developed.\n\nPublic water: Boundaries of current publicly-provided drinking water service\nPublic sewer: Boundaries of current publicly-provided wastewater service\nBroadband internet: Extent and quality of broadband internet connectivity\n\nAll localities have provided spatial data for public wastewater service. Public water service data has been received from Rockbridge and Buena Vista.\nMost local governments have limited or no in-house data on broadband coverage. However, the Virginia Department of Housing and Community Development (DHCD) is now required by code to collect and publish anonymized address-level records of broadband availability. The current dataset is published on the Virginia Open Data Portal:\nVirginia Locations Unserved by Broadband (last updated November 9, 2022)\nWe will use this spatial data to evaluate level of broadband service for all three localities."
+  },
+  {
+    "objectID": "doc-review.html#rockbridge-county",
+    "href": "doc-review.html#rockbridge-county",
+    "title": "2  Document review",
+    "section": "2.1 Rockbridge County",
+    "text": "2.1 Rockbridge County\nCounty of Rockbridge Comprehensive Plan 2016-2036 (PDF)\nAdopted November 2016\nCounty of Rockbridge Land Development Regulations (PDF)\nAdopted 1982, amended through March 2023\nThese regulations include the zoning and subdivision ordinances in a single document.\n\nZoning district uses and use regulations are covered in Articles 6 and 7.\nThe process and requirements for subdivision of land are covered in Article 9.\n\nCounty of Rockbridge Short-Term Rental Zoning Regulations (PDF)\nAdopted October 2021"
+  },
+  {
+    "objectID": "doc-review.html#city-of-lexington",
+    "href": "doc-review.html#city-of-lexington",
+    "title": "2  Document review",
+    "section": "2.2 City of Lexington",
+    "text": "2.2 City of Lexington\nLexington Comprehensive Plan 2040 (PDF)\nAdopted November 2020\nCity of Lexington Zoning Ordinance (Link)\nAdopted October 2017, amended through February 2023\nCity of Lexington Subdivision Ordinance (Link)\nAdopted 1981, amended through December 2010\nDraft amendments for Accessory Dwelling Units (PDF pages 9-17)\nLast revised April 27, 2023"
+  },
+  {
+    "objectID": "doc-review.html#city-of-buena-vista",
+    "href": "doc-review.html#city-of-buena-vista",
+    "title": "2  Document review",
+    "section": "2.3 City of Buena Vista",
+    "text": "2.3 City of Buena Vista\nBuena Vista Comprehensive Plan (PDF)\nAdopted November 2011\nCity of Buena Vista Zoning Ordinance and Subdivision Regulations (Link)\nAdopted July 1985, amended through February 2022\nThese regulations include the zoning and subdivision ordinances in a single document.\n\nZoning district uses and use regulations are covered in Articles 6 and 7.\nThe process and requirements for subdivision of land are covered in Article 9.\n\nCity of Buena Vista Residential Land Use Regulation Guide (PDF)\nUpdated July 2020\nShort Term Rental Regulations Guide for Property Owners (PDF)\nRegulations adopted February 2022, guide updated October 2022"
+  },
+  {
+    "objectID": "current-land-use.html#rockbridge-county",
+    "href": "current-land-use.html#rockbridge-county",
+    "title": "3  Current land use",
+    "section": "3.1 Rockbridge County",
+    "text": "3.1 Rockbridge County\n\n3.1.1 Categories\nParcels in the county are assigned one of 19 unique land use codes in the real property assessment data. To standardize these specific descriptions, we can assign new summary groups and categories, as shown in the table below. Residential land uses are highlighted.\n\n\n\n\n\nTable 3.1: Land use codes and descriptions assigned by county\n\n\nCode\nDescription\nGroup\nCategory\n\n\n\n\n11\nApartment\nApartment\nResidential\n\n\n10\nDwelling\nSingle-family\nResidential\n\n\n21\nSingle-wide MH\nMobile home\nResidential\n\n\n22\nDouble-wide MH\nMobile home\nResidential\n\n\n24\nTriple-wide MH\nMobile home\nResidential\n\n\n20\nTownhouse/condo\nTownhouse/condo\nResidential\n\n\n13\nCommercial\nCommercial\nCommercial\n\n\n26\nFair value commercial\nCommercial\nCommercial\n\n\n90\nUtilities\nCommercial\nCommercial\n\n\n12\nFarm\nAgricultural\nAgricultural\n\n\n14\nIndustrial\nIndustrial\nIndustrial\n\n\n30\nDelete\nDelete\nDelete\n\n\n16\nFair value\nOther\nOther\n\n\n17\nExempt\nOther\nOther\n\n\n0\nUnknown\nUnknown\nUnknown\n\n\n5\nVacant exempt\nVacant\nVacant\n\n\n15\nVacant land\nVacant\nVacant\n\n\n23\nVacant land mobile home\nVacant\nVacant\n\n\n25\nVacant land commercial\nVacant\nVacant\n\n\n\n\n\n\n\n\n\nRockbridge County includes large tracts of state and federal land, such as the George Washington National Forest and Moore’s Creek State Forest. To account for these preserved areas, all parcels under public ownership were designated a new public property category by hand. The category is grouped according to which level of government owns the parcel.\nThe table below shows the revised land use categories and groups.\n\n\n\n\n\nTable 3.2: Revised land use categories and groups\n\n\nCategory\nGroup\n\n\n\n\nResidential\nApartment\n\n\nResidential\nMobile home\n\n\nResidential\nSingle-family\n\n\nResidential\nTownhouse/condo\n\n\nPublic property\nCity property\n\n\nPublic property\nCounty property\n\n\nPublic property\nFederal land\n\n\nPublic property\nState land\n\n\nCommercial\nCommercial\n\n\nAgricultural\nAgricultural\n\n\nIndustrial\nIndustrial\n\n\nOther\nOther\n\n\nUnknown\nUnknown\n\n\nVacant\nVacant\n\n\n\n\n\n\n\n\n\nThis map shows general land use categories by parcel across Rockbridge County.\n\n\n\n\n\n\nFigure 3.1: Land use categories in Rockbridge County\n\n\nThis map shows the specific residential use groups for current residential parcels only. All other uses are excluded.\n\n\n\n\n\n\nFigure 3.2: Residential land use groups in Rockbridge County\n\n\n\n\n3.1.2 Distribution\n\nAs share of parcels\nThere are a total of 22,777 individual parcels across Rockbridge County. Nearly all of them are either residential (46.6 percent) or vacant (45.3 percent). All other uses comprise less than 3 percent on their own.\n\n\n\n\n\nFigure 3.3: Percent of all parcels in Rockbridge County by land use category\n\n\n\n\n\n\n\n\n\n\nInterpreting the lack of “agricultural” parcels\n\n\n\nAccording to county assessment records, only two parcels were designated with the “farm” description, and thus assigned to the “agricultural” category. However, we know that many more parcels in the county are used for agricultural purposes, so it is reasonable to interpret that a significant share of the “residential” and “vacant” parcels include farming activities.\nFor more information on agricultural parcels in the county, see analysis of the A-1 and A-2 zoning districts in Chapter 4.\n\n\nWithin just the 10,610 residential parcels, nearly all (90.3 percent) are single-family homes. Mobile homes on individual lots make up just under 8 percent; these include single-wides and double-wides. Only 173 parcels (1.6 percent) have townhomes or condos, and 27 parcels (0.3 percent) have apartments.\n\n\n\n\n\nFigure 3.4: Percent of all residential parcels in Rockbridge County by land use group\n\n\n\n\n\n\n\n\n\n\nSingle-family compared to multifamily parcels\n\n\n\nFor every parcel with a townhome, condo, or apartment building, there are another 48 parcels with single-family homes.\n\n\n\n\nAs share of land area\nExcluding Lexington and both towns, Rockbridge County is approximately 376,900 total acres. Residential and vacant parcels comprise the majority of this area, each accounting for about 35 percent of all land in the county.\nPublicly-owned lands make up nearly 25 percent of the county’s area, but just 1.3 percent of all parcels. These large tracts—including national forests and wildlife management areas—are permanently off limits to new development.\n\n\n\n\n\nFigure 3.5: Percent of all land area in Rockbridge County by land use category\n\n\n\n\nThe total area of residential parcels in the county is about 132,850 acres. Single-family home properties account for nearly every acre—over 97 percent—of that land. The remaining land is almost exclusively parcels with mobile homes (2.8 percent).\nThe few properties with apartments, townhomes, or condos make up just over 200 acres. This is less than 0.2 percent of all the residential land in Rockbridge County.\n\n\n\n\n\nFigure 3.6: Percent of all residential land area in Rockbridge County by land use group\n\n\n\n\n\n\n\n3.1.3 Analysis\nThe chart below shows the average and median lot sizes for the four different types of residential parcels found in the county.\n\n\n\n\n\nFigure 3.7: Average and median residential lot sizes in Rockbridge County by land use group\n\n\n\n\nAt almost 14 acres, the average size of a single-family lot is about twice as large as the average apartment property (6.83 acres), despite the latter accommodating multiple homes on each lot. However, these values are right-skewed due to a small number of very large lots. Still, when using medians to account for this skew, the typical single-family lot is more than 60 percent larger than the typical lot with an apartment building.\nThe chart below shows the distribution of residential lot sizes by land use group.\n\n\n\n\n\nFigure 3.8: Lot size distribution of residential parcels in Rockbridge County by land use group"
+  },
+  {
+    "objectID": "current-land-use.html#city-of-lexington",
+    "href": "current-land-use.html#city-of-lexington",
+    "title": "3  Current land use",
+    "section": "3.2 City of Lexington",
+    "text": "3.2 City of Lexington\n\n3.2.1 Categories\n\nDescriptions of residential land use categories\n\n\n\n3.2.2 Distribution\n\nResidential land uses by parcel\nResidential land uses by land area\n\n\n\n3.2.3 Analysis\n\nNotable changes in residential land use across county over time"
+  },
+  {
+    "objectID": "current-land-use.html#city-of-buena-vista",
+    "href": "current-land-use.html#city-of-buena-vista",
+    "title": "3  Current land use",
+    "section": "3.3 City of Buena Vista",
+    "text": "3.3 City of Buena Vista\n\n3.3.1 Categories\n\nDescriptions of residential land use categories\n\n\n\n3.3.2 Distribution\n\nResidential land uses by parcel\nResidential land uses by land area\n\n\n\n3.3.3 Analysis\n\nNotable changes in residential land use across county over time"
+  },
+  {
+    "objectID": "existing-zoning.html#rockbridge-county",
+    "href": "existing-zoning.html#rockbridge-county",
+    "title": "4  Existing zoning",
+    "section": "4.1 Rockbridge County",
+    "text": "4.1 Rockbridge County\n\n4.1.1 Residential zoning districts\nRockbridge County has nine base zoning districts and five overlay districts.\n\n\n\n\n\nTable 4.1: Zoning districts in Rockbridge County\n\n\nZone\nName\nOverlay\nType\n\n\n\n\nC-1\nConservation\nNo\nNonresidential\n\n\nA-1\nAgricultural and Limited Uses\nNo\nPrimarily Residential\n\n\nA-2\nAgricultural and General Uses\nNo\nPrimarily Residential\n\n\nA-T\nAgricultural Transitional\nNo\nPrimarily Residential\n\n\nR-1\nResidential General\nNo\nPrimarily Residential\n\n\nR-2\nResidential Mixed\nNo\nPrimarily Residential\n\n\nB-1\nGeneral Business\nNo\nMixed with Residential\n\n\nB-2\nPlanned Business\nNo\nMixed with Residential\n\n\nI-1\nGeneral Industrial\nNo\nNonresidential\n\n\nFH-1\nFlood Hazard\nYes\nNonresidential\n\n\nHistorical Overlay\n-\nYes\nMixed with Residential\n\n\nAgricultural/Forestal Overlay\n-\nYes\nMixed with Residential\n\n\nTC-O\nTourism Corridor Overlay\nYes\nMixed with Residential\n\n\nSource Water Protection Overlay\n-\nYes\nMixed with Residential\n\n\n\n\n\n\n\n\n\nOf those nine base districts, all but two (C-1 and I-1) allow some form residential uses either by right, conditionally, or via special exemption.\nThe table below shows the allowances for different residential uses in those seven districts.\n\n\n\n\n\nTable 4.2: Residential use allowances\n\n\nZone\nSF detached\nTownhome\nDuplex\nMultifamily\nMH\nMHP\n\n\n\n\nA-1\nA\nP\nP\nP\nC\nP\n\n\nA-2\nA\nP\nP\nP\nC\nS\n\n\nA-T\nA\nP\nS\nS\nC\nS\n\n\nR-1\nA\nP\nA\nP\nC\nP\n\n\nR-2\nA\nC\nA\nA\nC\nP\n\n\nB-1\nC\nP\nC\nC\nS\nP\n\n\nB-2\nS\nP\nS\nS\nS\nP\n\n\n\n\n\n\n\n\n\nAllowance key:\n\nA = Allowed by-right\nC = Conditional (by-right if additional conditions met)\nS = Special exception (permit application and public hearing required)\nP = Prohibited\n\nResidential use definitions:\n\nSF detached = Single-family home with no walls shared with other dwelling units\nTownhome = Single-family home with at least one wall shared with other dwelling unit\nDuplex = Building with two separate dwelling units\nMultifamily = Building with three or more separate dwelling units\nMH = Manufactured home (built off-site in accordance with federal codes)\nMHP = Manufactured home park (development with three or more manufactured homes on leased lots)\n\nSingle-family detached homes are by-right in five of the seven districts. In B-1, they are conditionally permitted by-right if the structure meets the “area and setback requirements of the R-2 District if public water and sewer are available or the R-1 District if on a private drainfield and well or public water” [605.02-04]. This same rule applies to B-2; however, all B-2 developments must be approved via special exemption.\nTownhomes are only allowed conditionally in the R-2 district, and prohibited in all other zones. Townhome developments must meet special regulations found in section 709 of the zoning ordinance to be approved by-right.\nDuplexes are by-right in R-1 and R-2 and conditional in B-1, where the same area, setback, and utility requirements apply as described for single-family homes above. Duplexes are allowed via special exception in A-T and B-2.\nMultifamily developments are by-right only in R-2. In B-1, multifamily is possible only via apartments or condos included as basement or upper-story units included in structures that include other permitted uses. At least 90% of street-level space must be non-residential. Multifamily is possible via special exception in A-T and B-2.\nManufactured homes are allowed in all districts other than B-1 and B-2 if conditions in section 707 are met. That section requires new units be built according to HUD code (no pre-1976 units), placed on permanent foundation, titled as real estate, among other stipulations. Manufactured homes are allowed only via special exception in B-1 and B-2.\nManufactured home parks are prohibited in all districts except for A-2 and A-T, where they are allowed only via special exception. New MHP developments must meet the design and site plan requirements outlined in sections 707.02 through 707.06.\n\n\n4.1.2 Distribution\n\nResidential zoning by parcel\nResidential zoning by land area\n\n\n\n4.1.3 Development potential\n\nMaps of where each housing type can be built by-right (and/or conditionally)\n\n\n\n4.1.4 Analysis\nThe existing zoning ordinance dictating land use and development in Rockbridge County has not been comprehensively rewritten since 1982. At this time, the County population was 17,856—about 5,000 people less than its population today.\nSince 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged."
+  },
+  {
+    "objectID": "future-land-use.html#categories",
+    "href": "future-land-use.html#categories",
+    "title": "5  Future land use",
+    "section": "5.1 Categories",
+    "text": "5.1 Categories\n\nDescriptions of future residential land use categories\nComparison to current categories"
+  },
+  {
+    "objectID": "future-land-use.html#distribution",
+    "href": "future-land-use.html#distribution",
+    "title": "5  Future land use",
+    "section": "5.2 Distribution",
+    "text": "5.2 Distribution\n\nResidential land uses by parcel\nResidential land uses by land area"
+  },
+  {
+    "objectID": "future-land-use.html#current-versus-future",
+    "href": "future-land-use.html#current-versus-future",
+    "title": "5  Future land use",
+    "section": "5.3 Current versus future",
+    "text": "5.3 Current versus future\n\nWhere land uses are planned to remain the same\nWhere land uses are planned to change"
+  },
+  {
+    "objectID": "future-land-use.html#discussion",
+    "href": "future-land-use.html#discussion",
+    "title": "5  Future land use",
+    "section": "5.4 Discussion",
+    "text": "5.4 Discussion\n…"
+  },
+  {
+    "objectID": "subdivisions.html#ordinance",
+    "href": "subdivisions.html#ordinance",
+    "title": "6  Subdivisions",
+    "section": "6.1 Ordinance",
+    "text": "6.1 Ordinance\n\nMajor requirements and stipulations in subdivision ordinance\nComparison to peer localities and best practices"
+  },
+  {
+    "objectID": "subdivisions.html#process",
+    "href": "subdivisions.html#process",
+    "title": "6  Subdivisions",
+    "section": "6.2 Process",
+    "text": "6.2 Process\n\nSteps for proposing, submitting, reviewing, and approving subdivision plats\nChallenges and opportunities"
+  },
+  {
+    "objectID": "subdivisions.html#recent-development",
+    "href": "subdivisions.html#recent-development",
+    "title": "6  Subdivisions",
+    "section": "6.3 Recent development",
+    "text": "6.3 Recent development\n\nAnalysis of recent residential subdivision development in the county\nAssessment of density, housing types, and locations\nComparison to applicable future land uses"
+  },
+  {
+    "objectID": "subdivisions.html#discussion",
+    "href": "subdivisions.html#discussion",
+    "title": "6  Subdivisions",
+    "section": "6.4 Discussion",
+    "text": "6.4 Discussion\n…"
+  },
+  {
+    "objectID": "summary.html#takeaways",
+    "href": "summary.html#takeaways",
+    "title": "7  Summary",
+    "section": "7.1 Takeaways",
+    "text": "7.1 Takeaways\n…"
+  },
+  {
+    "objectID": "summary.html#preliminary-recommendations",
+    "href": "summary.html#preliminary-recommendations",
+    "title": "7  Summary",
+    "section": "7.2 Preliminary recommendations",
+    "text": "7.2 Preliminary recommendations\n…"
+  }
+]

@@ -9,6 +9,7 @@ library(hdatools)
 library(scales)
 library(sf)
 library(mapview)
+library(leaflet)
 library(kableExtra)
 library(htmltools)
 library(htmlwidgets)
@@ -78,45 +79,70 @@ This map shows general land use categories by parcel across Rockbridge County.
 ```{r}
 #| eval: false
 
-rb_landuse_map <- mapview(
-  rock_landuse_zoning,
-  layer.name = "Land use",
-  zcol = "category",
-  col.regions = RColorBrewer::brewer.pal(8, "Paired")
-  )
+landuse_pal <- colorFactor(rainbow(8), unique(rock_occ$category))
+
+# Use standard land use colors
+# https://www.planning.org/lbcs/standards/activity/
 
 rb_landuse_map <- leaflet(rock_landuse_zoning) |> 
-  addTiles() |> 
-  addPolygons(fill)
+  addProviderTiles(providers$CartoDB.Positron) |> 
+  addPolygons(fillColor = ~landuse_pal(category),
+              fillOpacity = 0.7,
+              weight = 0) |> 
+  addLegend("topright",
+            pal = landuse_pal,
+            values = ~category,
+            title = "Land use category")
 
 saveWidget(rb_landuse_map, "maps/rb_landuse_map.html")
 
 ```
 
 
+::: {#fig-lu-map}
+
 ```{r}
-#| label: fig-lu-map
-#| fig-cap: "Land use categories in Rockbridge County"
 
-
+knitr::include_url("maps/rb_landuse_map.html")
 
 ```
+
+Land use categories in Rockbridge County
+:::
 
 This map shows the specific residential use groups for current residential parcels only. All other uses are excluded.
 
 ```{r}
-#| label: fig-lu-res-map
-#| fig-cap: "Residential land use groups in Rockbridge County"
+#| eval: false
 
-rock_landuse_zoning |> 
-  filter(category == "Residential") |> 
-  mapview(
-    layer.name = "Residential use",
-    zcol = "group",
-    col.regions = RColorBrewer::brewer.pal(4, "Paired")
-    )
+rock_landuse_res <- rock_landuse_zoning |> filter(category == "Residential")
+
+landuse_res_pal <- colorFactor(rainbow(4), unique(rock_landuse_res$group))
+
+rb_landuse_res_map <- leaflet(rock_landuse_res) |> 
+  addProviderTiles(providers$CartoDB.Positron) |> 
+  addPolygons(fillColor = ~landuse_res_pal(group),
+              fillOpacity = 0.7,
+              weight = 0) |> 
+  addLegend("topright",
+            pal = landuse_res_pal,
+            values = ~group,
+            title = "Residential use group")
+
+saveWidget(rb_landuse_res_map, "maps/rb_landuse_res_map.html")
 
 ```
+
+::: {#fig-lu-res-map}
+
+```{r}
+
+knitr::include_url("maps/rb_landuse_res_map.html")
+
+```
+
+Residential land use groups in Rockbridge County
+:::
 
 ### Distribution
 
@@ -490,7 +516,7 @@ rock_lot_quantiles <- rock_landuse_zoning |>
   filter(category == "Residential",
          CALCACRES > 0) |>  
   summarise(median = quantile(CALCACRES, probs = 0.5),
-            upper = quantile(CALCACRES, probs = 0.75),
+            upper = quantile(CALCACRES, probs = 0.9),
             .by = group)
 
 rock_lot_dist |> 
@@ -501,7 +527,7 @@ rock_lot_dist |>
   geom_vline(
     data = rock_lot_quantiles,
     aes(
-      xintercept = upper,
+      xintercept = median,
       color = group
       ),
     linewidth = 1,
@@ -527,10 +553,8 @@ rock_lot_dist |>
   labs(
     title = "Almost all residential lots are less than 2 acres in size",
     subtitle = "Lot size distribution of residential parcels in Rockbridge County by land use group",
-    caption = "**Source:** Rockbridge County GIS records.<br>**Note:** Different x-axis scales are used in each panel."
+    caption = "**Source:** Rockbridge County GIS records.<br>**Notes:** Different x-axis scales are used in each panel. Dashed lines show median lot sizes."
   )
-
-
 
 ```
 
