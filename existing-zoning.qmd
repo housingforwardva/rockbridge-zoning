@@ -28,7 +28,7 @@ rock_area <- read_rds("data/rockbridge/rock_area.rds")
 
 ```
 
-### Residential zoning districts
+### Zoning districts
 
 Rockbridge County has nine base zoning districts and five overlay districts.
 
@@ -70,7 +70,6 @@ saveWidget(rb_zoning_map, "maps/rb_zoning_map.html")
 ```
 
 ::: {#fig-zoning-map}
-
 ```{r}
 
 knitr::include_url("maps/rb_zoning_map.html")
@@ -133,21 +132,21 @@ rock_zoning_districts |>
 
 Allowance key:
 
-* A = Allowed by-right
-* C = Conditional (by-right if additional conditions met)
-* S = Special exception (permit application and public hearing required)
-* P = Prohibited
+-   A = Allowed by-right
+-   C = Conditional (by-right if additional conditions met)
+-   S = Special exception (permit application and public hearing required)
+-   P = Prohibited
 
 Residential use definitions:
 
-* SF detached = Single-family home with no walls shared with other dwelling units
-* Townhome = Single-family home with at least one wall shared with other dwelling unit
-* Duplex = Building with two separate dwelling units
-* Multifamily = Building with three or more separate dwelling units
-* MH = Manufactured home (built off-site in accordance with federal codes)
-* MHP = Manufactured home park (development with three or more manufactured homes on leased lots)
+-   SF detached = Single-family home with no walls shared with other dwelling units
+-   Townhome = Single-family home with at least one wall shared with other dwelling unit
+-   Duplex = Building with two separate dwelling units
+-   Multifamily = Building with three or more separate dwelling units
+-   MH = Manufactured home (built off-site in accordance with federal codes)
+-   MHP = Manufactured home park (development with three or more manufactured homes on leased lots)
 
-**Single-family detached** homes are by-right in five of the seven districts. In B-1, they are conditionally permitted by-right if the structure meets the "area and setback requirements of the R-2 District if public water and sewer are available or the R-1 District if on a private drainfield and well or public water" [605.02-04]. This same rule applies to B-2; however, all B-2 developments must be approved via special exemption.
+**Single-family detached** homes are by-right in five of the seven districts. In B-1, they are conditionally permitted by-right if the structure meets the "area and setback requirements of the R-2 District if public water and sewer are available or the R-1 District if on a private drainfield and well or public water" \[605.02-04\]. This same rule applies to B-2; however, all B-2 developments must be approved via special exemption.
 
 **Townhomes** are only allowed conditionally in the R-2 district, and prohibited in all other zones. Townhome developments must meet special regulations found in section 709 of the zoning ordinance to be approved by-right.
 
@@ -170,10 +169,6 @@ rock_zoning_area <- rock_area |>
             parcels_pct = sum(parcels_pct),
             area_pct = sum(area_pct),
             .by = c(MZONE))
-
-# rock_res_zoning <- rock_landuse_zoning |> 
-#   left_join(rock_zoning_districts, by = join_by(MZONE == zone)) |> 
-#   filter(str_detect(type, " Residential"))
 
 ```
 
@@ -222,9 +217,9 @@ Parcels zoned A-2 are the most common (49.5 percent) and comprise over half the 
 
 While R-1 properties account for 14.4 percent of all parcels, they make up just 1.4 percent of all land. Other zoning districts where homes are allowed (R-2, B-1, and B-2) account for less than one percent of land.
 
-### Land uses across districts
+### Land use by district
 
-The charts below show how parcels within each zoning district are currently used.
+The charts below show how parcels within each zoning district are currently used. Land uses are the same groups described in @tbl-lu-rev.
 
 ```{r}
 #| label: fig-rock-ag-zoning
@@ -317,9 +312,10 @@ rock_area |>
 
 Among the four non-agricultural districts that allow residential uses, single-family homes and vacant properties are still the most common parcel types. Well over half of R-1 properties are single-family homes, and another third vacant. Townhomes and condos make up almost 5 percent of R-1 parcels, despite being nonconforming uses.
 
-:::{.callout-tip}
-## No "duplex" land use designation
-Duplexes are permitted in R-1 and R-2 by-right; however, the land use codes currently used by the county do not include a standalone duplex designation. According to the latest American Community Survey [estimates](https://censusreporter.org/data/table/?table=B25024&geo_ids=05000US51163&primary_geo_id=05000US51163#valueType|estimate), there are around 60 2-unit dwellings in the county. It is possible these properties are included in the "Townhouse/condo" land use code.
+::: callout-tip
+#### No "duplex" land use designation
+
+Duplexes are permitted in R-1 and R-2 by-right; however, the land use codes currently used by the county do not include a standalone duplex designation. According to the latest American Community Survey [estimates](https://censusreporter.org/data/table/?table=B25024&geo_ids=05000US51163&primary_geo_id=05000US51163#valueType%7Cestimate), there are around 60 2-unit dwellings in the county. It is possible these properties are included in the "Townhouse/condo" land use code.
 :::
 
 Townhomes and condos are most common in R-2, where they make up over 12 percent of parcels. However, vacant lots (47.6 percent) and single-family homes (39 percent) are still much more prevalent in that district.
@@ -328,12 +324,71 @@ Two in three B-1 parcels are vacant (66.8 percent). The remainder are almost equ
 
 ### Development potential
 
-- Maps of where each housing type can be built by-right (and/or conditionally)
+...
+
+```{r}
+#| label: fig-rock-vacant
+#| fig-cap: "Parcel vacancy in residential zoning districts"
+
+rock_area |> 
+  filter(MZONE %in% c("R-1", "R-2", "B-1", "B-2")) |> 
+  group_by(MZONE) |> 
+  mutate(parcels_pct = parcels/sum(parcels)) |> 
+  ungroup() |> 
+  filter(parcels_pct > 0.01) |> 
+  mutate(group = fct_reorder(group, parcels_pct, .fun = sum),
+         MZONE = fct_relevel(MZONE, "R-1", "R-2", "B-1", "B-2")) |>
+  ggplot(aes(x = parcels_pct, y = group, fill = MZONE)) +
+  facet_wrap(~MZONE) +
+  geom_col() +
+  geom_text(
+    aes(
+      x = parcels_pct + 0.01,
+      y = group,
+      label = label_percent(accuracy = 0.1)(parcels_pct)
+    ),
+    color = "grey50",
+    hjust = 0
+  ) +
+  scale_x_continuous(
+    limits = c(0, 0.99),
+    expand = expansion(mult = c(0,0.05))
+  ) +
+  scale_fill_hfv() +
+  labs(
+    title = "Large shares of residential-zoned parcels are vacant",
+    subtitle = "Parcel vacancy in residential zoning districts",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.x = element_blank()
+  )
+
+```
+
+```{r}
+
+rock_res_zoning <- rock_landuse_zoning |>
+  mutate(acres = Shape_Area/43560, .after = 4) |> 
+  select(1, 4, 5, 8, 9, 10, 14) |> 
+  left_join(rock_zoning_districts, by = join_by(MZONE == zone)) |> 
+  select(1:6, 8:16) |> 
+  filter(str_detect(type, " Residential"))
+  
+
+
+```
+
+
+-   Maps of where each housing type can be built by-right (and/or conditionally)
 
 ### Analysis
 
-The existing zoning ordinance dictating land use and development in Rockbridge County has not been comprehensively rewritten since 1982. At this time, the County population was 17,856---about 5,000 people less than its population today. 
+The existing zoning ordinance dictating land use and development in Rockbridge County has not been comprehensively rewritten since 1982. At this time, the County population was 17,856---about 5,000 people less than its population today.
 
-Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged. 
+Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
 
 Figure out which properties are actually used for agriculture
