@@ -98,7 +98,6 @@ saveWidget(rb_landuse_map, "maps/rb_landuse_map.html")
 
 ```
 
-
 ::: {#fig-lu-map}
 
 ```{r}
@@ -147,7 +146,7 @@ Residential land use groups in Rockbridge County
 ### Distribution
 
 ```{r}
-#| label: rock-dist
+#| label: rock-dist-lu
 
 rock_category <- rock_area |> 
   summarise(parcels = sum(parcels),

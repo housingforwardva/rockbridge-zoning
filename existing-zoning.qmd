@@ -7,7 +7,10 @@ library(hdatools)
 library(scales)
 library(sf)
 library(mapview)
+library(leaflet)
 library(kableExtra)
+library(htmltools)
+library(htmlwidgets)
 
 ```
 
@@ -44,6 +47,38 @@ rock_zoning_districts |>
     )
 
 ```
+
+The map below shows the base zoning for each parcel in the county. Parcels with "NA" zoning in the county's data are excluded. These 575 properties primarily include otherwise undevelopable land, such as the Blue Ridge Parkway.
+
+```{r}
+#| eval: false
+
+zoning_pal <- colorFactor(rainbow(10), unique(rock_landuse_zoning$MZONE))
+
+rb_zoning_map <- leaflet(filter(rock_landuse_zoning, MZONE != "NA")) |> 
+  addProviderTiles(providers$CartoDB.Positron) |> 
+  addPolygons(fillColor = ~zoning_pal(MZONE),
+              fillOpacity = 0.7,
+              weight = 0) |> 
+  addLegend("topright",
+            pal = zoning_pal,
+            values = ~MZONE,
+            title = "Zoning")
+
+saveWidget(rb_zoning_map, "maps/rb_zoning_map.html")
+
+```
+
+::: {#fig-zoning-map}
+
+```{r}
+
+knitr::include_url("maps/rb_zoning_map.html")
+
+```
+
+Zoning by parcel in Rockbridge County
+:::
 
 Of those nine base districts, all but two (C-1 and I-1) allow some form residential uses either by right, conditionally, or via special exemption.
 
@@ -127,14 +162,169 @@ Residential use definitions:
 ### Distribution
 
 ```{r}
+#| label: rock-dist-zoning
 
+rock_zoning_area <- rock_area |> 
+  summarise(parcels = sum(parcels),
+            area = sum(area),
+            parcels_pct = sum(parcels_pct),
+            area_pct = sum(area_pct),
+            .by = c(MZONE))
 
+# rock_res_zoning <- rock_landuse_zoning |> 
+#   left_join(rock_zoning_districts, by = join_by(MZONE == zone)) |> 
+#   filter(str_detect(type, " Residential"))
 
 ```
 
+```{r}
+#| label: fig-rock-dist-zoning
+#| fig-cap: "Percent of all parcels in Rockbridge County by zoning district"
 
-- Residential zoning by parcel
-- Residential zoning by land area
+rock_zoning_area |> 
+  pivot_longer(2:5, names_to = "data", values_to = "value") |> 
+  filter(str_detect(data, "_pct")) |> 
+  mutate(MZONE = fct_reorder(MZONE, value, .fun = sum)) |>
+  ggplot(aes(y = MZONE, fill = data, color = data)) +
+  geom_col(
+    aes(x = value),
+    position = "dodge"
+    ) +
+  geom_text(
+    aes(
+      x = value + 0.025,
+      label = label_percent(accuracy = 0.1)(value)
+      ),
+    position = position_dodge(1),
+    #color = "grey50"
+    ) +
+  scale_x_continuous(
+    limits = c(0, 0.6),
+    expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Agricultural zoning makes up three-fourths of the county",
+    subtitle = "Percent of all <span style='color:#011e41;'>**parcels**</span> and <span style='color:#40c0c0;'>**land area**</span> in Rockbridge County by zoning district",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  scale_fill_hfv(-1) +
+  scale_color_hfv(-1) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    axis.text.x = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+```
+
+Parcels zoned A-2 are the most common (49.5 percent) and comprise over half the county's land area (52.7 percent). A-1 and A-T properties fill out another quarter of the county. Almost the full remainder of the county's land is zoned for conservation (C-1), or does not have zoning assigned to it.
+
+While R-1 properties account for 14.4 percent of all parcels, they make up just 1.4 percent of all land. Other zoning districts where homes are allowed (R-2, B-1, and B-2) account for less than one percent of land.
+
+### Land uses across districts
+
+The charts below show how parcels within each zoning district are currently used.
+
+```{r}
+#| label: fig-rock-ag-zoning
+#| fig-cap: "Percent of A-1, A-2, and A-T parcels by land use"
+
+rock_area |> 
+  filter(str_detect(MZONE, "A-")) |> 
+  group_by(MZONE) |> 
+  mutate(parcels_pct = parcels/sum(parcels)) |> 
+  ungroup() |> 
+  filter(parcels_pct > 0.005) |> 
+  mutate(group = fct_reorder(group, parcels_pct, .fun = sum)) |>
+  ggplot(aes(x = parcels_pct, y = group, fill = MZONE)) +
+  facet_wrap(~MZONE) +
+  geom_col() +
+  geom_text(
+    aes(
+      x = parcels_pct + 0.02,
+      y = group,
+      label = label_percent(accuracy = 0.1)(parcels_pct)
+    ),
+    color = "grey50",
+    hjust = 0
+  ) +
+  scale_x_continuous(
+    limits = c(0, 0.9),
+    expand = expansion(mult = c(0,0.05))
+  ) +
+  scale_fill_hfv() +
+  labs(
+    title = "Most properties zoned for agriculture are single-family homes or empty",
+    subtitle = "Percent of A-1, A-2, and A-T parcels by land use",
+    caption = "**Source:** Rockbridge County GIS records.<br>**Note:** Uses less than 1 percent of parcels in every zoning district are excluded."
+  ) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.x = element_blank()
+  )
+
+```
+
+Among agriculturally-zoned parcels, a majority are "vacant" or have a single-family home. However, this does not mean farming or harvesting does not occur on those lots; the county has just not assigned "agricultural" as the primary land use.
+
+Vacant parcels most common within the A-1 or A-T zones, where they comprise 55.6 and 67.3 percent, respectively. In the A-2 district, single-family properties are the most prevalent, at just over 51 percent.
+
+```{r}
+#| label: fig-rock-res-zoning
+#| fig-cap: "Percent of R-1, R-2, B-1, and B-2 parcels by land use"
+
+rock_area |> 
+  filter(MZONE %in% c("R-1", "R-2", "B-1", "B-2")) |> 
+  group_by(MZONE) |> 
+  mutate(parcels_pct = parcels/sum(parcels)) |> 
+  ungroup() |> 
+  filter(parcels_pct > 0.01) |> 
+  mutate(group = fct_reorder(group, parcels_pct, .fun = sum),
+         MZONE = fct_relevel(MZONE, "R-1", "R-2", "B-1", "B-2")) |>
+  ggplot(aes(x = parcels_pct, y = group, fill = MZONE)) +
+  facet_wrap(~MZONE) +
+  geom_col() +
+  geom_text(
+    aes(
+      x = parcels_pct + 0.01,
+      y = group,
+      label = label_percent(accuracy = 0.1)(parcels_pct)
+    ),
+    color = "grey50",
+    hjust = 0
+  ) +
+  scale_x_continuous(
+    limits = c(0, 0.99),
+    expand = expansion(mult = c(0,0.05))
+  ) +
+  scale_fill_hfv() +
+  labs(
+    title = "Large shares of residential-zoned parcels are vacant",
+    subtitle = "Percent of R-1, R-2, B-1, and B-2 parcels by land use",
+    caption = "**Source:** Rockbridge County GIS records.<br>**Note:** Uses less than 1 percent of parcels in every zoning district are excluded."
+  ) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.x = element_blank()
+  )
+
+```
+
+Among the four non-agricultural districts that allow residential uses, single-family homes and vacant properties are still the most common parcel types. Well over half of R-1 properties are single-family homes, and another third vacant. Townhomes and condos make up almost 5 percent of R-1 parcels, despite being nonconforming uses.
+
+:::{.callout-tip}
+## No "duplex" land use designation
+Duplexes are permitted in R-1 and R-2 by-right; however, the land use codes currently used by the county do not include a standalone duplex designation. According to the latest American Community Survey [estimates](https://censusreporter.org/data/table/?table=B25024&geo_ids=05000US51163&primary_geo_id=05000US51163#valueType|estimate), there are around 60 2-unit dwellings in the county. It is possible these properties are included in the "Townhouse/condo" land use code.
+:::
+
+Townhomes and condos are most common in R-2, where they make up over 12 percent of parcels. However, vacant lots (47.6 percent) and single-family homes (39 percent) are still much more prevalent in that district.
+
+Two in three B-1 parcels are vacant (66.8 percent). The remainder are almost equally either single-family homes or commercial properties. Only 12 parcels are currently zoned B-2. Of those, most are single-family homes.
 
 ### Development potential
 
@@ -145,3 +335,5 @@ Residential use definitions:
 The existing zoning ordinance dictating land use and development in Rockbridge County has not been comprehensively rewritten since 1982. At this time, the County population was 17,856---about 5,000 people less than its population today. 
 
 Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged. 
+
+Figure out which properties are actually used for agriculture

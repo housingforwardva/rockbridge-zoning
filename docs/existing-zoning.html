@@ -164,8 +164,9 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#residential-zoning-districts" id="toc-residential-zoning-districts" class="nav-link" data-scroll-target="#residential-zoning-districts"><span class="header-section-number">4.1.1</span> Residential zoning districts</a></li>
   <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">4.1.2</span> Distribution</a></li>
-  <li><a href="#development-potential" id="toc-development-potential" class="nav-link" data-scroll-target="#development-potential"><span class="header-section-number">4.1.3</span> Development potential</a></li>
-  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis"><span class="header-section-number">4.1.4</span> Analysis</a></li>
+  <li><a href="#land-uses-across-districts" id="toc-land-uses-across-districts" class="nav-link" data-scroll-target="#land-uses-across-districts"><span class="header-section-number">4.1.3</span> Land uses across districts</a></li>
+  <li><a href="#development-potential" id="toc-development-potential" class="nav-link" data-scroll-target="#development-potential"><span class="header-section-number">4.1.4</span> Development potential</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis"><span class="header-section-number">4.1.5</span> Analysis</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -303,6 +304,16 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 </div>
+<p>The map below shows the base zoning for each parcel in the county. Parcels with “NA” zoning in the county’s data are excluded. These 575 properties primarily include otherwise undevelopable land, such as the Blue Ridge Parkway.</p>
+<div id="fig-zoning-map" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<div class="cell">
+<iframe src="maps/rb_zoning_map.html" width="672" height="400px" data-external="1">
+</iframe>
+</div>
+<figcaption class="figure-caption">Figure&nbsp;4.1: Zoning by parcel in Rockbridge County</figcaption>
+</figure>
+</div>
 <p>Of those nine base districts, all but two (C-1 and I-1) allow some form residential uses either by right, conditionally, or via special exemption.</p>
 <p>The table below shows the allowances for different residential uses in those seven districts.</p>
 <div class="cell">
@@ -419,21 +430,72 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="distribution" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="distribution"><span class="header-section-number">4.1.2</span> Distribution</h3>
-<ul>
-<li>Residential zoning by parcel</li>
-<li>Residential zoning by land area</li>
-</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rock-dist-zoning" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="existing-zoning_files/figure-html/fig-rock-dist-zoning-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4.2: Percent of all parcels in Rockbridge County by zoning district</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Parcels zoned A-2 are the most common (49.5 percent) and comprise over half the county’s land area (52.7 percent). A-1 and A-T properties fill out another quarter of the county. Almost the full remainder of the county’s land is zoned for conservation (C-1), or does not have zoning assigned to it.</p>
+<p>While R-1 properties account for 14.4 percent of all parcels, they make up just 1.4 percent of all land. Other zoning districts where homes are allowed (R-2, B-1, and B-2) account for less than one percent of land.</p>
 </section>
-<section id="development-potential" class="level3" data-number="4.1.3">
-<h3 data-number="4.1.3" class="anchored" data-anchor-id="development-potential"><span class="header-section-number">4.1.3</span> Development potential</h3>
+<section id="land-uses-across-districts" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="land-uses-across-districts"><span class="header-section-number">4.1.3</span> Land uses across districts</h3>
+<p>The charts below show how parcels within each zoning district are currently used.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rock-ag-zoning" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="existing-zoning_files/figure-html/fig-rock-ag-zoning-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4.3: Percent of A-1, A-2, and A-T parcels by land use</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Among agriculturally-zoned parcels, a majority are “vacant” or have a single-family home. However, this does not mean farming or harvesting does not occur on those lots; the county has just not assigned “agricultural” as the primary land use.</p>
+<p>Vacant parcels most common within the A-1 or A-T zones, where they comprise 55.6 and 67.3 percent, respectively. In the A-2 district, single-family properties are the most prevalent, at just over 51 percent.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rock-res-zoning" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="existing-zoning_files/figure-html/fig-rock-res-zoning-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4.4: Percent of R-1, R-2, B-1, and B-2 parcels by land use</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Among the four non-agricultural districts that allow residential uses, single-family homes and vacant properties are still the most common parcel types. Well over half of R-1 properties are single-family homes, and another third vacant. Townhomes and condos make up almost 5 percent of R-1 parcels, despite being nonconforming uses.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+No “duplex” land use designation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Duplexes are permitted in R-1 and R-2 by-right; however, the land use codes currently used by the county do not include a standalone duplex designation. According to the latest American Community Survey <a href="https://censusreporter.org/data/table/?table=B25024&amp;geo_ids=05000US51163&amp;primary_geo_id=05000US51163#valueType%7Cestimate">estimates</a>, there are around 60 2-unit dwellings in the county. It is possible these properties are included in the “Townhouse/condo” land use code.</p>
+</div>
+</div>
+<p>Townhomes and condos are most common in R-2, where they make up over 12 percent of parcels. However, vacant lots (47.6 percent) and single-family homes (39 percent) are still much more prevalent in that district.</p>
+<p>Two in three B-1 parcels are vacant (66.8 percent). The remainder are almost equally either single-family homes or commercial properties. Only 12 parcels are currently zoned B-2. Of those, most are single-family homes.</p>
+</section>
+<section id="development-potential" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="development-potential"><span class="header-section-number">4.1.4</span> Development potential</h3>
 <ul>
 <li>Maps of where each housing type can be built by-right (and/or conditionally)</li>
 </ul>
 </section>
-<section id="analysis" class="level3" data-number="4.1.4">
-<h3 data-number="4.1.4" class="anchored" data-anchor-id="analysis"><span class="header-section-number">4.1.4</span> Analysis</h3>
+<section id="analysis" class="level3" data-number="4.1.5">
+<h3 data-number="4.1.5" class="anchored" data-anchor-id="analysis"><span class="header-section-number">4.1.5</span> Analysis</h3>
 <p>The existing zoning ordinance dictating land use and development in Rockbridge County has not been comprehensively rewritten since 1982. At this time, the County population was 17,856—about 5,000 people less than its population today.</p>
 <p>Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.</p>
+<p>Figure out which properties are actually used for agriculture</p>
 
 
 </section>
