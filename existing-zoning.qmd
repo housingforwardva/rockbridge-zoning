@@ -17,6 +17,28 @@ library(kableExtra)
 library(htmltools)
 library(htmlwidgets)
 
+# Set color scales
+
+allowance_cols <- c(
+  "Allowed" = "#259591", 
+  "Conditional" = "#8b85ca", 
+  "Special Exemption" = "#e0592a",
+  "Prohibited" = "#b1005f"
+  )
+
+allowance_pal <- colorFactor(
+  palette = c(
+    "#259591", 
+    "#8b85ca", 
+    "#e0592a"
+  ),
+  levels = c(
+    "Allowed", 
+    "Conditional", 
+    "Special Exemption"
+  )
+)
+
 ```
 
 This section examines current residential zoning patterns in each of the three localities. The towns of Glasgow and Goshen are not included.
@@ -430,13 +452,6 @@ rock_res_vacant <- rock_area_vacant |>
       )
   )
 
-allowance_cols <- c(
-  "Allowed" = "#259591", 
-  "Conditional" = "#8b85ca", 
-  "Special Exemption" = "#e0592a",
-  "Prohibited" = "#b1005f"
-  )
-
 rock_res_vacant |> 
   filter(
     data == "parcels_pct",
@@ -497,9 +512,11 @@ The zoning ordinance fully prohibits apartments on 62.2 percent of undeveloped l
 In theory, new manufactured home parks are possible via special exception on 70.1 percent of vacant lots. However, the three-acre minimum lot size and other development requirements, along with larger market factors beyond county regulatory issues, make this scenario unlikely.
 :::
 
+The maps below show what types of residential uses are allowed across vacant properties in the county. Parcels any with existing improvements are excluded.
+
+[finish these maps]
 
 ```{r}
-#| eval: false
 
 rock_res_zoning <- rock_landuse_zoning |>
   mutate(acres = Shape_Area/43560, .after = 4) |> 
@@ -511,22 +528,41 @@ rock_res_zoning <- rock_landuse_zoning |>
 ```
 
 ```{r}
+#| label: map-rb-1fd
 #| eval: false
 
-allowance_pal <- colorFactor(
-  palette = c(
-    "#259591", 
-    "#8b85ca", 
-    "#e0592a"
-  ),
-  levels = c(
-    "Allowed", 
-    "Conditional", 
-    "Special Exemption"
+rb_allowance_1fd_map <- rock_res_zoning |> 
+  filter(treat_1fd != "Prohibited",
+         group == "Vacant") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_1fd),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(MZONE)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_1fd,
+            title = "Single-family detached") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
   )
-)
 
-rock_res_zoning |> 
+saveWidget(rb_allowance_1fd_map, "maps/rb_allowance_1fd_map.html")
+
+```
+
+```{r}
+#| label: map-rb-1fa
+#| eval: false
+
+rb_allowance_1fa_map <- rock_res_zoning |> 
   filter(treat_1fa != "Prohibited",
          group == "Vacant") |> 
   leaflet() |> 
@@ -542,20 +578,42 @@ rock_res_zoning |>
   addLegend("topright",
             pal = allowance_pal,
             values = ~treat_1fa,
-            title = "Allowance") |> 
+            title = "Townhome") |> 
   addLayersControl(
     baseGroups = c("Simple", "Imagery"),
     position = "bottomright",
     options = layersControlOptions(collapsed = FALSE)
   )
 
-saveWidget(rb_zoning_map, "maps/rb_zoning_map.html")
+saveWidget(rb_allowance_1fa_map, "maps/rb_allowance_1fa_map.html")
 
 ```
 
+::: {#fig-lu-map}
 
+:::: {.panel-tabset}
 
-Maps of where each housing type can be built by-right (and/or conditionally)
+#### Single-family detached
+
+```{r}
+
+knitr::include_url("maps/rb_allowance_1fd_map.html")
+
+```
+
+#### Townhome
+
+```{r}
+
+knitr::include_url("maps/rb_allowance_1fa_map.html")
+
+```
+
+::::
+
+Maps of residential use allowances on vacant parcels
+:::
+
 
 ### Analysis
 
@@ -563,4 +621,10 @@ The existing zoning ordinance dictating land use and development in Rockbridge C
 
 Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
 
-Figure out which properties are actually used for agriculture
+[more to add]
+
+Initial recommendations:
+
+- Determine with greater certainty how many A-1, A-2, and A-T properties are actually used for agriculture-related activities
+
+[more to add]

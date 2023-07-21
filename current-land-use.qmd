@@ -557,32 +557,34 @@ rock_lot_dist |>
 
 ```
 
-## City of Lexington
+Despite having the largest average sizes, there are many single-family lots one acre or less in size. Lots with mobile homes or townhomes/condos are clustered much more evenly around their median values.
 
-### Categories
+<!-- ## City of Lexington -->
 
-- Descriptions of residential land use categories
+<!-- ### Categories -->
 
-### Distribution
+<!-- - Descriptions of residential land use categories -->
 
-- Residential land uses by parcel
-- Residential land uses by land area
+<!-- ### Distribution -->
 
-### Analysis
+<!-- - Residential land uses by parcel -->
+<!-- - Residential land uses by land area -->
 
-- Notable changes in residential land use across county over time
+<!-- ### Analysis -->
 
-## City of Buena Vista
+<!-- - Notable changes in residential land use across county over time -->
 
-### Categories
+<!-- ## City of Buena Vista -->
 
-- Descriptions of residential land use categories
+<!-- ### Categories -->
 
-### Distribution
+<!-- - Descriptions of residential land use categories -->
 
-- Residential land uses by parcel
-- Residential land uses by land area
+<!-- ### Distribution -->
 
-### Analysis
+<!-- - Residential land uses by parcel -->
+<!-- - Residential land uses by land area -->
 
-- Notable changes in residential land use across county over time
+<!-- ### Analysis -->
+
+<!-- - Notable changes in residential land use across county over time -->
