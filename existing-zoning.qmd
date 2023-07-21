@@ -507,10 +507,52 @@ rock_res_zoning <- rock_landuse_zoning |>
   left_join(rock_zoning_districts, by = join_by(MZONE == zone)) |> 
   select(1:6, 8:16) |> 
   filter(str_detect(type, " Residential"))
-  
-
 
 ```
+
+```{r}
+#| eval: false
+
+allowance_pal <- colorFactor(
+  palette = c(
+    "#259591", 
+    "#8b85ca", 
+    "#e0592a"
+  ),
+  levels = c(
+    "Allowed", 
+    "Conditional", 
+    "Special Exemption"
+  )
+)
+
+rock_res_zoning |> 
+  filter(treat_1fa != "Prohibited",
+         group == "Vacant") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_1fa),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(MZONE)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_1fa,
+            title = "Allowance") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(rb_zoning_map, "maps/rb_zoning_map.html")
+
+```
+
 
 
 Maps of where each housing type can be built by-right (and/or conditionally)
