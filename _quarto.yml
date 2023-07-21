@@ -36,6 +36,7 @@ format:
   html:
     theme: lumen
     mainfont: "Open Sans"
+    fig-align: left
   # pdf:
   #   documentclass: scrreprt
   #   mainfont: "Open Sans"

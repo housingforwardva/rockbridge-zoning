@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Existing zoning
 
 ```{r}
@@ -324,52 +329,177 @@ Two in three B-1 parcels are vacant (66.8 percent). The remainder are almost equ
 
 ### Development potential
 
-...
+There are 10,312 undeveloped lots in zoning districts that allow residential uses. Together, these parcels total 129,982 acres of land. The chart below shows how the county's vacant property is distributed by their current zoning district.
 
 ```{r}
 #| label: fig-rock-vacant
-#| fig-cap: "Parcel vacancy in residential zoning districts"
+#| fig-cap: "Percent of parcels and land area that are vacant within each zoning district"
 
-rock_area |> 
-  filter(MZONE %in% c("R-1", "R-2", "B-1", "B-2")) |> 
-  group_by(MZONE) |> 
-  mutate(parcels_pct = parcels/sum(parcels)) |> 
+rock_area_vacant <- rock_area |> 
+  filter(MZONE %in% c("A-1", "A-2", "A-T", "R-1", "R-2", "B-1", "B-2")) |> 
+  group_by(group) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    area_pct = area/sum(area)
+    ) |> 
   ungroup() |> 
-  filter(parcels_pct > 0.01) |> 
-  mutate(group = fct_reorder(group, parcels_pct, .fun = sum),
-         MZONE = fct_relevel(MZONE, "R-1", "R-2", "B-1", "B-2")) |>
-  ggplot(aes(x = parcels_pct, y = group, fill = MZONE)) +
-  facet_wrap(~MZONE) +
-  geom_col() +
+  filter(group == "Vacant") |> 
+  pivot_longer(cols = 4:7, names_to = "data", values_to = "value") |> 
+  mutate(MZONE = fct_reorder(MZONE, value, .fun = sum),
+         data = fct_relevel(data, "parcels_pct"))
+
+rock_area_vacant |> 
+  filter(str_detect(data, "_pct")) |>
+  ggplot(aes(y = MZONE, fill = data, color = data)) +
+  facet_wrap(~data) +
+  geom_col(
+    aes(x = value),
+    position = "dodge"
+    ) +
   geom_text(
     aes(
-      x = parcels_pct + 0.01,
-      y = group,
-      label = label_percent(accuracy = 0.1)(parcels_pct)
-    ),
-    color = "grey50",
-    hjust = 0
-  ) +
+      x = value + 0.08,
+      label = label_percent(accuracy = 0.1)(value)
+      ),
+    position = position_dodge(1),
+    ) +
   scale_x_continuous(
-    limits = c(0, 0.99),
+    limits = c(0, 0.85),
     expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Only a small share of vacant parcels are not in agricultural zones",
+    subtitle = "Percent of <span style='color:#011e41;'>**parcels**</span> and <span style='color:#40c0c0;'>**land area**</span> that are vacant within each zoning district",
+    caption = "**Source:** Rockbridge County GIS records.<br>**Note:** Vacant parcels in non-residential zoning districts are excluded."
   ) +
   scale_fill_hfv() +
-  labs(
-    title = "Large shares of residential-zoned parcels are vacant",
-    subtitle = "Parcel vacancy in residential zoning districts",
-    caption = "**Source:** Rockbridge County GIS records."
-  ) +
+  scale_color_hfv() +
   add_zero_line("x") +
   theme_hfv() +
   theme(
-    panel.grid.major.y = element_blank(),
-    axis.text.x = element_blank()
+    axis.text.x = element_blank(),
+    strip.text = element_blank(),
+    panel.grid.major.y = element_blank()
   )
 
 ```
 
+Just under half of all vacant parcels are zoned A-2 (43.2 percent), but these account for two-thirds of all undeveloped area. Vacant A-1 lots are the next largest group when measured by area (25.8 percent), but only account for 8.4 percent of the total parcel count. Vacant parcels zoned A-T make up the next largest count (26.9 percent), but together are only 5.2 percent of land area. 
+
+Single-family detached homes are the only by-right residential use across these districts. (Manufactured homes are also permitted, but must meet certain conditional criteria.) Most other dwelling types are fully prohibited.
+
+Just about one in all five undeveloped lots are zoned for residential or business, with nearly all either R-1 or B-1. These are even a much smaller share of the total vacant area, comprising about 2.5 percent. These are the only vacant parcels where townhomes and multiple-unit dwellings are possible by-right, conditionally, or via special exception.
+
+The chart below show how the current zoning ordinance allows (or restricts) different housing types as a percent of undeveloped parcels in the county.
+
 ```{r}
+#| label: fig-rock-allowance
+#| fig-cap: "Percent of undeveloped lots by residential use allowances"
+
+rock_res_vacant <- rock_area_vacant |> 
+  left_join(rock_zoning_districts, by = join_by(MZONE == zone)) |> 
+  select(4:5, 10:15) |> 
+  pivot_longer(3:8, names_to = "type", values_to = "allowance") |> 
+  select(3, 4, 1, 2) |> 
+  summarize(
+    value = sum(value),
+    .by = c(1:3)
+  ) |> 
+  mutate(
+    allowance = fct_relevel(
+      allowance,
+      "Allowed", 
+      "Conditional", 
+      "Special Exemption"
+      ),
+    type = case_match(
+      type,
+      "treat_1fd" ~ "Single-family detached",
+      "treat_1fa" ~ "Townhome",
+      "treat_2f" ~ "Duplex",
+      "treat_mf" ~ "Multifamily",
+      "treat_mh" ~ "Manufactured home",
+      "treat_mhp" ~ "Manufactured home park"
+      ),
+    type = fct_relevel(
+      type, 
+      "Single-family detached", 
+      "Townhome",
+      "Duplex",
+      "Multifamily"
+      )
+  )
+
+allowance_cols <- c(
+  "Allowed" = "#259591", 
+  "Conditional" = "#8b85ca", 
+  "Special Exemption" = "#e0592a",
+  "Prohibited" = "#b1005f"
+  )
+
+rock_res_vacant |> 
+  filter(
+    data == "parcels_pct",
+    value > 0.001
+    ) |> 
+  ggplot(
+    aes(
+      x = allowance,
+      y = value,
+      fill = allowance,
+      color = allowance
+      )
+    ) + 
+  facet_wrap(~type) +
+  geom_col(position = "dodge") +
+  geom_text(
+    aes(
+      y = value + 0.1,
+      label = label_percent(accuracy = 0.1)(value)
+      ),
+    position = position_dodge(1)
+  ) +
+  scale_fill_manual(values = allowance_cols) +
+  scale_color_manual(values = allowance_cols) +
+  labs(
+    title = "Townhomes, duplexes, and apartments are prohibited on more than half of all vacant parcels",
+    subtitle = "Percent of undeveloped lots where each residential use is
+    <span style='color:#259591;'>**allowed**</span> by-right,
+    <span style='color:#8b85ca;'>**conditional**</span> by-right,
+    via <span style='color:#e0592a;'>**special exception**</span> only, or
+    <span style='color:#b1005f;'>**prohibited**</span>",
+    caption = "**Source:** Rockbridge County GIS records."
+  ) +
+  add_zero_line("y") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text = element_blank() 
+  )
+
+```
+
+::: {.callout-warning}
+#### Overstated development potential
+
+This analysis only considers the possible residential uses for each parcel, derived from the county's zoning ordinance. It does not factor in other regulatory requirements, such as minimum lot sizes and setbacks. Road and utility access are also not included variables. Therefore, the share of vacant parcels actually suitable for development is likely much lower than these estimates.
+:::
+
+Single-family detached homes are by-right on almost nine in ten empty lots, and are a conditional use on almost all other parcels. Manufactured homes share a similar distribution, but require conditional approval most everywhere.
+
+Duplexes are the next most common residential use allowed across vacant properties, where they are by-right in R-1 or R-1 (10.9 percent), or conditional in B-1 (10.5 percent). Multifamily apartments can be developed by-right on less than half a percent of all currently empty parcels, or conditionally on 10.5 percent. Both duplexes and multifamily homes would require a special exception (and public hearing) on 26.9 percent of vacant properties. These are nearly all zoned A-T.
+
+The zoning ordinance fully prohibits apartments on 62.2 percent of undeveloped lots today, and duplexes on 51.7 percent. Townhomes are effectively banned everywhere.
+
+::: {.callout-note}
+#### Challenges to manufactured home park development
+
+In theory, new manufactured home parks are possible via special exception on 70.1 percent of vacant lots. However, the three-acre minimum lot size and other development requirements, along with larger market factors beyond county regulatory issues, make this scenario unlikely.
+:::
+
+
+```{r}
+#| eval: false
 
 rock_res_zoning <- rock_landuse_zoning |>
   mutate(acres = Shape_Area/43560, .after = 4) |> 
@@ -383,7 +513,7 @@ rock_res_zoning <- rock_landuse_zoning |>
 ```
 
 
--   Maps of where each housing type can be built by-right (and/or conditionally)
+Maps of where each housing type can be built by-right (and/or conditionally)
 
 ### Analysis
 
