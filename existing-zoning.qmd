@@ -187,7 +187,7 @@ Residential use definitions:
 
 **Manufactured home parks** are prohibited in all districts except for A-2 and A-T, where they are allowed only via special exception. New MHP developments must meet the design and site plan requirements outlined in sections 707.02 through 707.06.
 
-## Lot requirements
+## Lot requirements {#sec-rb-lot-req}
 
 The zoning ordinance also stipulates specific geometric criteria that must be met before properties can be developed into homes. These include minimum lot area, road frontage, setbacks (front, side, and rear), and in some cases structure height.
 
@@ -196,6 +196,8 @@ These requirements vary by district as seen below in "Table 1: Area and Setback 
 ![Area and setback requirements](data/rockbridge/rb-area-setback-req.png)
 
 The minimum area for R-1 and R-2 depends on whether the property has access to public water and/or sewer, as shown in "Table 2: Residential District Area Requirements" (T2-1).
+
+Subsequent notes in the text state that the minimum lot size for A-1 and A-2 is 2 acres, except when smaller lots may be approved as part of a cluster development.
 
 ![Area requirements based on utility access](data/rockbridge/rb-area-utility.png)
 

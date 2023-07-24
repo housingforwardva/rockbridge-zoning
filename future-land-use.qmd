@@ -89,6 +89,8 @@ saveWidget(rb_flu_map, "maps/rb_flu_map.html")
 knitr::include_url("maps/rb_flu_map.html")
 
 ```
+
+Future land use map
 :::
 
 ## Distribution

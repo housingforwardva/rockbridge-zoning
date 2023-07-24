@@ -62,6 +62,9 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script async="" src="https://hypothes.is/embed.js"></script>
 
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
 </head>
 
@@ -170,7 +173,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#lot-area-requirements" id="toc-lot-area-requirements" class="nav-link active" data-scroll-target="#lot-area-requirements"><span class="header-section-number">4.1</span> Lot area requirements</a></li>
+  <li><a href="#property-criteria" id="toc-property-criteria" class="nav-link active" data-scroll-target="#property-criteria"><span class="header-section-number">4.1</span> Property criteria</a>
+  <ul class="collapse">
+  <li><a href="#land-use-and-zoning" id="toc-land-use-and-zoning" class="nav-link" data-scroll-target="#land-use-and-zoning"><span class="header-section-number">4.1.1</span> Land use and zoning</a></li>
+  <li><a href="#lot-dimensions" id="toc-lot-dimensions" class="nav-link" data-scroll-target="#lot-dimensions"><span class="header-section-number">4.1.2</span> Lot dimensions</a></li>
+  <li><a href="#future-land-use" id="toc-future-land-use" class="nav-link" data-scroll-target="#future-land-use"><span class="header-section-number">4.1.3</span> Future land use</a></li>
+  <li><a href="#utility-access" id="toc-utility-access" class="nav-link" data-scroll-target="#utility-access"><span class="header-section-number">4.1.4</span> Utility access</a></li>
+  <li><a href="#additional-filters" id="toc-additional-filters" class="nav-link" data-scroll-target="#additional-filters"><span class="header-section-number">4.1.5</span> Additional filters</a></li>
+  </ul></li>
+  <li><a href="#preliminary-selection" id="toc-preliminary-selection" class="nav-link" data-scroll-target="#preliminary-selection"><span class="header-section-number">4.2</span> Preliminary selection</a></li>
   </ul>
 </nav>
     </div>
@@ -201,8 +212,270 @@ ul.task-list li input[type="checkbox"] {
 <li>What the future land use designation is, and</li>
 <li>Access to existing public utilities.</li>
 </ul>
-<section id="lot-area-requirements" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="lot-area-requirements"><span class="header-section-number">4.1</span> Lot area requirements</h2>
+<section id="property-criteria" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="property-criteria"><span class="header-section-number">4.1</span> Property criteria</h2>
+<p>Strategic residential development opportunities will ideally meet the following criteria:</p>
+<ul>
+<li>Vacant parcel</li>
+<li>Zoned A-T, R-1, R-2, or B-1</li>
+<li>Meets applicable minimum lot size (see below)</li>
+<li>Located in Suburban Service Area, Village Service Area, or Rural Village Area</li>
+<li>Within 500 feet of public water <em>and</em> sewer</li>
+</ul>
+<section id="land-use-and-zoning" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="land-use-and-zoning"><span class="header-section-number">4.1.1</span> Land use and zoning</h3>
+<p>Applying the first two criteria, there are 4,886 parcels currently vacant and zoned either A-T, R-1, R-2, or B-1. Over half are zoned A-T.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-rb-dev-luz" class="anchored">
+<div class="table-responsive">
+<table class="table table-hover table-condensed table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;4.1: Number of vacant parcels by zoning district</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Zone</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Criteria parcels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A-T</td>
+<td style="text-align: center;">2718</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">R-1</td>
+<td style="text-align: center;">1063</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">B-1</td>
+<td style="text-align: center;">1066</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">R-2</td>
+<td style="text-align: center;">39</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+</div>
+</section>
+<section id="lot-dimensions" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="lot-dimensions"><span class="header-section-number">4.1.2</span> Lot dimensions</h3>
+<p>As shown in the prior <a href="./existing-zoning.html#sec-rb-lot-req">zoning chapter</a>, minimum lot sizes in Rockbridge’s zoning ordinance are often conditional on other factors. Based on those requirements, we can assume the following minimums for each district:</p>
+<ul>
+<li><strong>A-T</strong>: 2 acres (single-family detached)</li>
+<li><strong>R-1</strong>: 0.5 acres with public water and sewer and 1 acre without (single-family detached and duplex)</li>
+<li><strong>R-2</strong>: 0.25 acres with public water and sewer (single-family detached and duplex); 0.5 acres with public water and sewer (multifamily)</li>
+<li><strong>B-1</strong>: 0.5 acres with public water and sewer (multifamily)</li>
+</ul>
+<p>The 0.5 minimum lot size for multifamily is assumed to apply to R-2 and R-1, and that multifamily is defined as three or more units. Therefore, the additional 2,000 sqft required would begin applying at the fourth unit.</p>
+<p>For now, the lowest size minimum is applied as a filter. (Additional lot size requirements will be calculated in when utility access is considered.)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-rb-dev-lot" class="anchored">
+<div class="table-responsive">
+<table class="table table-hover table-condensed table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;4.2: Number of minimum-sized vacant parcels by zoning district</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Zone</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Criteria parcels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">R-1</td>
+<td style="text-align: center;">473</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">A-T</td>
+<td style="text-align: center;">329</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">B-1</td>
+<td style="text-align: center;">119</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">R-2</td>
+<td style="text-align: center;">9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+</div>
+<p>There are 927 vacant parcels that meet the lowest minimum lot size requirement. Almost half are wither R-1 or A-T. Only 9 are zoned R-2.</p>
+</section>
+<section id="future-land-use" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="future-land-use"><span class="header-section-number">4.1.3</span> Future land use</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-rb-dev-flu" class="anchored">
+<div class="table-responsive">
+<table class="table table-hover table-condensed table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;4.3: Number of minimum-sized vacant parcels in growth areas by zoning district</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Zone</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Criteria parcels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">R-1</td>
+<td style="text-align: center;">388</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">A-T</td>
+<td style="text-align: center;">124</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">B-1</td>
+<td style="text-align: center;">67</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">R-2</td>
+<td style="text-align: center;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+</div>
+<p>There are 586 parcels that meet all above criteria and are located in a Suburban Service Area, Village Service Area, or Rural Village Area. The majority are zoned R-1.</p>
+</section>
+<section id="utility-access" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="utility-access"><span class="header-section-number">4.1.4</span> Utility access</h3>
+<p>We can use a conservative estimation that any parcel within a 500 foot buffer of an existing water or sewer line is or could be connected to the system(s). The map below shows those buffers, separated by which areas have access to water only, sewer only, or both.</p>
+<div id="fig-ws-map" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<div class="cell">
+<iframe src="maps/rb_ws_map.html" width="672" height="400px" data-external="1">
+</iframe>
+</div>
+<figcaption class="figure-caption">Figure&nbsp;4.1: Map of 500 foot buffer radius around public water and sewer lines</figcaption>
+</figure>
+</div>
+<p>Separate shapefiles were provided for each utility; their coverage varied, as shown in the light green and light purple areas in the map, where only one service is available.</p>
+<p>Because the lot sizes in R-1 and R-2 differ based on access to <em>both</em> water and sewer, we will use the blue shaded area to determine where those smaller criteria apply.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-rb-dev-ws" class="anchored">
+<div class="table-responsive">
+<table class="table table-hover table-condensed table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;4.4: Number of minimum-sized vacant parcels in growth areas with utility access by zoning district</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Zone</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Criteria parcels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">R-1</td>
+<td style="text-align: center;">113</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B-1</td>
+<td style="text-align: center;">45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A-T</td>
+<td style="text-align: center;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">R-2</td>
+<td style="text-align: center;">6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+</div>
+<p>A subset of 194 of those properties have theoretical access to both water and sewer utilities. This remainder is still primarily zoned R-1.</p>
+</section>
+<section id="additional-filters" class="level3" data-number="4.1.5">
+<h3 data-number="4.1.5" class="anchored" data-anchor-id="additional-filters"><span class="header-section-number">4.1.5</span> Additional filters</h3>
+<p>Based on a manual review of these remaining parcels, we can also exclude the following as unlikely to be suitable for residential development:</p>
+<ul>
+<li>“Vacant exempt” parcels which are predominately owned by public or religious entities</li>
+<li>Two parcels approximately over 100 acres owned and used by the Lexington Golf &amp; Country Club</li>
+</ul>
+<p>[Reserved for further criteria if needed]</p>
+<p>This removes an additional 20 properties. The final subtotals by zoning district are below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-rb-dev-af" class="anchored">
+<div class="table-responsive">
+<table class="table table-hover table-condensed table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;4.5: Number of parcels meeting all development criteria by zoning district</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Zone</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Criteria parcels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">R-1</td>
+<td style="text-align: center;">106</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B-1</td>
+<td style="text-align: center;">42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A-T</td>
+<td style="text-align: center;">23</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">R-2</td>
+<td style="text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+</div>
+</section>
+</section>
+<section id="preliminary-selection" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="preliminary-selection"><span class="header-section-number">4.2</span> Preliminary selection</h2>
+<p>The map below shows the 174 parcels meeting all of the criteria established in the preceding analysis.</p>
+<div id="fig-dev-map" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<div class="cell">
+<iframe src="maps/rb_dev_map.html" width="672" height="400px" data-external="1">
+</iframe>
+</div>
+<figcaption class="figure-caption">Figure&nbsp;4.2: Preliminary selection of potential residential development sites</figcaption>
+</figure>
+</div>
+<p>These properties are in several rough groupings, mostly along the Route 11 corridor immediately north and south of Lexington:</p>
+<ul>
+<li>Four clusters of R-1 properties (three to the north, one to the south) that include both infill lots and larger parcels potentially suitable for subdivision (or rezoning)</li>
+<li>Fairly large A-T properties to the north, mostly on the west side of Route 11</li>
+<li>Scattered B-1 lots of varying sizes</li>
+</ul>
+<p>The only R-2 parcels form a crescent around a new subdivision on the northwest corner of the interchange between Route 11 and Interstate 64.</p>
+<p>There are only two parcels outside of the immediate Lexington area; both are directly west of Glasgow. One is a large wooded A-T lot, and the other a small R-1 lot fronting Route 130.</p>
+<p>[reserved for additional criteria/analysis following staff feedback]</p>
 
 
 </section>

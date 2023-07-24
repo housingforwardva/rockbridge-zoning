@@ -10,6 +10,20 @@ engine: knitr
 This document is still under construction. It was last updated `r format(Sys.time(), format = "%B %d, %Y")` at `r format(Sys.time(), "%I:%M %p")`.
 :::
 
+::: {.callout-tip}
+## How to give interactive feedback
+
+You can highlight and add comments to this website using [hypothesis.is](https://web.hypothes.is/).
+
+1.  Create a [free account](https://web.hypothes.is/start/) with your email address. You do not need to install the browser extension. Be sure to activate your account by clicking the link sent to your email upon registering.
+2.  Here, or any other page on this website, open the annotation sidebar by clicking on the little arrow at the top right.
+3.  Click "Log in" and enter your credentials when prompted.
+4.  You can now select any text on the page to make new annotations or highlights. These will be visible to all viewers.
+5.  Clicking on any yellow-highlighted text will reveal comments made by others. You can reply to these annotations.
+
+For more information, see the [Annotation Basics](https://web.hypothes.is/help/annotation-basics/) help page.
+:::
+
 This report is an analysis of zoning and land use patterns in Rockbridge County, the City of Lexington, and the City of Buena Vista. This work supports the ongoing [regional housing study](https://www.cspdc.org/programs-services/housing/) that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC).
 
 ## Objectives
@@ -29,7 +43,10 @@ This work will draw on the following information:
 - Current comprehensive plans and related documents,
 - Existing land uses by parcel,
 - Existing residential and mixed-use zoning districts,
-- Subdivision ordinances and related regulations, and
-- Recent residential development patterns.
+- Future land use categories and map, and
+- Current water and sewer system coverage.
+
+<!-- - Subdivision ordinances and related regulations, and -->
+<!-- - Recent residential development patterns. -->
 
 HFV will synthesize this analysis and provide a summary of findings, as well as potential recommendations that would work in sync with solutions offered in the full regional report.

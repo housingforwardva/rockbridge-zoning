@@ -7,9 +7,331 @@ This section identifies where future residential development in the county can o
 - What the future land use designation is, and
 - Access to existing public utilities.
 
-## Lot area requirements
-
 ```{r}
+
+library(tidyverse)
+library(hdatools)
+library(scales)
+library(tidytext)
+library(sf)
+library(mapview)
+library(leaflet)
+library(kableExtra)
+library(htmltools)
+library(htmlwidgets)
+
+rock_landuse_zoning <- read_rds("data/rockbridge/rock_landuse_zoning.rds") |> 
+  rowid_to_column(var = "key")
+
+rock_flu <- read_rds("data/rockbridge/rock_flu.rds")
+
+rock_ws <- read_rds("data/rockbridge/rock_ws.rds")
 
 ```
 
+## Property criteria
+
+Strategic residential development opportunities will ideally meet the following criteria:
+
+- Vacant parcel 
+- Zoned A-T, R-1, R-2, or B-1
+- Meets applicable minimum lot size (see below)
+- Located in Suburban Service Area, Village Service Area, or Rural Village Area
+- Within 500 feet of public water *and* sewer
+
+### Land use and zoning
+
+Applying the first two criteria, there are 4,886 parcels currently vacant and zoned either A-T, R-1, R-2, or B-1. Over half are zoned A-T.
+
+```{r}
+#| label: tbl-rb-dev-luz
+#| tbl-cap: "Number of vacant parcels by zoning district"
+
+rock_dev_luz <- rock_landuse_zoning |> 
+  filter(
+    MZONE %in% c("A-T", "R-1", "R-2", "B-1"),
+    group == "Vacant"
+  )
+
+rock_dev_luz |> 
+  st_drop_geometry() |> 
+  summarise(
+    parcels = n(),
+    .by = MZONE
+  ) |> 
+  kable(
+    col.names = c("Zone", "Criteria parcels"),
+    align = "cc"
+  ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    ) 
+  
+```
+
+### Lot dimensions
+
+As shown in the prior [zoning chapter](existing-zoning.qmd#sec-rb-lot-req), minimum lot sizes in Rockbridge's zoning ordinance are often conditional on other factors. Based on those requirements, we can assume the following minimums for each district:
+
+- **A-T**: 2 acres (single-family detached)
+- **R-1**: 0.5 acres with public water and sewer and 1 acre without (single-family detached and duplex)
+- **R-2**: 0.25 acres with public water and sewer (single-family detached and duplex); 0.5 acres with public water and sewer (multifamily)
+- **B-1**: 0.5 acres with public water and sewer (multifamily)
+
+The 0.5 minimum lot size for multifamily is assumed to apply to R-2 and R-1, and that multifamily is defined as three or more units. Therefore, the additional 2,000 sqft required would begin applying at the fourth unit.
+
+For now, the lowest size minimum is applied as a filter. (Additional lot size requirements will be calculated in when utility access is considered.)
+
+```{r}
+#| label: tbl-rb-dev-lot
+#| tbl-cap: "Number of minimum-sized vacant parcels by zoning district"
+
+rock_dev_lot <- rock_dev_luz |> 
+  mutate(
+    lot_dim = case_when(
+      MZONE == "A-T" & CALCACRES >= 2 ~ TRUE,
+      MZONE == "R-1" & CALCACRES >= 0.5 ~ TRUE,
+      MZONE == "R-2" & CALCACRES >= 0.25 ~ TRUE,
+      MZONE == "B-1" & CALCACRES >= 0.5 ~ TRUE,
+      .default = FALSE
+    )
+  ) |> 
+  filter(lot_dim == TRUE)
+
+rock_dev_lot |> 
+  st_drop_geometry() |> 
+  summarise(
+    parcels = n(),
+    .by = MZONE
+  ) |> 
+  arrange(desc(parcels)) |> 
+  kable(
+    col.names = c("Zone", "Criteria parcels"),
+    align = "cc"
+  ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    ) 
+
+```
+
+There are 927 vacant parcels that meet the lowest minimum lot size requirement. Almost half are wither R-1 or A-T. Only 9 are zoned R-2.
+
+### Future land use
+
+```{r}
+#| label: tbl-rb-dev-flu
+#| tbl-cap: "Number of minimum-sized vacant parcels in growth areas by zoning district"
+
+sf_use_s2(FALSE)
+
+rock_dev_centroid <- rock_dev_lot |> 
+  st_centroid() |> 
+  select(1) |> 
+  st_join(rock_flu) |> 
+  select(1, 3, 4)
+
+rock_dev_flu <- rock_dev_lot |> 
+  left_join(
+    st_drop_geometry(rock_dev_centroid),
+    by = join_by(key)
+    ) |> 
+  filter(
+    future_land_use %in% c("Suburban Service Area", "Village Service Area", "Rural Village Area")
+    )
+
+rock_dev_flu |> 
+  st_drop_geometry() |> 
+  summarise(
+    parcels = n(),
+    .by = MZONE
+  ) |> 
+  arrange(desc(parcels)) |> 
+  kable(
+    col.names = c("Zone", "Criteria parcels"),
+    align = "cc"
+  ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    ) 
+
+```
+
+There are 586 parcels that meet all above criteria and are located in a Suburban Service Area, Village Service Area, or Rural Village Area. The majority are zoned R-1.
+
+### Utility access
+
+We can use a conservative estimation that any parcel within a 500 foot buffer of an existing water or sewer line is or could be connected to the system(s). The map below shows those buffers, separated by which areas have access to water only, sewer only, or both.
+
+```{r}
+#| eval: false
+
+ws_pal <- colorFactor(
+  palette = c(
+    "#1a3454", 
+    "#79d2d2", 
+    "#ada9d9"
+  ),
+  levels = c(
+    "Both", 
+    "Water only", 
+    "Sewer only"
+  )
+)
+
+rb_ws_map <- rock_ws |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~ws_pal(label),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(label)) |> 
+  addLegend("topright",
+            pal = ws_pal,
+            values = ~label,
+            title = "Utility access") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(rb_ws_map, "maps/rb_ws_map.html")
+
+```
+
+::: {#fig-ws-map}
+
+```{r}
+
+knitr::include_url("maps/rb_ws_map.html")
+
+```
+
+Map of 500 foot buffer radius around public water and sewer lines
+
+:::
+
+Separate shapefiles were provided for each utility; their coverage varied, as shown in the light green and light purple areas in the map, where only one service is available.
+
+Because the lot sizes in R-1 and R-2 differ based on access to *both* water and sewer, we will use the blue shaded area to determine where those smaller criteria apply.
+
+```{r}
+#| label: tbl-rb-dev-ws
+#| tbl-cap: "Number of minimum-sized vacant parcels in growth areas with utility access by zoning district"
+
+rock_dev_ws <- rock_dev_flu |> 
+  st_filter(filter(rock_ws, label == "Both"))
+
+rock_dev_ws |> 
+  st_drop_geometry() |> 
+  summarise(
+    parcels = n(),
+    .by = MZONE
+  ) |> 
+  arrange(desc(parcels)) |> 
+  kable(
+    col.names = c("Zone", "Criteria parcels"),
+    align = "cc"
+  ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    ) 
+
+```
+
+A subset of 194 of those properties have theoretical access to both water and sewer utilities. This remainder is still primarily zoned R-1.
+
+### Additional filters
+
+Based on a manual review of these remaining parcels, we can also exclude the following as unlikely to be suitable for residential development:
+
+- "Vacant exempt" parcels which are predominately owned by public or religious entities
+- Two parcels approximately over 100 acres owned and used by the Lexington Golf & Country Club
+
+[Reserved for further criteria if needed]
+
+This removes an additional 20 properties. The final subtotals by zoning district are below.
+
+```{r}
+#| label: tbl-rb-dev-af
+#| tbl-cap: "Number of parcels meeting all development criteria by zoning district"
+
+rock_dev_af <- rock_dev_ws |> 
+  filter(description != "Vacant exempt") |> 
+  filter(OWNERNAME != "LEXINGTON GOLF & COUNTRY CLUB IN")
+
+rock_dev_af |> 
+  st_drop_geometry() |> 
+  summarise(
+    parcels = n(),
+    .by = MZONE
+  ) |> 
+  arrange(desc(parcels)) |> 
+  kable(
+    col.names = c("Zone", "Criteria parcels"),
+    align = "cc"
+  ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+## Preliminary selection
+
+The map below shows the 174 parcels meeting all of the criteria established in the preceding analysis.
+
+```{r}
+#| eval: false
+
+zoning_pal <- colorFactor(rainbow(4), unique(rock_dev_af$MZONE))
+
+rb_dev_map <- leaflet(filter(rock_dev_af)) |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~zoning_pal(MZONE),
+              fillOpacity = 0.7,
+              weight = 0) |> 
+  addLegend("topright",
+            pal = zoning_pal,
+            values = ~MZONE,
+            title = "Zoning") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(rb_dev_map, "maps/rb_dev_map.html")
+
+```
+
+::: {#fig-dev-map}
+```{r}
+
+knitr::include_url("maps/rb_dev_map.html")
+
+```
+
+Preliminary selection of potential residential development sites
+:::
+
+These properties are in several rough groupings, mostly along the Route 11 corridor immediately north and south of Lexington:
+
+- Four clusters of R-1 properties (three to the north, one to the south) that include both infill lots and larger parcels potentially suitable for subdivision (or rezoning)
+- Fairly large A-T properties to the north, mostly on the west side of Route 11
+- Scattered B-1 lots of varying sizes
+
+The only R-2 parcels form a crescent around a new subdivision on the northwest corner of the interchange between Route 11 and Interstate 64.
+
+There are only two parcels outside of the immediate Lexington area; both are directly west of Glasgow. One is a large wooded A-T lot, and the other a small R-1 lot fronting Route 130.
+
+[reserved for additional criteria/analysis following staff feedback]
