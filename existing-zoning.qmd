@@ -41,9 +41,11 @@ allowance_pal <- colorFactor(
 
 ```
 
-This section examines current residential zoning patterns in each of the three localities. The towns of Glasgow and Goshen are not included.
+This section examines current residential zoning patterns in Rockbridge County.
 
-## Rockbridge County
+The existing zoning ordinance dictating land use and development was originally written in 1982. It has not been comprehensively rewritten since then. At that time, the County population was 17,856---about 5,000 people less than its population today.
+
+Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
 
 ```{r}
 
@@ -55,7 +57,7 @@ rock_area <- read_rds("data/rockbridge/rock_area.rds")
 
 ```
 
-### Zoning districts
+## Zoning districts
 
 Rockbridge County has nine base zoning districts and five overlay districts.
 
@@ -185,7 +187,23 @@ Residential use definitions:
 
 **Manufactured home parks** are prohibited in all districts except for A-2 and A-T, where they are allowed only via special exception. New MHP developments must meet the design and site plan requirements outlined in sections 707.02 through 707.06.
 
-### Distribution
+## Lot requirements
+
+The zoning ordinance also stipulates specific geometric criteria that must be met before properties can be developed into homes. These include minimum lot area, road frontage, setbacks (front, side, and rear), and in some cases structure height.
+
+These requirements vary by district as seen below in "Table 1: Area and Setback Requirements" from the county's zoning ordinance (page T1-1).
+
+![Area and setback requirements](data/rockbridge/rb-area-setback-req.png)
+
+The minimum area for R-1 and R-2 depends on whether the property has access to public water and/or sewer, as shown in "Table 2: Residential District Area Requirements" (T2-1).
+
+![Area requirements based on utility access](data/rockbridge/rb-area-utility.png)
+
+Based on this chart, it is unclear whether the R-1 and R-2 area requirements are specific to single-family residential or if it also applies to duplexes. Both are by-right uses in those districts.
+
+It is further unclear whether the multifamily lot requirement includes duplexes or is specific to a certain definition of multifamily housing, such as three units or more per structure.
+
+## Distribution
 
 ```{r}
 #| label: rock-dist-zoning
@@ -244,7 +262,7 @@ Parcels zoned A-2 are the most common (49.5 percent) and comprise over half the 
 
 While R-1 properties account for 14.4 percent of all parcels, they make up just 1.4 percent of all land. Other zoning districts where homes are allowed (R-2, B-1, and B-2) account for less than one percent of land.
 
-### Land use by district
+## Land use by district
 
 The charts below show how parcels within each zoning district are currently used. Land uses are the same groups described in @tbl-lu-rev.
 
@@ -349,7 +367,7 @@ Townhomes and condos are most common in R-2, where they make up over 12 percent 
 
 Two in three B-1 parcels are vacant (66.8 percent). The remainder are almost equally either single-family homes or commercial properties. Only 12 parcels are currently zoned B-2. Of those, most are single-family homes.
 
-### Development potential
+## Undeveloped lots
 
 There are 10,312 undeveloped lots in zoning districts that allow residential uses. Together, these parcels total 129,982 acres of land. The chart below shows how the county's vacant property is distributed by their current zoning district.
 
@@ -522,6 +540,8 @@ rock_res_zoning <- rock_landuse_zoning |>
   left_join(rock_zoning_districts, by = join_by(MZONE == zone)) |> 
   select(1:6, 8:16) |> 
   filter(str_detect(type, " Residential"))
+
+# write_rds(rock_res_zoning, "data/rockbridge/rock_res_zoning.rds")
 
 ```
 
@@ -768,18 +788,16 @@ knitr::include_url("maps/rb_allowance_mhp_map.html")
 Maps of residential use allowances on vacant parcels
 :::
 
+## Takeaways
 
+Rockbridge's current residential zoning regimen is not particularly complex. And while the code is generally not amenable by-right housing development beyond single-family detached homes, several exceptions are noteworthy. These include duplexes by-right in R-1 and R-2, and apartments by-right in R-2.
 
-### Analysis
+Furthermore, there are a few ambiguities in the county's zoning data---and ordinance text---that make it difficult to correctly interpret and apply certain regulations.
 
-The existing zoning ordinance dictating land use and development in Rockbridge County has not been comprehensively rewritten since 1982. At this time, the County population was 17,856---about 5,000 people less than its population today.
+Preliminary findings and recommendations:
 
-Since 1982, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
-
-[more to add]
-
-Initial recommendations:
-
-- Determine with greater certainty how many A-1, A-2, and A-T properties are actually used for agriculture-related activities
-
-[more to add]
+- Determine with greater certainty how many A-1, A-2, and A-T properties are actually used for activities related to farming and cultivating natural resources.
+- Create consistent methodology/definition for parcels assigned with "NA" zoning.
+- Add clarity on current lot area requirements relative to utility access (Table 2 in zoning ordinance, page T2-1).
+- Explore lowering barriers for townhome development, especially in R-1 and R-2 districts.
+- Consider carving out a small-scale multifamily definition, such as three to four units per structure, whose development regulations could be less onerous than larger multifamily development.

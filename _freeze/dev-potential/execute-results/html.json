@@ -1,0 +1,14 @@
+{
+  "hash": "69f01d778658c56364f3c84ce0b35ac4",
+  "result": {
+    "markdown": "# Development potential\n\nThis section identifies where future residential development in the county can or should occur. The analysis includes new factors, as well as information gathered in previous chapters, including:\n\n- Whether the property is already developed,\n- How residential uses are treated in the applicable zoning districts,\n- What the future land use designation is, and\n- Access to existing public utilities.\n\n## Lot area requirements\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

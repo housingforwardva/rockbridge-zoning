@@ -1,0 +1,15 @@
+# Development potential
+
+This section identifies where future residential development in the county can or should occur. The analysis includes new factors, as well as information gathered in previous chapters, including:
+
+- Whether the property is already developed,
+- How residential uses are treated in the applicable zoning districts,
+- What the future land use designation is, and
+- Access to existing public utilities.
+
+## Lot area requirements
+
+```{r}
+
+```
+

@@ -1,6 +1,6 @@
 # Current land use
 
-This section examines current residential land uses in each of the three localities. The towns of Glasgow and Goshen are not included.
+This section examines current residential land uses in Rockbridge County.
 
 ```{r}
 
@@ -16,9 +16,6 @@ library(htmlwidgets)
 
 ```
 
-
-## Rockbridge County
-
 ```{r}
 
 # Load Rockbridge zoning and land use data
@@ -29,7 +26,7 @@ rock_area <- read_rds("data/rockbridge/rock_area.rds")
 
 ```
 
-### Categories
+## Categories
 
 Parcels in the county are assigned one of 19 unique land use codes in the real property assessment data. To standardize these specific descriptions, we can assign new summary groups and categories, as shown in the table below. Residential land uses are highlighted.
 
@@ -143,7 +140,7 @@ knitr::include_url("maps/rb_landuse_res_map.html")
 Residential land use groups in Rockbridge County
 :::
 
-### Distribution
+## Distribution
 
 ```{r}
 #| label: rock-dist-lu
@@ -165,7 +162,7 @@ rock_residential <- rock_area |>
 
 ```
 
-#### As share of parcels {.unnumbered}
+### Parcels
 
 There are a total of 22,777 individual parcels across Rockbridge County. Nearly all of them are either residential (46.6 percent) or vacant (45.3 percent). All other uses comprise less than 3 percent on their own.
 
@@ -306,7 +303,7 @@ rock_residential |>
 For every parcel with a townhome, condo, or apartment building, there are another 48 parcels with single-family homes.
 :::
 
-#### As share of land area {.unnumbered}
+### Area
 
 Excluding Lexington and both towns, Rockbridge County is approximately 376,900 total acres. Residential and vacant parcels comprise the majority of this area, each accounting for about 35 percent of all land in the county.
 
@@ -439,7 +436,7 @@ rock_residential |>
 
 ```
 
-### Analysis
+## Lot sizes
 
 The chart below shows the average and median lot sizes for the four different types of residential parcels found in the county. 
 
@@ -558,6 +555,25 @@ rock_lot_dist |>
 ```
 
 Despite having the largest average sizes, there are many single-family lots one acre or less in size. Lots with mobile homes or townhomes/condos are clustered much more evenly around their median values.
+
+## Takeaways
+
+Notable findings from this analysis of current land use in the county include:
+
+- There are nearly an equal number of parcels used for homes as there are vacant parcels.
+- Nine out of ten residential properties are detached single-family homes. Less than two percent are used for townhomes or apartments.
+- Over half of all lots with single-family or mobile homes are bigger than 2 acres.
+- Public property, primarily protected forests and conservation areas, makes up one-fourth of all land in the county.
+
+The county's current land use codes and descriptions could be improved for accuracy and legibility. For example:
+
+- "Dwelling" can technically include many different types of units, but the county only assigns it to single-family detached homes.
+- Townhomes, which would likely cover single-family attached units, are combined with condos. Condominium units are most often multifamily.
+- Multiple codes are created to differentiate between "fair value" or "exempt" tax assessment designations. These assignments could be separated into a new standalone data field.
+- The revised categories and groups in @tbl-lu-rev are an example of a standardized alternative structure.
+- In the long-term, the county may want to explore using the American Planning Association's [Land Based Classification Standards](https://www.planning.org/lbcs/) (LBCS).
+
+
 
 <!-- ## City of Lexington -->
 

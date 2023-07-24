@@ -1,4 +1,4 @@
-# Data collection
+# Data collection {.unnumbered}
 
 To complete the goals of this analysis, all three localities have provided data related to their land use regimens. Both spatial and non-spatial data is included. This section outlines what types of data have been collected so far from each locality.
 

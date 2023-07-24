@@ -16,12 +16,17 @@ book:
     - index.qmd
     - data-collection.qmd
     - doc-review.qmd
-    - current-land-use.qmd
-    - existing-zoning.qmd
-    - future-land-use.qmd
-    - subdivisions.qmd
-#    - entitlements.qmd
-    - summary.qmd
+    - part: "Rockbridge"
+      chapters:
+      - current-land-use.qmd
+      - existing-zoning.qmd
+      - future-land-use.qmd
+      - dev-potential.qmd
+      #- subdivisions.qmd
+      #- entitlements.qmd
+    - part: "Lexington"
+    - part: "Buena Vista"
+#    - summary.qmd
 #    - references.qmd
 
 bibliography: references.bib
@@ -46,5 +51,6 @@ format:
   #       \usepackage{float}
   #       \raggedbottom
 
-
+comments: 
+  hypothesis: true
 

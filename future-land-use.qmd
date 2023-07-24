@@ -2,10 +2,59 @@
 
 This section examines the the county's future land uses as defined and applied in the comprehensive plan.
 
+```{r}
+
+library(tidyverse)
+library(hdatools)
+library(scales)
+library(sf)
+library(mapview)
+library(leaflet)
+library(kableExtra)
+library(htmltools)
+library(htmlwidgets)
+
+```
+
+```{r}
+
+# Load data
+
+rock_landuse_zoning <- read_rds("data/rockbridge/rock_landuse_zoning.rds")
+rock_res_zoning <- read_rds("data/rockbridge/rock_res_zoning.rds")
+rock_flu <- read_rds("data/rockbridge/rock_flu.rds")
+rock_flu_area <- read_rds("data/rockbridge/rock_flu_area.rds")
+rock_flu_desc <- read_csv("data/rockbridge/rb-future-land-uses.csv")
+
+```
+
 ## Categories
 
-- Descriptions of future residential land use categories
-- Comparison to current categories
+The county's 2016 comprehensive plan defines seven different general land use categories to help guide future growth. This map shows where those categories are currently assigned throughout the county.
+
+![Future land use map of Rockbridge County](data/rockbridge/rb-comp-plan-flu-map.png)
+
+Shapefiles showing where each use is currently assigned were obtained for five of the categories, as shown below.
+
+```{r}
+#| label: tbl-flu-desc
+#| tbl-cap: "Future land use categories and preferred uses"
+
+rock_flu_desc |> 
+  kable(
+    col.names = c(
+      "Category", "Residential", "Mixed use", "Commercial",
+      "Industrial", "Public water and sewer"),
+    align = "lccccc"
+  ) |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+
+```
+
+The remaining Institutional Area and Public Land designations do not have shapefiles; however, they are not critical for this analysis, and will be excluded.
 
 ## Distribution
 
@@ -17,6 +66,3 @@ This section examines the the county's future land uses as defined and applied i
 - Where land uses are planned to remain the same
 - Where land uses are planned to change
 
-## Discussion
-
-...
