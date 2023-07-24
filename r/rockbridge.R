@@ -162,9 +162,78 @@ rock_area <- rock_landuse_zoning |>
   mutate(parcels_pct = parcels/sum(parcels),
          area_pct = area/sum(area))
 
+## Prep future land uses --------------
+
+rock_flu_ssa <- rock_suburb |> 
+  st_union() |> 
+  st_sf() |> 
+  mutate(future_land_use = "Suburban Service Area", .before = 1) |> 
+  select(1, geometry = 2)
+
+rock_flu_vsa <- rock_village |> 
+  mutate(future_land_use = "Village Service Area", .before = 1) |> 
+  select(1)
+
+rock_flu_rva <- rock_ruralvillage |> 
+  mutate(future_land_use = "Rural Village Area", .before = 1) |> 
+  select(1)
+
+rock_flu_rpa <- rock_rural |> 
+  st_union() |> 
+  st_sf() |> 
+  mutate(future_land_use = "Rural Planning Area", .before = 1) |> 
+  select(1, geometry = 2)
+
+rock_flu <- bind_rows(rock_flu_ssa, rock_flu_vsa, rock_flu_rva, rock_flu_rpa) |> 
+  select(1) |> 
+  st_difference() |> 
+  st_cast("POLYGON") |> 
+  rowid_to_column() |> 
+  filter(!rowid %in% c(9, 25)) |> 
+  mutate(
+    future_land_use = case_match(
+      rowid,
+      11 ~ "Interstate Interchange",
+      12 ~ "Interstate Interchange",
+      .default = future_land_use
+    ),
+    name = case_match(
+      rowid,
+      10 ~ "Natural Bridge",
+      11 ~ "Exit 200 (Fairfield)",
+      12 ~ "Exit 205 (Raphine)",
+      14 ~ "Arnolds Valley",
+      15 ~ "Fancy Hill",
+      16 ~ "Effinger",
+      17 ~ "Collierstown",
+      18 ~ "Cornwall",
+      19 ~ "Kerrs Creek",
+      20 ~ "Rockbridge Baths",
+      21 ~ "Vesuvius",
+      22 ~ "Brownsburg",
+      23 ~ "Brownsburg",
+      24 ~ "Raphine"
+    ),
+    .after = 2
+  ) |> 
+  st_difference(rock_towns) |> 
+  filter(
+    `name.1` == "Glasgow",
+    rowid != 13
+    ) |> 
+  select(1, 2, 3) |>
+  st_cast("POLYGON") |> 
+  mutate(acres = as.numeric(st_area(rock_flu)/43560), .after = 3)
+  
+
+mapview(rock_flu, zcol = "future_land_use", layer.name = "Future land use")
+
+
+
 ## Save data --------------------------
 
-write_rds(rock_landuse_zoning, "data/rockbridge/rock_landuse_zoning.rds") |> 
-  st_transform(4326)
+rock_landuse_zoning |> 
+  st_transform(4326) |> 
+  write_rds("data/rockbridge/rock_landuse_zoning.rds")
 
 write_rds(rock_area, "data/rockbridge/rock_area.rds")

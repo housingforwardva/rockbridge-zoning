@@ -512,7 +512,7 @@ The zoning ordinance fully prohibits apartments on 62.2 percent of undeveloped l
 In theory, new manufactured home parks are possible via special exception on 70.1 percent of vacant lots. However, the three-acre minimum lot size and other development requirements, along with larger market factors beyond county regulatory issues, make this scenario unlikely.
 :::
 
-The maps below show what types of residential uses are allowed across vacant properties in the county. Parcels any with existing improvements are excluded.
+The maps below show what types of residential uses are allowed across presently vacant properties in the county. Parcels with any existing improvements are excluded.
 
 [finish these maps]
 
@@ -589,6 +589,130 @@ saveWidget(rb_allowance_1fa_map, "maps/rb_allowance_1fa_map.html")
 
 ```
 
+```{r}
+#| label: map-rb-2f
+#| eval: false
+
+rb_allowance_2f_map <- rock_res_zoning |> 
+  filter(treat_2f != "Prohibited",
+         group == "Vacant") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_2f),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(MZONE)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_2f,
+            title = "Duplex") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(rb_allowance_2f_map, "maps/rb_allowance_2f_map.html")
+
+```
+
+```{r}
+#| label: map-rb-mf
+#| eval: false
+
+rb_allowance_mf_map <- rock_res_zoning |> 
+  filter(treat_mf != "Prohibited",
+         group == "Vacant") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_mf),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(MZONE)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_mf,
+            title = "Multifamily") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(rb_allowance_mf_map, "maps/rb_allowance_mf_map.html")
+
+```
+
+```{r}
+#| label: map-rb-mh
+#| eval: false
+
+rb_allowance_mh_map <- rock_res_zoning |> 
+  filter(treat_mh != "Prohibited",
+         group == "Vacant") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_mh),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(MZONE)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_mh,
+            title = "Manufactured home") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(rb_allowance_mh_map, "maps/rb_allowance_mh_map.html")
+
+```
+
+```{r}
+#| label: map-rb-mhp
+#| eval: false
+
+rb_allowance_mhp_map <- rock_res_zoning |> 
+  filter(treat_mhp != "Prohibited",
+         group == "Vacant") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_mhp),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(MZONE)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_mhp,
+            title = "Manufactured home park") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(rb_allowance_mhp_map, "maps/rb_allowance_mhp_map.html")
+
+```
+
 ::: {#fig-lu-map}
 
 :::: {.panel-tabset}
@@ -609,10 +733,43 @@ knitr::include_url("maps/rb_allowance_1fa_map.html")
 
 ```
 
+#### Duplex
+
+```{r}
+
+knitr::include_url("maps/rb_allowance_2f_map.html")
+
+```
+
+#### Multifamily
+
+```{r}
+
+knitr::include_url("maps/rb_allowance_mf_map.html")
+
+```
+
+#### Manufactured home
+
+```{r}
+
+knitr::include_url("maps/rb_allowance_mh_map.html")
+
+```
+
+#### Manufactured home park
+
+```{r}
+
+knitr::include_url("maps/rb_allowance_mhp_map.html")
+
+```
+
 ::::
 
 Maps of residential use allowances on vacant parcels
 :::
+
 
 
 ### Analysis
