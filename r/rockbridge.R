@@ -225,15 +225,92 @@ rock_flu <- bind_rows(rock_flu_ssa, rock_flu_vsa, rock_flu_rva, rock_flu_rpa) |>
   st_cast("POLYGON") |> 
   mutate(acres = as.numeric(st_area(rock_flu)/43560), .after = 3)
   
+rock_flu_area <- rock_flu |> 
+  st_drop_geometry() |> 
+  summarise(
+    acres = sum(acres),
+    .by = future_land_use
+  ) |> 
+  mutate(pct = acres/sum(acres))
 
-mapview(rock_flu, zcol = "future_land_use", layer.name = "Future land use")
+# mapview(rock_flu, zcol = "future_land_use", layer.name = "Future land use")
 
+## Prep utilities ---------------------
 
+rock_water_area <- rock_water |> 
+  filter(!str_detect(LINETYPE, "Abandon")) |> 
+  st_union() |> 
+  st_sf() |> 
+  st_buffer(dist = 500) |> 
+  select(geometry = 1) |> 
+  mutate(
+    layer = "County_Water_20130522",
+    buffer_ft = 500,
+    .before = 1
+    )
+
+rock_sewer_area <- rock_sewer |> 
+  st_union() |> 
+  st_sf() |> 
+  st_buffer(dist = 500) |> 
+  select(geometry = 1) |> 
+  mutate(
+    layer = "County_Sewer_20130522",
+    buffer_ft = 500,
+    .before = 1
+  )
+
+rock_ws_only <- st_intersection(rock_water_area, rock_sewer_area) |> 
+  select(1, 2) |> 
+  mutate(
+    layer = "Derived",
+    label = "Both",
+    .after = 1
+    )
+
+rock_water_only <- st_difference(rock_water_area, rock_ws_only) |> 
+  select(1, 2) |> 
+  mutate(
+    label = "Water only",
+    .after = 1
+    )
+  
+rock_sewer_only <- st_difference(rock_sewer_area, rock_ws_only) |> 
+  select(1, 2) |> 
+  mutate(
+    label = "Sewer only",
+    .after = 1
+  )
+
+rock_ws <- bind_rows(rock_ws_only, rock_water_only, rock_sewer_only)
+
+mapview(rock_ws, zcol = "label")
+
+# mapview(rock_ws_area, col.regions =  "white") +
+#   mapview(rock_sewer_only, col.regions = "brown") +
+#   mapview(rock_water_only, col.regions = "blue")
 
 ## Save data --------------------------
+
+# Land use and zoning
 
 rock_landuse_zoning |> 
   st_transform(4326) |> 
   write_rds("data/rockbridge/rock_landuse_zoning.rds")
 
 write_rds(rock_area, "data/rockbridge/rock_area.rds")
+
+# Future land use
+
+rock_flu |> 
+  st_transform(4326) |> 
+  write_rds("data/rockbridge/rock_flu.rds")
+
+write_rds(rock_flu_area, "data/rockbridge/rock_flu_area.rds")
+
+# Utilities
+
+rock_ws |> 
+  st_transform(4326) |> 
+  write_rds("data/rockbridge/rock_ws.rds")
+
