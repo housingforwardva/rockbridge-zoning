@@ -231,7 +231,7 @@ rock_flu_area <- rock_flu |>
     acres = sum(acres),
     .by = future_land_use
   ) |> 
-  mutate(pct = acres/sum(acres))
+  mutate(acres_pct = acres/sum(acres))
 
 # mapview(rock_flu, zcol = "future_land_use", layer.name = "Future land use")
 

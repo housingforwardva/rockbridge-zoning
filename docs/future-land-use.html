@@ -175,8 +175,12 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#categories" id="toc-categories" class="nav-link active" data-scroll-target="#categories"><span class="header-section-number">3.1</span> Categories</a></li>
-  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">3.2</span> Distribution</a></li>
-  <li><a href="#current-versus-future" id="toc-current-versus-future" class="nav-link" data-scroll-target="#current-versus-future"><span class="header-section-number">3.3</span> Current versus future</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">3.2</span> Distribution</a>
+  <ul class="collapse">
+  <li><a href="#parcels" id="toc-parcels" class="nav-link" data-scroll-target="#parcels"><span class="header-section-number">3.2.1</span> Parcels</a></li>
+  </ul></li>
+  <li><a href="#current-land-use" id="toc-current-land-use" class="nav-link" data-scroll-target="#current-land-use"><span class="header-section-number">3.3</span> Current land use</a></li>
+  <li><a href="#current-zoning" id="toc-current-zoning" class="nav-link" data-scroll-target="#current-zoning"><span class="header-section-number">3.4</span> Current zoning</a></li>
   </ul>
 </nav>
     </div>
@@ -210,7 +214,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption class="figure-caption">Future land use map of Rockbridge County</figcaption>
 </figure>
 </div>
-<p>Shapefiles showing where each use is currently assigned were obtained for five of the categories, as shown below.</p>
+<p>Shapefiles showing where each use is currently assigned were obtained for five of the categories, as shown below. The remaining Institutional Area and Public Land designations do not have shapefiles; however, they are not critical for this analysis, and will be excluded.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-flu-desc" class="anchored">
@@ -276,20 +280,82 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 </div>
-<p>The remaining Institutional Area and Public Land designations do not have shapefiles; however, they are not critical for this analysis, and will be excluded.</p>
+<p>Residential uses are encouraged in Suburban Service Areas, Village Service Areas, and Rural Village Areas. “Mixed residential” development is also favored in the first two, but additional descriptions of this typology are not included in the comp plan, such as preferred densities.</p>
+<p>While housing is not outright discouraged in Rural Planning Areas, the plan warns that homes and subdivisions “will receive a lower level of public service delivery.”</p>
+<p>Two Rural Village Areas are also designated for Interstate Exchange. These include Raphine (Exit 205 on Interstate 81) and Fairfield (Exit 200). This assignment primarily promotes motorist-oriented shopping and food service uses, along with other related commercial and light industrial activities. Residential uses are not mentioned.</p>
+<p>These five categories are shown on the map below.</p>
+<p>::: {#fig-flu-map}</p>
+<div class="cell">
+<iframe src="maps/rb_flu_map.html" width="672" height="400px" data-external="1">
+</iframe>
+</div>
 </section>
 <section id="distribution" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="distribution"><span class="header-section-number">3.2</span> Distribution</h2>
+<section id="parcels" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="parcels"><span class="header-section-number">3.2.1</span> Parcels</h3>
+<p>Of the 22,514 parcels with a known assigned future land use category, 70 percent are in Rural Planning Areas. While these property owners are likely to be more often than not still able to build a new single-family home by-right, Rockbridge County will not be actively supporting or guiding new residential growth into those areas.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rock-flu-parcel" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<p><img src="future-land-use_files/figure-html/fig-rock-flu-parcel-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.1: Percent of all parcels in Rockbridge County by future land use</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Most other parcels (23.5 percent) fall into Suburban Service Areas, where residential development is encouraged. Almost 4 percent are in Rural Village Areas, and just over a percent each for Village Service Areas and Interstate Interchanges.</p>
+<p>Measured by total land area, parcels in Rural Planning Areas account for almost 95 percent. Just over 3 percent is in Suburban Service Areas.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rock-flu-area" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<p><img src="future-land-use_files/figure-html/fig-rock-flu-area-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.2: Percent of all land area in Rockbridge County by future land use</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="current-land-use" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="current-land-use"><span class="header-section-number">3.3</span> Current land use</h2>
+<p>Many properties across the county are currently being used for something that may not be fully suitable for its future target. The chart below shows the breakdown, by parcel, of what the primary uses are on properties across different future land use areas.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rock-flu-lu" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<p><img src="future-land-use_files/figure-html/fig-rock-flu-lu-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.3: Percent of parcels by current land use across future land use categories</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <ul>
-<li>Residential land uses by parcel</li>
-<li>Residential land uses by land area</li>
+<li>Vacant lots in Rural Village Areas and Village Service Areas present possible small-scale residential infill opportunities to provide more affordable and accessible housing options to rural residents.</li>
+<li>Suburban Service Areas remain almost entirely single-family or undeveloped, so growth potential remains strong, but dependent on utility capacity.</li>
+<li>Almost half of all parcels within Interstate Interchanges are single-family homes. These residences may feel pressured by continued commercial development into the future.</li>
 </ul>
 </section>
-<section id="current-versus-future" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="current-versus-future"><span class="header-section-number">3.3</span> Current versus future</h2>
+<section id="current-zoning" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="current-zoning"><span class="header-section-number">3.4</span> Current zoning</h2>
+<p>Today’s zoning varies significantly across the different future land use categories. The chart below shows the breakdown, by parcel, of what these future land use areas are currently zoned.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rock-flu-zoning" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<p><img src="future-land-use_files/figure-html/fig-rock-flu-zoning-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.4: Percent of parcels by zoning district across future land use categories</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <ul>
-<li>Where land uses are planned to remain the same</li>
-<li>Where land uses are planned to change</li>
+<li>The common R-1 zoning in Interstate Interchange areas may need to change to dissuade additional lower-density development in increasingly trafficked hubs.</li>
+<li>A-1 and A-2 zoning generally contribute to the Rural Planning Area goals, but the current A-T parcels may need to be evaluated and assessed whether they remain strategic areas for potentially more dense development.</li>
+<li>Likewise, A-T should be evaluated for its ability to meet the goals of Rural Village Areas, and to determine whether another (or a new) zoning district may be needed.</li>
+<li>There is significant potential to increase the share of R-2 zoned areas in Suburban Service Areas. Parcels zoned A-T and A-2 in these areas should be re-evaluated to determine whether their lower densities are appropriate for the type of growth preferred in parts of the county served by utilities.</li>
 </ul>
 
 
