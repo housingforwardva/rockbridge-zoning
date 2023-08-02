@@ -1,0 +1,9 @@
+zone,locality,name,overlay,type,treat_1fd,treat_1fa,treat_th,treat_2f,treat_mf1,treat_mf2,treat_mh,treat_mhp,frontage,minlot_1f,setback_1f,setback_side_1f,setback_rear_1f,parking_1f,height_1f,minlot_2f,setback_2f,setback_side_2f,setback_rear_2f,parking_1br_2f,parking_2br_2f,height_2f,minlot_4f,setback_4f,setback_side_4f,setback_rear_4f,parking_1br_4f,parking_2br_4f,height_4f,treat_adu,adu_max_pct,adu_max_sf,treat_prd,mhp,minlot_prd,maxdens_prd,notes
+R-1,Lexington city,Residential General,No,Primarily Residential,Allowed,Allowed,Prohibited,Allowed,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,Allowed,,,,,,,
+R-2,Lexington city,Suburban Residential,No,Primarily Residential,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,Allowed,,,,,,,
+R-M,Lexington city,Residential Multifamily,No,Primarily Residential,Allowed,Allowed,Allowed,Allowed,Allowed,Allowed,,,,,,,,,,,,,,,,,,,,,,,,Allowed,,,,,,,
+R-LC,Lexington city,Residential-Light Commercial,No,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Conditional,Conditional,,,,,,,,,,,,,,,,,,,,,,,,Allowed,,,,,,,
+C-1,Lexington city,Central Business,No,Mixed with Residential,Allowed,Prohibited,Allowed,Prohibited,Conditional,Allowed,,,,,,,,,,,,,,,,,,,,,,,,Allowed,,,,,,,
+C-2,Lexington city,General Commercial,No,Mixed with Residential,Prohibited,Prohibited,Conditional,Prohibited,Allowed,Allowed,,,,,,,,,,,,,,,,,,,,,,,,Prohibited,,,,,,,
+P-OS,Lexington city,Parks and Open Space,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+FP,Lexington city,Floodplain Overlay,Yes,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
