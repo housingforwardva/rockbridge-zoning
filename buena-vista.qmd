@@ -1,0 +1,136 @@
+# Buena Vista
+
+## Existing zoning
+
+This section examines current residential zoning patterns in the City of Buena Vista
+
+The existing zoning ordinance dictating land use and development was originally written in 1985. It has not been comprehensively rewritten since then. At that time, the County population was 6,470---only about 100 people less than its population today.
+
+Since 1985, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
+
+```{r}
+
+bv_districts <- read_csv("data/buena-vista/bv-zoning-districts.csv")
+bv_zoning <- read_rds("data/buena-vista/bv_zoning.rds")
+bv_parcels <- read_rds("data/buena-vista/bv_parcels.rds")
+```
+### Zoning Districts
+
+```{r}
+#| label: tbl-zoning-districts
+#| tbl-cap: "Zoning districts in Rockbridge County"
+
+bv_districts |> 
+  select(zone, name, overlay, type) |> 
+  kable(
+    col.names = c("Zone", "Name", "Overlay", "Type"),
+    align = "clll"
+    ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+```{r}
+
+zoning_pal <- colorFactor(rainbow(20), unique(bv_parcels$ZONING))
+
+bv_zoning_map <- leaflet(filter(bv_parcels, ZONING != "NA")) |> 
+  addProviderTiles(providers$CartoDB.Positron) |> 
+  addPolygons(fillColor = ~zoning_pal(ZONING),
+              fillOpacity = 0.7,
+              weight = 0) |> 
+  addLegend("topright",
+            pal = zoning_pal,
+            values = ~ZONING,
+            title = "Zoning")
+
+saveWidget(bv_zoning_map, "maps/bv_zoning_map.html")
+
+bv_zoning_map
+
+
+```
+
+
+```{r}
+#| label: tbl-residential-uses
+#| tbl-cap: "Residential use allowances"
+
+bv_districts |> 
+  filter(overlay == "No",
+         type != "Nonresidential") |> 
+  mutate(
+    across(
+      c(6:13),
+      ~ case_match(
+        .x,
+        "Prohibited" ~ "P",
+        "Allowed" ~ "A",
+        "Conditional" ~ "C",
+        "Special Exception" ~ "S"
+      )
+      )
+    ) |> 
+  mutate(
+    across(
+      c(6:13),
+      ~ cell_spec(
+        .x,
+        bold = TRUE,
+        color = case_match(
+          .x,
+          "P" ~ "#b1005f",
+          "A" ~ "#259591",
+          "C" ~ "#8b85ca",
+          "S" ~ "#e0592a"
+        )
+      )
+    )
+  ) |>
+  select(1, 6:13) |> 
+  kable(
+    col.names = c("Zone", "SF detached", "Townhome", "Duplex", "Multifamily", "Group Home", "ADU", "MH", "MHP"),
+    align = "lcccccccc",
+    escape = FALSE
+    ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+### Lot Requirements
+
+```{r}
+
+# https://library.municode.com/va/buena_vista/codes/code_of_ordinances?nodeId=PTIIILADERE_ART6USDI_S630.00TASE
+
+
+```
+
+
+
+### Distribution
+
+
+```{r}
+#| label: bv-dist-zoning
+
+bv_zoning_area <- bv_parcels |> 
+  group_by(category, group, MZONE) |> 
+  summarise(parcels = n(),
+            area = sum(acres)) |> 
+  ungroup() |> 
+  
+  # Calculate percentage shares for parcels and area
+  mutate(parcels_pct = parcels/sum(parcels),
+         area_pct = area/sum(area))
+  summarise(parcels = sum(parcels),
+            area = sum(area),
+            parcels_pct = sum(parcels_pct),
+            area_pct = sum(area_pct),
+            .by = c(MZONE))
+
+```

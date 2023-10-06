@@ -26,6 +26,8 @@ book:
       #- entitlements.qmd
     - part: "Lexington"
     - part: "Buena Vista"
+      chapters: 
+        - buena-vista.qmd
 #    - summary.qmd
 #    - references.qmd
 

@@ -16,6 +16,5 @@ MU,Buena Vista,Mixed Use,No,Mixed with Residential,Allowed,Allowed,Prohibited,Co
 Seminary Hill,Buena Vista,Seminary Hill,Yes,Mixed with Residential,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 MB,Buena Vista,Mixed Business,No,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 INST,Buena Vista,Institutional,No,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-PUD-RES-HT,Buena Vista,Planned Unit Development-Residential-Hill Top,Yes,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-MUC,Buena Vista,Mixed Use Corridor,No,Mixed with Residential,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+PUD-RES-HT,Buena Vista,Planned Unit Development-Residential-Hill Top,Yes,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+MUC,Buena Vista,Mixed Use Corridor,No,Mixed with Residential,Prohibited,Prohibited,Prohibited,Prohibited,Allowed,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
