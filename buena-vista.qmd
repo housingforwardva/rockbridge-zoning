@@ -1,5 +1,42 @@
 # Buena Vista
 
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(hdatools)
+library(scales)
+library(sf)
+library(mapview)
+library(leaflet)
+library(kableExtra)
+library(htmltools)
+library(htmlwidgets)
+
+# Set color scales
+
+allowance_cols <- c(
+  "Allowed" = "#259591", 
+  "Conditional" = "#8b85ca", 
+  "Special Exemption" = "#e0592a",
+  "Prohibited" = "#b1005f"
+  )
+
+allowance_pal <- colorFactor(
+  palette = c(
+    "#259591", 
+    "#8b85ca", 
+    "#e0592a"
+  ),
+  levels = c(
+    "Allowed", 
+    "Conditional", 
+    "Special Exemption"
+  )
+)
+
+```
+
 ## Existing zoning
 
 This section examines current residential zoning patterns in the City of Buena Vista
@@ -119,18 +156,15 @@ bv_districts |>
 #| label: bv-dist-zoning
 
 bv_zoning_area <- bv_parcels |> 
-  group_by(category, group, MZONE) |> 
-  summarise(parcels = n(),
-            area = sum(acres)) |> 
+  st_drop_geometry() |> 
+  group_by(ZONING) |> 
+  summarise(acres = sum(acres),
+            parcels = n()) |> 
   ungroup() |> 
-  
-  # Calculate percentage shares for parcels and area
-  mutate(parcels_pct = parcels/sum(parcels),
-         area_pct = area/sum(area))
-  summarise(parcels = sum(parcels),
-            area = sum(area),
-            parcels_pct = sum(parcels_pct),
-            area_pct = sum(area_pct),
-            .by = c(MZONE))
+  mutate(pct_parcels = parcels/sum(parcels),
+         pct_area = acres/sum(acres))
+
 
 ```
+
+

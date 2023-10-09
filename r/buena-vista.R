@@ -79,9 +79,10 @@ bv_parcels_clean <- bv_parcels |>
 bv_parcels_clean$area <- as.numeric(sf::st_area(bv_parcels_clean))
 
 bv_parcels_clean_area <- bv_parcels_clean |> 
-  mutate(acres = area*0.00024710538146717)
+  mutate(acres = area*0.00024710538146717) 
+  
 
-# unique(bv_parcels_clean$ZONING)
+unique(bv_parcels_clean$ZONING)
 # 
 # mapview(bv_parcels_clean, zcol = "ZONING")
 
