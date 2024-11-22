@@ -25,6 +25,8 @@ book:
       #- subdivisions.qmd
       #- entitlements.qmd
     - part: "Lexington"
+      chapters: 
+        - lexington.qmd
     - part: "Buena Vista"
       chapters: 
         - buena-vista.qmd

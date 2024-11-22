@@ -1,0 +1,120 @@
+# Lexington
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(hdatools)
+library(scales)
+library(sf)
+library(mapview)
+library(leaflet)
+library(kableExtra)
+library(htmltools)
+library(htmlwidgets)
+
+# Set color scales
+
+allowance_cols <- c(
+  "Allowed" = "#259591", 
+  "Conditional" = "#8b85ca", 
+  "Special Exemption" = "#e0592a",
+  "Prohibited" = "#b1005f"
+  )
+
+allowance_pal <- colorFactor(
+  palette = c(
+    "#259591", 
+    "#8b85ca", 
+    "#e0592a"
+  ),
+  levels = c(
+    "Allowed", 
+    "Conditional", 
+    "Special Exemption"
+  )
+)
+
+```
+
+This section examines current residential zoning patterns in the City of Lexington.
+
+The existing zoning ordinance dictating land use and development was originally written in ____
+It has not been comprehensively rewritten since then. At that time, the City population was _____.
+
+Since ___, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
+
+```{r}
+
+# Load BV zoning and parcel data
+
+lex_districts <- read_csv("data/lexington/lex-zoning-districts.csv")
+lex_zoning <- read_rds("data/lexington/lex_zoning.rds")
+lex_parcels <- read_rds("data/lexington/lex_parcels.rds")
+
+```
+
+## Zoning districts
+
+. . .
+
+```{r}
+#| label: tbl-zoning-districts
+#| tbl-cap: "Zoning districts in Lexington"
+
+lex_districts |> 
+  select(zone, name, overlay, type) |> 
+  kable(
+    col.names = c("Zone", "Name", "Overlay", "Type"),
+    align = "clll"
+    ) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
+
+```
+
+. . .
+
+```{r}
+
+zoning_pal <- colorFactor(rainbow(20), unique(lex_parcels$ZONING))
+
+
+
+
+```
+
+. . .
+
+```{r}
+#| label: tbl-residential-uses
+#| tbl-cap: "Residential use allowances"
+
+
+
+```
+
+## Lot requirements
+
+. . .
+
+```{r}
+
+
+
+```
+
+## Distribution
+
+. . .
+
+```{r}
+#| label: lex-dist-zoning
+
+
+```
+
+## Land use by district
+
+The charts below show how parcels within each of the City's zoning districts are currently used. 

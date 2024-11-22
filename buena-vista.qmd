@@ -37,25 +37,29 @@ allowance_pal <- colorFactor(
 
 ```
 
-## Existing zoning
+This section examines current residential zoning patterns in the City of Buena Vista.
 
-This section examines current residential zoning patterns in the City of Buena Vista
-
-The existing zoning ordinance dictating land use and development was originally written in 1985. It has not been comprehensively rewritten since then. At that time, the County population was 6,470---only about 100 people less than its population today.
+The existing zoning ordinance dictating land use and development was originally written in 1985. It has not been comprehensively rewritten since then. At that time, the city's population was 6,470---only about 100 people less than its population today.
 
 Since 1985, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
 
 ```{r}
 
+# Load BV zoning and parcel data
+
 bv_districts <- read_csv("data/buena-vista/bv-zoning-districts.csv")
 bv_zoning <- read_rds("data/buena-vista/bv_zoning.rds")
 bv_parcels <- read_rds("data/buena-vista/bv_parcels.rds")
+
 ```
-### Zoning Districts
+
+## Zoning districts
+
+. . .
 
 ```{r}
 #| label: tbl-zoning-districts
-#| tbl-cap: "Zoning districts in Rockbridge County"
+#| tbl-cap: "Zoning districts in Buena Vista"
 
 bv_districts |> 
   select(zone, name, overlay, type) |> 
@@ -68,6 +72,8 @@ bv_districts |>
     )
 
 ```
+
+. . .
 
 ```{r}
 
@@ -90,6 +96,7 @@ bv_zoning_map
 
 ```
 
+. . .
 
 ```{r}
 #| label: tbl-residential-uses
@@ -138,7 +145,9 @@ bv_districts |>
 
 ```
 
-### Lot Requirements
+## Lot requirements
+
+. . .
 
 ```{r}
 
@@ -147,10 +156,9 @@ bv_districts |>
 
 ```
 
+## Distribution
 
-
-### Distribution
-
+. . .
 
 ```{r}
 #| label: bv-dist-zoning
@@ -167,4 +175,6 @@ bv_zoning_area <- bv_parcels |>
 
 ```
 
+## Land use by district
 
+The charts below show how parcels within each of the City's zoning districts are currently used. 
