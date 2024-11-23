@@ -20,7 +20,7 @@ allowance_cols <- c(
   "Conditional" = "#8b85ca", 
   "Special Exemption" = "#e0592a",
   "Prohibited" = "#b1005f"
-  )
+)
 
 allowance_pal <- colorFactor(
   palette = c(

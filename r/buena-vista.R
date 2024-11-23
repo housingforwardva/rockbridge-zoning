@@ -5,7 +5,7 @@
 ## -------------------------------------
 
 
-## Setup -------------------------------
+## SETUP -------------------------------
 
 # Load libraries
 library(tidyverse)
@@ -21,8 +21,43 @@ library(janitor)
 # Turn spherical geometry off
 sf_use_s2(FALSE)
 
+# Lead get_dominant_zone() fn
 
-## Import parcel data -----------------
+source("r/fns/get-dom-zone.R")
+
+## ZONING -----------------------------
+
+# Import zoning data
+
+bv_zoning_raw <- st_read("data/buena-vista/Zoning20211201.shp") |> 
+  
+  # Keep only necessary columns
+  select(zoning = 4, desc = 5, comment = 8,  11) |>
+  
+  # Fix R4 description
+  mutate(
+    desc = case_match(
+      zoning,
+      "R4" ~ "Medium Density Residential",
+      .default = desc
+    )
+  ) |> 
+  
+  # Project to NAD83
+  st_transform(4269)
+
+# Make summary table
+
+bv_zoning_tbl <- bv_zoning_raw |> 
+  st_drop_geometry() |> 
+  summarise(
+    n = n(),
+    .by = c(zoning, desc)
+  ) |> 
+  arrange(zoning)
+
+
+## PARCELS ----------------------------
 
 # Parcel assessment data
 
@@ -57,9 +92,6 @@ bv_parcels_raw <- st_read("data/buena-vista/Parcel20211201.shp") |>
   # Project to NAD83
   st_transform(4269)
 
-
-## Join parcel data -------------------
-
 # Parcel geos with valid map numbers
 
 bv_parcels_valid <- bv_parcels_raw |> 
@@ -70,8 +102,18 @@ bv_parcels_valid <- bv_parcels_raw |>
 bv_parcels_na <- bv_parcels_raw |> 
   filter(is.na(mapnum)) |> 
   mutate(
-    across(c(mapnum, zoning, class), ~ "NA")
-  )
+    across(c(mapnum, class), ~ "NA"),
+    address = as.character(address)
+  ) |> 
+  select(-zoning)
+
+# Get zoning from spatial join
+
+bv_parcels_na_fix <- get_dominant_zone(
+  bv_parcels_na,
+  zoning = select(bv_zoning_raw, zoning, geometry)
+) |> 
+  select(1:3, 12, 3:11, 13)
 
 # Anti join to find mismatches
 
@@ -101,112 +143,117 @@ bv_join_all <- bv_join_inner |>
   mutate(
     across(c(class, address), ~ as.character(.x))
   ) |>
-  bind_rows(bv_parcels_na)
+  bind_rows(bv_parcels_na_fix)
 
 
-bv_join_clean <- bv_join_all |> 
+## Clean up parcel data ---------------
+
+bv_multi <- bv_join_all |> 
+  filter(owner1 == "REHL DONALD A ET UX") |> 
+  st_cast("POLYGON") |> 
+  mutate(id = row_number()) |> 
   mutate(
-    case_match(
+    zoning = case_when(
+      id == 4 ~ "GM",
+      .default = "PUB-R6"
+    )
+  ) |> 
+  st_cast("MULTIPOLYGON") |> 
+  select(-id)
+
+bv_join_clean <- bv_join_all |>
+  mutate(
+    zoning = case_match(
       zoning,
+      "B-1" ~ "B1",
       "B1MU" ~ "B1",
       "B-1MU" ~ "B1",
       "B-2" ~ "B2",
+      "C-1" ~ "C1",
       "I1" ~ "INST",
       "LM &" ~ "LM",
-      "MXB-H" ~ 
-      "MXR-H" ~ "PUD-RES-HT"
-      
+      "MUB-1" ~ "MU",
+      "MUR-3" ~ "MU",
+      "MXB-H" ~ "MXB-HT",
+      "MXR" ~ "PUD-RES-HT",
+      "MXR-H" ~ "PUD-RES-HT",
+      "PUD" ~ "PUD-R6",
+      "R-1" ~ "R1",
+      "R-2" ~ "R2",
+      "R-3" ~ "R3",
+      "R-4" ~ "R4",
+      "R-5" ~ "R5",
+      "R-6" ~ "PUD-R6",
+      .default = zoning
     )
-  )
+  ) |> 
+  mutate(
+    zoning = case_when(
+      deed_book == "RC 306/219" ~ "REC",
+      deed_book == "24 373" ~ "C1",
+      mapnum == "8- 1-  -  -   -   5A" ~ "GM",
+      mapnum == "3- 1- 4-  -   A" ~ "C1",
+      owner1 == "SOUTHERN VIRGINIA COLLEGE" ~ "INST",
+      owner1 == "SOUTHERN VIRGINIA UNIVERSITY" ~ "INST",
+      owner1 == "SOUTHERN SEMINARY JUNIOR" ~ "INST",
+      owner1 == "UNITED STATES OF AMERICA" ~ "INST",
+      owner1 == "GREENHILL CEMETERY" ~ "C1",
+      .default = zoning
+    )
+  ) |> 
+  mutate(id = row_number(), .before = 1) |>
+  filter(!id %in% c(2940, 2945)) |> 
+  select(-id) |> 
+  bind_rows(bv_multi)
 
-bv_z <- bv_zoning |> 
-  st_drop_geometry() |> 
+# bv_join_clean |> filter() |> mapview(zcol = "zoning")
+  
+bv_c <- bv_join_clean |>
+  st_drop_geometry() |>
   summarise(
     ct = n(),
-    .by = Zoning_Cod
+    .by = class
   )
 
-
-
-## Import zoning data -----------------
-
-bv_zoning <- st_read("data/buena-vista/Zoning20211201.shp") |> 
-
-  # Keep only necessary columns
-  select(2, 4:5, 8) |>
-
-  # Project to NAD83
-  st_transform(4269) |> 
-  
-  # Clean up zoning abbreviations
-  mutate(ZONING = case_when(
-    Zoning_Cod == "R1" ~ "R-1",
-    Zoning_Cod == "R2" ~ "R-2",
-    Zoning_Cod == "R3" ~ "R-3",
-    Zoning_Cod == "R4" ~ "R-4",
-    Zoning_Cod == "R5" ~ "R-5",
-    Zoning_Cod == "R6" ~ "R-6",
-    Zoning_Cod == "B1" ~ "B-1",
-    Zoning_Cod == "B2" ~ "B-2",
-    TRUE ~ Zoning_Cod
-  ))
-  
-# View data ---------------------------
-
-mapview(bv_parcels, zcol = "ZONING")
 
 ## Prep parcels for analysis ----------
 
-bv_parcels_clean <- bv_parcels |> 
-  mutate(ZONING = case_when(
-    ZONING == "B-1MU" ~ "B-1/MU",
-    ZONING == "B1MU" ~ "B-1/MU",
-    ZONING == "I1" ~ "INST",
-    ZONING == "LM &" ~ "LM",
-    ZONING == "MUB-1" ~ "B-1/MU",
-    ZONING == "MUR-3" ~ "R-3/MU",
-    ZONING == "MXB-H" ~ "MXB-HT",
-    ZONING == "R1" ~ "R-1",
-    ZONING == "R2" ~ "R-2",
-    ZONING == "R3" ~ "R-3",
-    ZONING == "MXR" ~ "PUD-RES-HT",
-    ZONING == "MXR-H" ~ "PUD-RES-HT",
-    TRUE ~ ZONING)) 
+# Define land uses
+bv_parcels_class <- bv_join_clean |> 
+  mutate(
+    class = case_match(
+      class,
+      "1" ~ "Single-family",
+      "2" ~ "Single-family",
+      "3" ~ "Multifamily",
+      "4" ~ "Commercial",
+      "5" ~ "Vacant",
+      "6" ~ "Vacant",
+      "71" ~ "State/federal government",
+      "74" ~ "Park",
+      "76" ~ "Church",
+      "77" ~ "Institutional",
+      "78" ~ "Education",
+      "79" ~ "Other",
+      "NA" ~ "No data"
+    )
+  )
 
-bv_parcels_clean$area <- as.numeric(sf::st_area(bv_parcels_clean))
+bv_parcels_area <- bv_parcels_class |> 
+  mutate(
+    area = as.numeric(
+      st_area(bv_parcels_class) * 0.00024710538146717
+    ),
+    .before = 13
+  )
 
-bv_parcels_clean_area <- bv_parcels_clean |> 
-  mutate(acres = area*0.00024710538146717) 
-  
-
-unique(bv_parcels_clean$ZONING)
-# 
-# mapview(bv_parcels_clean, zcol = "ZONING")
-
-# Land use classes --------------------
-
-1 = SF
-2 = SF
-3 = MF
-4 = Commercial
-5 = Vacant
-6 = Vacant
-
-71 = VA/US gov
-74 = Park
-76 = Church
-77 = Instit
-78 = Edu
-79 = Other
-  
-## Parcel area
-
-bv_area <- bv_parcels_clean_area |> 
-  st_drop_geometry()
 
 
 # Write Data --------------------------
 
-write_rds(bv_zoning, "data/buena-vista/bv_zoning.rds")
-write_rds(bv_parcels_clean_area, "data/buena-vista/bv_parcels.rds")
+bv_parcels_class |> 
+  write_rds("data/buena-vista/bv_parcels.rds")
+
+bv_zoning_raw |> 
+  write_rds("data/buena-vista/bv_zoning.rds")
     
