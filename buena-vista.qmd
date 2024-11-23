@@ -35,6 +35,31 @@ allowance_pal <- colorFactor(
   )
 )
 
+zoning_cols <- c(
+  "B1" = "#FFB6C1",    # Light pink for General Business
+  "B2" = "#FF69B4",    # Darker pink for Planned Business
+  "C1" = "#90EE90",    # Light green for Conservation
+  "GM" = "#B0C4DE",    # Light steel blue for General Manufacturing
+  "INST" = "#D3D3D3",  # Light gray for Institutional
+  "LM" = "#00BFFF",    # Deep sky blue for Light Manufacturing
+  "MB" = "#DDA0DD",    # Plum for Mixed Business
+  "MU" = "#DA70D6",    # Orchid for Mixed Use
+  "MUC" = "#9370DB",   # Medium purple for Mixed Use Corridor
+  "MXB-HT" = "#663399", # Dark purple for Mixed Use Business - Hill Top
+  "PUD-R6" = "#FFA07A", # Light salmon for PUD-Residential
+  "PUD-RES-HT" = "#A0522D", # Sienna for PUD-Residential-Hilltop
+  "R1" = "#FFFFD4",    # Very light yellow for Low Density Residential
+  "R2" = "#FFFF00",    # Yellow for Residential
+  "R3" = "#FFE4B5",    # Moccasin for Residential Limited
+  "R4" = "#FFA500",    # Orange for Medium Density Residential
+  "REC" = "#98FB98"    # Pale green for Recreational
+)
+
+zoning_pal <- colorFactor(
+  palette = zoning_cols,
+  domain = names(zoning_cols)
+)
+
 ```
 
 This section examines current residential zoning patterns in the City of Buena Vista.

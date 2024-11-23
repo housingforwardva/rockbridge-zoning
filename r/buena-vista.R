@@ -242,7 +242,7 @@ bv_parcels_class <- bv_join_clean |>
 bv_parcels_area <- bv_parcels_class |> 
   mutate(
     area = as.numeric(
-      st_area(bv_parcels_class) * 0.00024710538146717
+      st_area(bv_parcels_class) / 4047
     ),
     .before = 13
   )

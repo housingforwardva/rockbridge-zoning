@@ -35,6 +35,22 @@ allowance_pal <- colorFactor(
   )
 )
 
+zoning_cols <- c(
+  "R-1" = "#FFFFD4",    # Light yellow/cream for General Residential
+  "R-2" = "#FFFF00",    # Bright yellow for Suburban Residential
+  "R-M" = "#BDB76B",    # Dark khaki for Multifamily Residential
+  "R-LC" = "#FF8C00",   # Dark orange for Residential Light Commercial
+  "C-1" = "#FFB6C1",    # Light pink for Commercial (Central Business)
+  "C-2" = "#FF0000",    # Red for Commercial (General Commerce)
+  "P-OS" = "#228B22",   # Forest green for Parks & Open Space
+  "NA" = "grey80" 
+)
+
+zoning_pal <- colorFactor(
+  palette = zoning_cols,
+  domain = names(zoning_cols)
+)
+
 ```
 
 This section examines current residential zoning patterns in the City of Lexington.
