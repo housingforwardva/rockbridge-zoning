@@ -1,6 +1,6 @@
 # Data collection {.unnumbered}
 
-To complete the goals of this analysis, all three localities have provided data related to their land use regimens. Both spatial and non-spatial data is included. This section outlines what types of data have been collected so far from each locality.
+To complete the goals of this analysis, all three localities provided data related to their land use regimens. Both spatial and non-spatial data is included. This section outlines what types of data have been collected so far from each locality.
 
 ## Land use and zoning
 
@@ -12,6 +12,8 @@ This group includes the following types of GIS data:
 - **Future land use**: Designated future land use categories based on current comprehensive plan
 
 All three localities have provided sufficient forms of these datasets. However, the data structures are not consistent. For example, the current land use designations for each parcel may be a field included in the parcel shapefile, or they must instead be joined using separate non-spatial real estate assessment records.
+
+::: {.content-hidden when-format="html"}
 
 ## Entitlements
 
@@ -26,19 +28,25 @@ All three localities have provided sufficient records of these applications and 
 
 Like the GIS data, however, data structures are very different for each of the jurisdiction's records. Significant effort is required to assess and rework the data to provide comparable analysis across all localities.
 
+:::
+
 ## Infrastructure
 
 Data in this group include public and private infrastructure that strongly influence where new housing can or cannot be developed. 
 
 - **Public water**: Boundaries of current publicly-provided drinking water service
 - **Public sewer**: Boundaries of current publicly-provided wastewater service
-- **Broadband internet**: Extent and quality of broadband internet connectivity
+<!-- - **Broadband internet**: Extent and quality of broadband internet connectivity -->
 
-All localities have provided spatial data for public wastewater service. Public water service data has been received from Rockbridge and Buena Vista.
+All localities provided spatial data for public wastewater service. Public water service data was received from Rockbridge and Buena Vista.
+
+::: {.content-hidden when-format="html"}
 
 Most local governments have limited or no in-house data on broadband coverage. However, the Virginia Department of Housing and Community Development (DHCD) is now required by code to collect and publish anonymized address-level records of broadband availability. The current dataset is published on the Virginia Open Data Portal:
 
 [Virginia Locations Unserved by Broadband](https://data.virginia.gov/Government/Virginia-Locations-Unserved-by-Broadband/tu9g-ra7v) (last updated November 9, 2022)
 
 We will use this spatial data to evaluate level of broadband service for all three localities.
+
+:::
 

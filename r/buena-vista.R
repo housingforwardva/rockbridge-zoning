@@ -155,7 +155,7 @@ bv_multi <- bv_join_all |>
   mutate(
     zoning = case_when(
       id == 4 ~ "GM",
-      .default = "PUB-R6"
+      .default = "PUD-R6"
     )
   ) |> 
   st_cast("MULTIPOLYGON") |> 
@@ -182,7 +182,7 @@ bv_join_clean <- bv_join_all |>
       "R-2" ~ "R2",
       "R-3" ~ "R3",
       "R-4" ~ "R4",
-      "R-5" ~ "R5",
+      "R-5" ~ "R3",
       "R-6" ~ "PUD-R6",
       .default = zoning
     )
@@ -251,7 +251,7 @@ bv_parcels_area <- bv_parcels_class |>
 
 # Write Data --------------------------
 
-bv_parcels_class |> 
+bv_parcels_area |> 
   write_rds("data/buena-vista/bv_parcels.rds")
 
 bv_zoning_raw |> 

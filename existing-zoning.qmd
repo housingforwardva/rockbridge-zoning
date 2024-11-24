@@ -116,43 +116,41 @@ The table below shows the allowances for different residential uses in those sev
 #| label: tbl-residential-uses
 #| tbl-cap: "Residential use allowances"
 
-rock_zoning_districts |> 
+rock_res_use_table <- rock_zoning_districts |> 
   filter(overlay == "No",
          type != "Nonresidential") |> 
+  select(1, 6:11, 33) |> 
   mutate(
     across(
-      c(6:11),
+      c(2:8),
       ~ case_match(
         .x,
         "Prohibited" ~ "P",
         "Allowed" ~ "A",
         "Conditional" ~ "C",
-        "Special Exemption" ~ "S"
+        "Special Exemption" ~ "S",
+        "Public Hearing" ~ "S"
       )
       )
-    ) |> 
-  mutate(
-    across(
-      c(6:11),
-      ~ cell_spec(
-        .x,
-        bold = TRUE,
-        color = case_match(
-          .x,
-          "P" ~ "#b1005f",
-          "A" ~ "#259591",
-          "C" ~ "#8b85ca",
-          "S" ~ "#e0592a"
-        )
-      )
-    )
-  ) |> 
-  select(1, 6:11) |> 
+  )
+
+rock_res_use_table |> 
   kable(
-    col.names = c("Zone", "SF detached", "Townhome", "Duplex", "Multifamily", "MH", "MHP"),
-    align = "lcccccc",
+    col.names = c("Zone", "SF detached", "Townhome", "Duplex", "Multifamily", "MH", "MHP", "ADU"),
+    align = "lccccccc",
     escape = FALSE
     ) |>
+  purrr::reduce(2:8, function(x, y) {
+    col <- rock_res_use_table[, y]
+    column_spec(x, y,
+      bold = TRUE,
+      color = case_when(
+        col == "P" ~ "#b1005f",
+        col == "A" ~ "#259591",
+        col == "C" ~ "#8b85ca",
+        col == "S" ~ "#e0592a"
+      ))
+  }, .init = _) |> 
   kableExtra::kable_styling(
     bootstrap_options = c("hover", "condensed", "responsive")
     )
@@ -174,6 +172,7 @@ Residential use definitions:
 -   Multifamily = Building with three or more separate dwelling units
 -   MH = Manufactured home (built off-site in accordance with federal codes)
 -   MHP = Manufactured home park (development with three or more manufactured homes on leased lots)
+-   ADU = Accessory dwelling unit
 
 **Single-family detached** homes are by-right in five of the seven districts. In B-1, they are conditionally permitted by-right if the structure meets the "area and setback requirements of the R-2 District if public water and sewer are available or the R-1 District if on a private drainfield and well or public water" \[605.02-04\]. This same rule applies to B-2; however, all B-2 developments must be approved via special exemption.
 

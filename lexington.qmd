@@ -17,33 +17,33 @@ library(htmlwidgets)
 
 allowance_cols <- c(
   "Allowed" = "#259591", 
-  "Conditional" = "#8b85ca", 
-  "Special Exemption" = "#e0592a",
+  "Conditional" = "#e0592a", 
+  #"Special Exemption" = "#e0592a",
   "Prohibited" = "#b1005f"
 )
 
 allowance_pal <- colorFactor(
   palette = c(
     "#259591", 
-    "#8b85ca", 
     "#e0592a"
+    #"#e0592a"
   ),
   levels = c(
     "Allowed", 
-    "Conditional", 
-    "Special Exemption"
+    "Conditional"
+    #"Special Exemption"
   )
 )
 
 zoning_cols <- c(
   "R-1" = "#FFFFD4",    # Light yellow/cream for General Residential
   "R-2" = "#FFFF00",    # Bright yellow for Suburban Residential
-  "R-M" = "#BDB76B",    # Dark khaki for Multifamily Residential
+  "R-M" = "grey80",    # Dark khaki for Multifamily Residential
   "R-LC" = "#FF8C00",   # Dark orange for Residential Light Commercial
   "C-1" = "#FFB6C1",    # Light pink for Commercial (Central Business)
   "C-2" = "#FF0000",    # Red for Commercial (General Commerce)
   "P-OS" = "#228B22",   # Forest green for Parks & Open Space
-  "NA" = "grey80" 
+  "NA" = "#BDB76B"
 )
 
 zoning_pal <- colorFactor(
@@ -55,34 +55,36 @@ zoning_pal <- colorFactor(
 
 This section examines current residential zoning patterns in the City of Lexington.
 
-The existing zoning ordinance dictating land use and development was originally written in ____
-It has not been comprehensively rewritten since then. At that time, the City population was _____.
-
-Since ___, amendments have been made to the zoning code to address cases and uses not originally considered, but the overall form of the zoning code remains unchanged.
+The existing zoning ordinance dictating land use and development was written in 2017. It replaced the previous chapter, which was adopted in 1976.
 
 ```{r}
 
-# Load BV zoning and parcel data
+# Load Lex zoning and parcel data
 
 lex_districts <- read_csv("data/lexington/lex-zoning-districts.csv")
-lex_zoning <- read_rds("data/lexington/lex_zoning.rds")
-lex_parcels <- read_rds("data/lexington/lex_parcels.rds")
+
+lex_zoning <- read_rds("data/lexington/lex_zoning.rds") |> 
+  rename(zoning = mzone)
+
+lex_parcels <- read_rds("data/lexington/lex_parcels.rds") |> 
+  rename(zoning = mzone)
 
 ```
 
 ## Zoning districts
 
-. . .
+The City has 7 base zoning districts. Not shown are the overlay districts for floodplains and other special requirements.
 
 ```{r}
 #| label: tbl-zoning-districts
 #| tbl-cap: "Zoning districts in Lexington"
 
 lex_districts |> 
-  select(zone, name, overlay, type) |> 
+  filter(!zone %in% c("FP")) |> 
+  select(zone, name, type) |> 
   kable(
-    col.names = c("Zone", "Name", "Overlay", "Type"),
-    align = "clll"
+    col.names = c("Zone", "Name", "Type"),
+    align = "cll"
     ) |>
   kableExtra::kable_styling(
     bootstrap_options = c("hover", "condensed", "responsive")
@@ -90,47 +92,791 @@ lex_districts |>
 
 ```
 
-. . .
+The map below shows the base zoning for each parcel in the city. Parcels with “NA” zoning in the city’s data include much of the VMI campus.
 
 ```{r}
+#| eval: false
 
-zoning_pal <- colorFactor(rainbow(20), unique(lex_parcels$ZONING))
+lex_zoning_map <- lex_zoning |> 
+  #filter(zoning != "NA") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron) |> 
+  addPolygons(fillColor = ~zoning_pal(zoning),
+              fillOpacity = 0.7,
+              color = "black",
+              opacity = 0.1,
+              weight = 2,
+              label = lex_zoning$zoning) |> 
+  addLegend("topright",
+            pal = zoning_pal,
+            values = ~zoning,
+            title = "Zoning")
 
+lex_zoning_map
 
-
+saveWidget(lex_zoning_map, "maps/lex_zoning_map.html")
 
 ```
 
-. . .
+::: {#fig-zoning-map}
+```{r}
+
+knitr::include_url("maps/lex_zoning_map.html")
+
+```
+
+Map of zoning districts in Lexington
+:::
+
+Of those base districts, six allow some form residential uses either by right or conditionally.
+
+The table below shows the allowances for different residential uses in those districts.
 
 ```{r}
 #| label: tbl-residential-uses
 #| tbl-cap: "Residential use allowances"
 
+lex_res_use_table <- lex_districts |> 
+  #filter(overlay == "No",
+  #       type != "Nonresidential") |> 
+  filter(!zone %in% c("FP", "P-OS")) |> 
+  select(1, 6:12) |> 
+  mutate(
+    across(
+      c(2:8),
+      ~ case_match(
+        .x,
+        "Prohibited" ~ "P",
+        "Allowed" ~ "A",
+        "Conditional" ~ "S"
+        #"Special Exception" ~ "C"
+      )
+      )
+  )
+
+lex_res_use_table |> 
+  kable(
+    col.names = c("Zone", "SF detached", "SF attached", "Townhome", "Duplex", "Multifamily (1 floor)", "Multifamily (2+ floors)", "ADU"),
+    align = "lccccccc",
+    escape = FALSE
+    ) |> 
+  purrr::reduce(2:8, function(x, y) {
+    col <- lex_res_use_table[, y]
+    column_spec(x, y,
+      bold = TRUE,
+      color = case_when(
+        col == "P" ~ "#b1005f",
+        col == "A" ~ "#259591",
+        #col == "C" ~ "#8b85ca",
+        col == "S" ~ "#e0592a"
+      ))
+  }, .init = _) |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("hover", "condensed", "responsive")
+    )
 
 
 ```
+
+Allowance key:
+
+-   A = Allowed by-right
+-   S = Special exception (**conditional use permit** and public hearing required)
+-   P = Prohibited
+
+Residential use definitions:
+
+-   SF detached = Single-family home with no walls shared with other dwelling units
+-   SF attached = Two or more single-family dwellings sharing two or more common walls, each on its own individual lot
+-   Townhome = A grouping of three or more attached single-family dwellings in a row in which each unit has its own front and rear access
+-   Duplex = Building with two separate dwelling units
+-   Multifamily = Building with three or more separate dwelling units
+-   ADU = Accessory apartment
+
+**Single-family detached** homes are by-right in all but the C-2 district.
+
+**Single-family attached** homes are by-right in all but the C-1 and C-2 districts.
+
+**Townhomes** are only allowed by-right in the R-M, R-LC, and C-1 districts, allowed with a permit in C-2, and prohibited in R-1 and R-2.
+
+**Duplexes** are by-right in R-1, R-M, and R-LC; they are not allowed in all other districts.
+
+**Multifamily (1 floor)** developments are by-right in R-M and C-2, and allowed with conditional use permit in R-LC and C-1. **Multifamily (2+ floors)** developments are the same, but also by-right in C-1.
+
+**Accessory apartments** are a by-right use everywhere but C-2.
 
 ## Lot requirements
 
-. . .
+The zoning ordinance also stipulates specific geometric criteria that must be met before properties can be developed into homes. These include minimum lot area, road frontage, setbacks (front, side, and rear), and in some cases structure height.
+
+The chart below shows the base minimum lot sizes for different residential uses, derived from the "Lot Requirements Table: Area and Yard Regulations" (420 Attachment 2) in the zoning ordinance.
 
 ```{r}
+#| label: fig-min-lots
+#| fig-cap: "Minimum lot sizes for residential uses by zoning district"
 
+# https://ecode360.com/attachment/LE2692/LE2692-420b%20Area%20and%20Yard%20Reg.pdf
 
+lex_med_lot <- lex_parcels |> 
+  st_drop_geometry() |> 
+  filter(zoning %in% c("R-1", "R-2", "R-M", "R-LC")) |> 
+  summarise(
+    medsf = median(area)*43560,
+    .by = zoning
+  )
+
+lex_min_lots <- tibble(
+  zoning = c("R-1", "R-2", "R-M", "R-LC"),
+  `SF` = c(8000, 15000, 8000, 8000),
+  `TH` = c(NA, NA, 2400, 2400),
+  `Duplex` = c(12000, NA, 12000, 12000),
+  `MF` = c(NA, NA, 10000, 10000)
+  )
+
+lex_min_lots |>
+  pivot_longer(
+    cols = 2:5,
+    names_to = "units",
+    values_to = "size"
+  ) |> 
+  mutate(
+    units = fct_relevel(
+      units, "SF", "TH", "Duplex", "MF"
+    )
+  ) |>
+  filter(!is.na(size)) |> 
+  ggplot(aes(x = units, y = size, fill = zoning)) +
+  facet_grid(cols = vars(zoning), scales = "free_x", , space = "free_x") +
+  #geom_hline(yintercept = 12497.370, color = "#1a3454", linetype = 2) + # R-1
+  #geom_hline(yintercept = 7329.293, color = "#53c6c6", linetype = 2) +  # R-2
+  #geom_hline(yintercept = 28668.016, color = "#9691cf", linetype = 2) + # R4
+  #geom_text(
+  #  x = "Single-family", y = 12497.370,
+  #  label = "R2", color = "#1a3454", vjust = -1
+  #) +
+  #geom_text(
+  #  x = "Single-family", y = 7329.293,
+  #  label = "R3", color = "#53c6c6", vjust = -1
+  #) +
+  #geom_text(
+  #  x = "Single-family", y = 28668.016,
+  #  label = "R4", color = "#9691cf", vjust = -1
+  #) +
+  geom_col(position = "dodge", width = 0.8) +
+  #scale_x_discrete(expand = c(.3, 0)) +
+  geom_text(
+    aes(label = label_comma()(size)),
+    color = "white",
+    angle = 90,
+    hjust = 1.5
+  ) +
+  scale_y_continuous(
+    labels = label_comma(),
+    limits = c(0, 17000),
+    breaks = seq(0, 20000, 2500),
+    expand = c(0, 0.05)
+  ) +
+  scale_fill_hfv() +
+  add_zero_line() +
+  labs(
+    title = "Minimum lot sizes for residential uses by zoning district",
+    #subtitle = "Dashed lines = current median lot size for parcels in that district",
+    caption = "**Note:** After 4 units in multifamily building, additional 1,500 sq ft per unit is required for lot size.",
+    y = "Square feet"
+  ) +
+  theme_hfv(
+    axis.title.y = element_text()
+  )
 
 ```
 
-## Distribution
+Minimum lot size requirements vary significantly by both zoning district and housing type. In R-1 zones, single-family homes require 8,000 square feet while duplexes need 12,000 square feet. R-2 has the largest minimum lot size at 15,000 square feet for single-family homes.
 
-. . .
+In both R-LC and R-M districts, there's a graduated scale: single-family homes need 8,000 square feet, duplexes 12,000 square feet, and townhomes just 2,400 square feet. Multi-family developments in these districts start at 10,000 square feet for up to 4 units, with an additional 1,500 square feet required for each unit beyond that.
+
+## Distribution
 
 ```{r}
 #| label: lex-dist-zoning
 
+lex_zoning_area <- lex_parcels |> 
+  st_drop_geometry() |> 
+  group_by(zoning) |> 
+  summarise(acres = sum(area),
+            parcels = n()) |> 
+  ungroup() |> 
+  mutate(pct_parcels = parcels/sum(parcels),
+         pct_area = acres/sum(acres)) |> 
+  filter(!is.na(zoning))
 
 ```
 
+```{r}
+#| label: fig-lex-dist-zoning
+#| fig-cap: "Parcel distribution in Lexington by zoning district"
+
+lex_zoning_area |> 
+  pivot_longer(2:5, names_to = "data", values_to = "value") |> 
+  filter(
+    str_detect(data, "pct"),
+    zoning != "NA"
+    ) |> 
+  #mutate(
+  #  half = case_when(
+  #    zoning %in% c("B2", "R1","B1", "MXB-HT", "R4", "MB", "MU") ~ 2,
+  #    .default = 1
+  #  )
+  #) |> 
+  mutate(zoning = fct_reorder(zoning, value, .fun = sum)) |>
+  ggplot(aes(y = zoning, fill = data, color = data)) +
+  #facet_wrap(~half, scales = "free") +
+  geom_col(
+    aes(x = value),
+    position = "dodge",
+    color = NA
+    ) +
+  geom_text(
+    #data = . %>% filter(value > 0.01),
+    aes(
+      x = value + 0.02,
+      hjust = 0,
+      label = label_percent(accuracy = 0.1)(value)
+      ),
+    position = position_dodge(1),
+    #color = "grey50"
+    ) +
+  scale_y_discrete(expand = c(0, 0)) +
+  scale_x_continuous(
+    limits = c(0, 0.8),
+    expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Parcel distribution in Lexington by zoning district",
+    subtitle = "Percent of all <span style='color:#011e41;'>**parcels**</span> and <span style='color:#40c0c0;'>**land area**</span> in Lexington by zoning district",
+    caption = "**Source:** City of Lexington GIS records."
+  ) +
+  scale_fill_hfv(-1) +
+  scale_color_hfv(-1) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    axis.text.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    strip.text = element_blank()
+  )
+
+```
+
+Parcels zoned R-1 are overwhelmingly the most common (68.5%) and comprise nearly half of Lexington's land area (46.6%). R-2 properties make up the second largest share, with 16.8% of parcels and 23.1% of land area.
+
+Commercial zones (C-1 and C-2) together account for about 9% of parcels but only 7.4% of land area. The remaining zoning districts (P-OS, R-LC, and R-M) each represent small portions of both parcels and land area, with none exceeding 6% of total land area.
+
 ## Land use by district
 
-The charts below show how parcels within each of the City's zoning districts are currently used. 
+The charts below show how parcels within the City's two most common zoning districts are currently used. 
+
+```{r}
+#| label: fig-lex-use
+#| fig-cap: "Land use distribution across zoning districts"
+
+lex_landuse_zoning <- lex_parcels |> 
+  st_drop_geometry() |> 
+  filter(zoning != "NA") |> 
+  summarise(
+    parcels = n(),
+    acres = sum(area),
+    .by = c(zoning, group)
+  ) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    acres_pct = acres/sum(acres),
+    .by = group
+  ) 
+
+lex_landuse_zoning |> 
+  mutate(
+    zoning = case_when(
+      zoning %in% c("R-1", "R-2") ~ zoning,
+      .default = "All other districts"
+    )
+  ) |> 
+  summarise(
+    parcels = sum(parcels),
+    acres = sum(acres),
+    .by = c(zoning, group)
+  ) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    acres_pct = acres/sum(acres),
+    .by = zoning
+  ) |> 
+  slice_max(acres_pct, n = 5, by = zoning) |> 
+  mutate(zoning = fct_relevel(zoning, "R-1", "R-2", "All other districts")) |>
+  mutate(group = fct_reorder(group,  acres_pct, .fun = sum)) |> 
+  ggplot(aes(x = acres_pct, y = group, fill = zoning)) +
+  facet_wrap(~zoning, scales = "free_y") +
+  geom_col() +
+  geom_text(
+    aes(
+      x = acres_pct + 0.02,
+      y = group,
+      label = label_percent(accuracy = 0.1)(acres_pct)
+    ),
+    color = "grey50",
+    hjust = 0
+  ) +
+  scale_x_continuous(
+    limits = c(0, 0.9),
+    expand = expansion(mult = c(0,0.05))
+  ) +
+  scale_fill_hfv() +
+  labs(
+    title = "Top five land uses for R-1, R-2, and all other zoning districts",
+    subtitle = "Percent of total area in zoning district by land use",
+    caption = "**Source:** City of Lexington GIS records."
+  ) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.x = element_blank()
+  )
+
+```
+
+In R-1 districts, dwellings are the predominant land use at 53.1% of total area, followed by campus uses (18.5%) and vacant land (15.1%). R-2 districts are even more heavily residential, with dwellings accounting for 83% of land area and vacant parcels making up most of the remainder at 15.6%.
+
+In all other zoning districts combined, commercial uses dominate at 33.8% of land area, while dwellings make up just 12%. Municipal uses and vacant land each account for about 11% of the remaining districts' area, with parks taking up 8.1%.
+
+::: callout-tip
+#### No "duplex" land use designation
+
+Duplexes are allowed in R-1, R-M, and R-LC by-right; however, the land use codes currently used by the City do not include a standalone duplex designation. According to the latest American Community Survey [estimates](https://censusreporter.org/data/table/?table=B25024&geo_ids=16000US5111032&primary_geo_id=16000US5111032#valueType|estimate), there are approximately 290 2-unit dwellings in the city. It is possible these properties are included in the "Apartment" land use code.
+:::
+
+## Undeveloped lots
+
+```{r}
+#| label: fig-lex-vacant
+#| fig-cap: "Percent of undeveloped land by zoning district"
+
+lex_area_vacant <- lex_parcels |> 
+  st_drop_geometry() |> 
+  filter(
+    group == "Vacant",
+    !category %in% c("Public property", "Educational", "Religious")
+  ) |> 
+  summarise(
+    parcels = n(),
+    acres = sum(area),
+    .by = zoning
+  ) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    acres_pct = acres/sum(acres)
+  )
+
+lex_area_vacant |> 
+  mutate(zoning = fct_reorder(zoning, acres_pct)) |> 
+  #filter(acres_pct > 0.01) |> 
+  ggplot(aes(y = zoning, x = acres_pct)) +
+  geom_col(
+    fill = "#011e41"
+    ) +
+  geom_text(
+    aes(label = label_percent(accuracy = 0.1)(acres_pct)),
+    color = "#011e41",
+    nudge_x = 0.03
+    ) +
+  scale_x_continuous(
+    limits = c(0, 0.72),
+    expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Percent of undeveloped land by zoning district",
+    subtitle = "Institutional, educational, and recreational parcels excluded",
+    caption = "**Source:** City of Lexington GIS records."
+  ) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    axis.text.x = element_blank(),
+    strip.text = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+```
+
+R-1 zoned areas contain the highest proportion of undeveloped land at 62%, followed by R-2 areas at 32%. The remaining zoning districts have very low percentages of undeveloped land, with C-2 at 2.9%, R-M at 1.9%, and both R-LC and C-1 under 1%. This pattern suggests that most of Lexington's development potential lies within its residential zones, particularly R-1 districts, while commercial and other districts are largely built out.
+
+```{r}
+#| label: fig-lex-allowance
+#| fig-cap: "Undeveloped land by residential uses allowed"
+
+sub_vacant = paste0(
+  "Percent of undeveloped land where each residential use is ",
+  "<span style='color:#259591;'>**allowed**</span> by-right,<br>",
+  #"<span style='color:#8b85ca;'>**conditional**</span> by-right, ",
+  "via <span style='color:#e0592a;'>**special exception**</span> only, ",
+  "or <span style='color:#b1005f;'>**prohibited**</span>"
+)
+
+lex_res_vacant <- lex_area_vacant |> 
+  left_join(lex_districts, by = join_by(zoning == zone)) |> 
+  select(1, 2, 3, 10:15) |> 
+  pivot_longer(4:9, names_to = "type", values_to = "allowance") |> 
+  select(4, 5, 2, 3) |>
+  summarize(
+    parcels = sum(parcels),
+    acres = sum(acres),
+    .by = c(type, allowance)
+  ) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    acres_pct = acres/sum(acres),
+    .by = type
+  ) |> 
+  mutate(
+    allowance = fct_relevel(
+      allowance,
+      "Allowed", 
+      "Conditional",
+      "Prohibited"
+      ),
+    type = case_match(
+      type,
+      "treat_1fd" ~ "SF detached",
+      "treat_1fa" ~ "SF attached",
+      "treat_th" ~ "Townhome",
+      "treat_2f" ~ "Duplex",
+      "treat_mf1" ~ "MF (1 floor)",
+      "treat_mf2" ~ "MF (2+ floors)",
+      ),
+    type = fct_relevel(
+      type, 
+      "SF detached", 
+      "SF attached",
+      "Townhome",
+      "Duplex",
+      "MF (1 floor)",
+      "MF (2+ floors)"
+      )
+  )
+
+lex_res_vacant |> 
+  filter(
+    acres_pct > 0.005
+    ) |> 
+  ggplot(
+    aes(
+      x = allowance,
+      y = acres_pct,
+      fill = allowance,
+      color = allowance
+      )
+    ) + 
+  facet_wrap(~type, strip.position = "bottom") +
+  geom_col(position = "dodge") +
+  geom_text(
+    aes(
+      y = acres_pct + 0.05,
+      label = label_percent(accuracy = 0.1)(acres_pct)
+      ),
+    position = position_dodge(1)
+  ) +
+  scale_fill_manual(values = allowance_cols) +
+  scale_color_manual(values = allowance_cols) +
+  labs(
+    title = "Undeveloped land by residential uses allowed",
+    subtitle = sub_vacant,
+    caption = "**Source:** City of Lexington GIS records."
+  ) +
+  add_zero_line("y") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text = element_blank()
+  )
+
+```
+
+Nearly all undeveloped land in Lexington allows single-family homes by-right, with 97.1% permitting detached homes and 96.6% allowing attached single-family homes. The picture changes dramatically for other housing types: while duplexes are allowed by-right on 64.6% of undeveloped land, they're prohibited on 35.4%.
+
+Multi-family housing faces the strictest restrictions, with both one-story and multi-story developments prohibited on 94% of undeveloped land. Townhomes face similar restrictions, being prohibited on 94% of undeveloped parcels, with only 3.1% allowing them by-right and 2.9% permitting them through special exception.
+
+The maps below show what types of residential uses are allowed across presently undeveloped properties in the city. Parcels with any existing improvements are excluded.
+
+```{r}
+
+lex_allow_map <- lex_parcels |> 
+  st_transform(4326) |>
+  filter(
+    group == "Vacant",
+    !category %in% c("Public property", "Educational", "Religious")
+  ) |> 
+  select(zoning, group, geometry) |> 
+  left_join(lex_districts, by = join_by(zoning == zone)) |> 
+  select(1, 8:13, 3)
+
+```
+
+
+```{r}
+#| label: map-1fd
+#| eval: false
+
+lex_allowance_1fd_map <- lex_allow_map |> 
+  filter(treat_1fd != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_1fd),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_1fd,
+            title = "Single-family detached") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(lex_allowance_1fd_map, "maps/lex_allowance_1fd_map.html")
+
+```
+
+```{r}
+#| label: map-1fa
+#| eval: false
+
+lex_allowance_1fa_map <- lex_allow_map |> 
+  filter(treat_1fa != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_1fa),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_1fa,
+            title = "Single-family attached") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(lex_allowance_1fa_map, "maps/lex_allowance_1fa_map.html")
+
+```
+
+```{r}
+#| label: map-th
+#| eval: false
+
+lex_allowance_th_map <- lex_allow_map |> 
+  filter(treat_th != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_th),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_th,
+            title = "Townhome") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(lex_allowance_th_map, "maps/lex_allowance_th_map.html")
+
+```
+
+```{r}
+#| label: map-2f
+#| eval: false
+
+lex_allowance_2f_map <- lex_allow_map |> 
+  filter(treat_2f != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_2f),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_2f,
+            title = "Duplex") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(lex_allowance_2f_map, "maps/lex_allowance_2f_map.html")
+
+```
+
+```{r}
+#| label: map-mf1
+#| eval: false
+
+lex_allowance_mf1_map <- lex_allow_map |> 
+  filter(treat_mf1 != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_mf1),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_mf1,
+            title = "Multifamily (1 floor)") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(lex_allowance_mf1_map, "maps/lex_allowance_mf1_map.html")
+
+```
+
+```{r}
+#| label: map-mf2
+#| eval: false
+
+lex_allowance_mf2_map <- lex_allow_map |> 
+  filter(treat_mf2 != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_mf2),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_mf2,
+            title = "Multifamily (2+ floors)") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(lex_allowance_mf2_map, "maps/lex_allowance_mf2_map.html")
+
+```
+
+::: {#fig-lu-map}
+
+:::: {.panel-tabset}
+
+#### SF detached
+
+```{r}
+
+knitr::include_url("maps/lex_allowance_1fd_map.html")
+
+```
+
+#### SF attached
+
+```{r}
+
+knitr::include_url("maps/lex_allowance_1fa_map.html")
+
+```
+
+#### Townhome
+
+```{r}
+
+knitr::include_url("maps/lex_allowance_th_map.html")
+
+```
+
+#### Duplex
+
+```{r}
+
+knitr::include_url("maps/lex_allowance_2f_map.html")
+
+```
+
+#### MF (1 floor)
+
+```{r}
+
+knitr::include_url("maps/lex_allowance_mf2_map.html")
+
+```
+
+#### MF (2+ floors)
+
+```{r}
+
+knitr::include_url("maps/lex_allowance_mf2_map.html")
+
+```
+
+::::
+
+Maps of residential use allowances on undeveloped parcels
+:::
+
+
+## Takeaways
+
+Lexington's 2017 zoning code creates a relatively straightforward framework of seven districts, but establishes strong hierarchies in housing types and development potential. The code's structure and implementation raise several notable points about housing diversity and development capacity.
+
+The overwhelming dominance of R-1 zoning (68.5% of parcels, 46.6% of land area) combined with large minimum lot sizes creates a baseline of low-density development across much of the city. Given that R-1 contains 62% of the city's undeveloped land, this represents a significant constraint on future housing development potential.
+
+Current treatment of housing types reveals stark disparities:
+
+  - Nearly all undeveloped land (97%) allows single-family homes
+  - Despite by-right duplex permissions in R-1, R-M, and R-LC, the city lacks a mechanism to track these properties in its land use codes
+  - 94% of undeveloped land prohibits townhomes and multifamily housing
+  - Minimum lot sizes are significantly larger for any housing type beyond single-family (e.g., 12,000 sq ft for duplexes vs 8,000 sq ft for single-family in R-1)
+
+Several opportunities for code modernization emerge:
+
+  - Create a specific land use designation for duplexes to better track existing two-unit dwellings
+  - Consider reducing minimum lot sizes, particularly in R-1 and R-2, to enable more efficient use of available land
+  - Expand housing type permissions in R-2, which holds 32% of undeveloped land but currently prohibits everything except single-family homes
+  - Review the substantial setback and lot width requirements that may further constrain development beyond the basic lot size minimums
+
+These changes would help maximize the development potential of Lexington's limited remaining land while maintaining appropriate standards for community character and infrastructure capacity.

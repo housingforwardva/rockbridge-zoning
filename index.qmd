@@ -4,6 +4,8 @@ engine: knitr
 
 ## About {.unnumbered}
 
+::: {.content-hidden when-format="html"}
+
 ::: {.callout-caution}
 ### Please note
 
@@ -22,6 +24,8 @@ You can highlight and add comments to this website using [hypothesis.is](https:/
 5.  Clicking on any yellow-highlighted text will reveal comments made by others. You can reply to these annotations.
 
 For more information, see the [Annotation Basics](https://web.hypothes.is/help/annotation-basics/) help page.
+:::
+
 :::
 
 This report is an analysis of zoning and land use patterns in Rockbridge County, the City of Lexington, and the City of Buena Vista. This work supports the ongoing [regional housing study](https://www.cspdc.org/programs-services/housing/) that HousingForward Virginia (HFV) and the Virginia Center for Housing Research (VCHR) are completing for the Central Virginia Regional Planning District Commission (CSPDC).
@@ -45,8 +49,3 @@ This work will draw on the following information:
 - Existing residential and mixed-use zoning districts,
 - Future land use categories and map, and
 - Current water and sewer system coverage.
-
-<!-- - Subdivision ordinances and related regulations, and -->
-<!-- - Recent residential development patterns. -->
-
-HFV will synthesize this analysis and provide a summary of findings, as well as potential recommendations that would work in sync with solutions offered in the full regional report.

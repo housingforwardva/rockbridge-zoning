@@ -24,12 +24,12 @@ book:
       - dev-potential.qmd
       #- subdivisions.qmd
       #- entitlements.qmd
-    - part: "Lexington"
-      chapters: 
-        - lexington.qmd
-    - part: "Buena Vista"
-      chapters: 
-        - buena-vista.qmd
+    #- part: "Lexington"
+    #  chapters: 
+    - lexington.qmd
+    #- part: "Buena Vista"
+    #  chapters: 
+    - buena-vista.qmd
 #    - summary.qmd
 #    - references.qmd
 
@@ -55,6 +55,6 @@ format:
   #       \usepackage{float}
   #       \raggedbottom
 
-comments: 
-  hypothesis: true
+#comments: 
+#  hypothesis: true
 

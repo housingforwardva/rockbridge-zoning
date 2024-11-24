@@ -18,7 +18,7 @@ library(htmlwidgets)
 allowance_cols <- c(
   "Allowed" = "#259591", 
   "Conditional" = "#8b85ca", 
-  "Special Exemption" = "#e0592a",
+  "Special Exception" = "#e0592a",
   "Prohibited" = "#b1005f"
   )
 
@@ -31,7 +31,7 @@ allowance_pal <- colorFactor(
   levels = c(
     "Allowed", 
     "Conditional", 
-    "Special Exemption"
+    "Special Exception"
   )
 )
 
@@ -80,17 +80,19 @@ bv_parcels <- read_rds("data/buena-vista/bv_parcels.rds")
 
 ## Zoning districts
 
-. . .
+Buena Vista's zoning code includes 17 distinct districts, with five primarily residential zones, eight mixed-use zones that allow residential development, and four nonresidential districts. The residential districts range from low-density R1 to medium-density R4, plus a planned unit development zone (PUD-R6). The mixed-use districts include traditional business zones (B1, B2), specialized Hill Top district development areas (PUD-RES-HT, MXB-HT), and corridor-specific zones (MUC).
+
 
 ```{r}
 #| label: tbl-zoning-districts
 #| tbl-cap: "Zoning districts in Buena Vista"
 
 bv_districts |> 
-  select(zone, name, overlay, type) |> 
+  filter(!zone %in% c("Seminary Hill", "FH-1")) |> 
+  select(zone, name, type) |> 
   kable(
-    col.names = c("Zone", "Name", "Overlay", "Type"),
-    align = "clll"
+    col.names = c("Zone", "Name", "Type"),
+    align = "cll"
     ) |>
   kableExtra::kable_styling(
     bootstrap_options = c("hover", "condensed", "responsive")
@@ -98,41 +100,54 @@ bv_districts |>
 
 ```
 
-. . .
+The map below shows the base zoning for each parcel in the city. R2 and R3 districts make up the majority of residential land in Buena Vista, primarily in the central and western portions of the city. The Hill Top districts (PUD-RES-HT and MXB-HT) are concentrated in the eastern area, while business and mixed-use districts follow major corridors. Conservation and recreational zones are primarily located along the city's periphery.
 
 ```{r}
+#| eval: false
 
-zoning_pal <- colorFactor(rainbow(20), unique(bv_parcels$ZONING))
-
-bv_zoning_map <- leaflet(filter(bv_parcels, ZONING != "NA")) |> 
+bv_zoning_map <- leaflet(bv_zoning) |> 
   addProviderTiles(providers$CartoDB.Positron) |> 
-  addPolygons(fillColor = ~zoning_pal(ZONING),
+  addPolygons(fillColor = ~zoning_pal(zoning),
               fillOpacity = 0.7,
-              weight = 0) |> 
+              color = "black",
+              opacity = 0.1,
+              weight = 2,
+              label = bv_zoning$zoning) |> 
   addLegend("topright",
             pal = zoning_pal,
-            values = ~ZONING,
+            values = ~zoning,
             title = "Zoning")
-
-saveWidget(bv_zoning_map, "maps/bv_zoning_map.html")
 
 bv_zoning_map
 
+saveWidget(bv_zoning_map, "maps/bv_zoning_map.html")
 
 ```
 
-. . .
+::: {#fig-zoning-map}
+```{r}
+
+knitr::include_url("maps/bv_zoning_map.html")
+
+```
+
+Map of zoning districts in Buena Vista
+:::
+
+The table below shows the allowances for different residential uses in each zoning district.
 
 ```{r}
 #| label: tbl-residential-uses
 #| tbl-cap: "Residential use allowances"
 
-bv_districts |> 
-  filter(overlay == "No",
-         type != "Nonresidential") |> 
+bv_res_use_table <- bv_districts |> 
+  #filter(overlay == "No",
+  #       type != "Nonresidential") |> 
+  filter(!zone %in% c("Seminary Hill", "FH-1")) |> 
+  select(1, 6:9, 11) |> 
   mutate(
     across(
-      c(6:13),
+      c(2:6),
       ~ case_match(
         .x,
         "Prohibited" ~ "P",
@@ -141,65 +156,701 @@ bv_districts |>
         "Special Exception" ~ "S"
       )
       )
-    ) |> 
-  mutate(
-    across(
-      c(6:13),
-      ~ cell_spec(
-        .x,
-        bold = TRUE,
-        color = case_match(
-          .x,
-          "P" ~ "#b1005f",
-          "A" ~ "#259591",
-          "C" ~ "#8b85ca",
-          "S" ~ "#e0592a"
-        )
-      )
-    )
-  ) |>
-  select(1, 6:13) |> 
+  )
+
+bv_res_use_table |> 
   kable(
-    col.names = c("Zone", "SF detached", "Townhome", "Duplex", "Multifamily", "Group Home", "ADU", "MH", "MHP"),
-    align = "lcccccccc",
+    col.names = c("Zone", "SF detached", "Townhome", "Duplex", "Multifamily", "ADU"),
+    align = "lccccc",
     escape = FALSE
-    ) |>
+    ) |> 
+  purrr::reduce(2:6, function(x, y) {
+    col <- bv_res_use_table[, y]
+    column_spec(x, y,
+      bold = TRUE,
+      color = case_when(
+        col == "P" ~ "#b1005f",
+        col == "A" ~ "#259591",
+        col == "C" ~ "#8b85ca",
+        col == "S" ~ "#e0592a"
+      ))
+  }, .init = _) |> 
   kableExtra::kable_styling(
     bootstrap_options = c("hover", "condensed", "responsive")
     )
 
 ```
 
+Allowance key:
+
+-   A = Allowed by-right
+-   C = Conditional (by-right if additional conditions met)
+-   S = Special exception (permit application and public hearing required)
+-   P = Prohibited
+
+Residential use definitions:
+
+-   SF detached = Single-family home with no walls shared with other dwelling units
+-   Townhome = Single-family home with at least one wall shared with other dwelling unit
+-   Duplex = Building with two separate dwelling units
+-   Multifamily = Building with three or more separate dwelling units
+-   ADU = Accessory apartment
+
+**Single-family detached** homes are by-right in most residential districts (R1-R4) and mixed-use zones (MU, MB, INST), but require special exception approval in planned development areas and are prohibited in conservation zones.
+
+**Townhomes** are only allowed by-right in R4, MB, MU, and INST districts, with most other zones either prohibiting them entirely or requiring special exception approval.
+
+**Duplexes** are by-right in PUD-R6 and MU districts, with R1 allowing them conditionally. Most other residential zones require special exceptions for duplex development.
+
+**Multifamily** developments are by-right in R4 and MB districts only, with most other zones either prohibiting them or requiring special exception approval.
+
+**Accessory apartments** are conditionally permitted in all residential districts (R1-R4) and by-right in most mixed-use and planned development zones, offering flexibility for additional housing units on existing residential lots.
+
 ## Lot requirements
 
-. . .
+The zoning ordinance also stipulates specific geometric criteria that must be met before properties can be developed into homes. These include minimum lot area, road frontage, setbacks (front, side, and rear), and in some cases structure height.
+
+The chart below shows the base minimum lot sizes for different residential uses in different zoning districts, derived from the "Sec. 630.00. - Table of setbacks." of the Buena Vista Zoning Ordinance.
+
+::: {#tbl-lot-reqs}
+
+![](data/buena-vista/bv-lot-reqs.png)
+Minimum lot size requirements
+
+:::
 
 ```{r}
+#| label: fig-min-lots
+#| fig-cap: "Minimum lot sizes for residential uses by zoning district"
 
 # https://library.municode.com/va/buena_vista/codes/code_of_ordinances?nodeId=PTIIILADERE_ART6USDI_S630.00TASE
 
+bv_med_lot <- bv_parcels |> 
+  st_drop_geometry() |> 
+  filter(zoning %in% c("R1", "R2", "R3", "R4")) |> 
+  summarise(
+    medsf = median(area)*43560,
+    .by = zoning
+  )
+
+bv_min_lots <- tibble(
+  zoning = c("R1", "R2", "R3", "R4"),
+  `SF` = c(12500, 9375, 6250, 6250),
+  `Duplex` = c(NA, 9375+6250, 6250+3125, 6250+3125),
+  `MF` =c(NA, NA, 6250+(3125*3), 6250+(3125*3))
+  )
+  #left_join(bv_med_lot) |> 
+  #rename(`Median lot size` = medsf)
+
+bv_min_lots |>
+  #select(1, 5:7) |> 
+  pivot_longer(
+    cols = 2:4,
+    names_to = "units",
+    values_to = "size"
+  ) |> 
+  drop_na() |> 
+  #filter(zoning != "R1") |> 
+  mutate(units = fct_reorder(units, size)) |> 
+  ggplot(aes(x = units, y = size, fill = zoning)) +
+  facet_grid(cols = vars(zoning), scales = "free_x", , space = "free_x") +
+  geom_hline(yintercept = 44117.379, color = "#1a3454", linetype = 2) + # R1
+  geom_hline(yintercept = 12497.370, color = "#53c6c6", linetype = 2) + # R2
+  geom_hline(yintercept = 7329.293, color = "#9691cf", linetype = 2) +  # R3
+  geom_hline(yintercept = 28668.016, color = "#259591", linetype = 2) + # R4
+  geom_text(
+    x = "SF", y = 44117.379,
+    label = "R1", color = "#1a3454", vjust = -1
+  ) +
+  geom_text(
+    x = "SF", y = 12497.370,
+    label = "R2", color = "#53c6c6", vjust = -1
+  ) +
+  geom_text(
+    x = "SF", y = 7329.293,
+    label = "R3", color = "#9691cf", vjust = -1
+  ) +
+  geom_text(
+    x = "SF", y = 28668.016,
+    label = "R4", color = "#259591", vjust = -1
+  ) +
+  geom_col(position = "dodge2", width = 0.8) +
+  scale_x_discrete(expand = c(.7, 0)) +
+  scale_y_continuous(
+    labels = label_comma(),
+    limits = c(0, 50000),
+    breaks = seq(0, 45000, 5000),
+    expand = c(0, 0.05)
+  ) +
+  scale_fill_hfv() +
+  add_zero_line() +
+  labs(
+    title = "Minimum lot sizes for residential uses by zoning district",
+    subtitle = "Dashed lines = current median lot size for parcels in that district",
+    caption = "**Note:** Requirements shown for lots served by public water and sewer.",
+    y = "Square feet"
+  ) +
+  theme_hfv(
+    axis.title.y = element_text()
+  )
 
 ```
 
-## Distribution
+Minimum lot sizes vary significantly across zoning districts and housing types. R1 zones require the largest lots for single-family homes, while R4 allows for smaller lots to accommodate higher density development.
 
-. . .
+On the other hand, PUD and mixed-use districts generally have more flexible lot size requirements to encourage diverse housing types.
+
+## Distribution
 
 ```{r}
 #| label: bv-dist-zoning
 
 bv_zoning_area <- bv_parcels |> 
   st_drop_geometry() |> 
-  group_by(ZONING) |> 
-  summarise(acres = sum(acres),
+  group_by(zoning) |> 
+  summarise(acres = sum(area),
             parcels = n()) |> 
   ungroup() |> 
   mutate(pct_parcels = parcels/sum(parcels),
-         pct_area = acres/sum(acres))
+         pct_area = acres/sum(acres)) |> 
+  filter(!is.na(zoning))
 
 
 ```
 
+```{r}
+#| label: fig-bv-dist-zoning
+#| fig-cap: "Parcel distribution in Buena Vista by zoning district"
+
+bv_zoning_area |> 
+  pivot_longer(2:5, names_to = "data", values_to = "value") |> 
+  filter(
+    str_detect(data, "pct"),
+    !is.na(zoning)
+    ) |> 
+  mutate(
+    half = case_when(
+      zoning %in% c("B2", "R1","B1", "MXB-HT", "R4", "MB", "MU") ~ 2,
+      .default = 1
+    )
+  ) |> 
+  mutate(zoning = fct_reorder(zoning, value, .fun = sum)) |>
+  ggplot(aes(y = zoning, fill = data, color = data)) +
+  facet_wrap(~half, scales = "free") +
+  geom_col(
+    aes(x = value),
+    position = "dodge",
+    color = NA
+    ) +
+  geom_text(
+    #data = . %>% filter(value > 0.01),
+    aes(
+      x = value + 0.03,
+      hjust = 0,
+      label = label_percent(accuracy = 0.1)(value)
+      ),
+    position = position_dodge(1),
+    #color = "grey50"
+    ) +
+  scale_y_discrete(expand = c(0, 0)) +
+  scale_x_continuous(
+    limits = c(0, 0.7),
+    expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Parcel distribution in Buena Vista by zoning district",
+    subtitle = "Percent of all <span style='color:#011e41;'>**parcels**</span> and <span style='color:#40c0c0;'>**land area**</span> in Buena Vista by zoning district",
+    caption = "**Source:** City of Buena Vista GIS records."
+  ) +
+  scale_fill_hfv(-1) +
+  scale_color_hfv(-1) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    axis.text.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    strip.text = element_blank()
+  )
+
+```
+
+The distribution of parcels across Buena Vista's zoning districts shows that R2 and R3 zones dominate the city's land use pattern, together accounting for over half of all parcels. These moderate-density residential districts form the backbone of the city's neighborhoods. Mixed-use and business districts comprise a relatively small portion of total parcels, reflecting their concentrated nature along commercial corridors.
+
 ## Land use by district
 
-The charts below show how parcels within each of the City's zoning districts are currently used. 
+The chart below shows how land area within the City's two most common zoning districts is currently used. 
+
+```{r}
+#| label: fig-bv-use
+#| fig-cap: "Land use distribution across R2 and R3 zoned parcels"
+
+# bv_parcels |> 
+#   st_drop_geometry() |>
+#   mutate(
+#     vacant = case_when(
+#       impvalue < 1000 ~ "Vacant",
+#       .default = "Not vacant"
+#     ),
+#     .before = impvalue
+#   ) |>
+#   summarise(
+#     parcels = n(),
+#     .by = c(class, vacant)
+#   ) |> arrange(class)
+
+bv_landuse_zoning <- bv_parcels |> 
+  st_drop_geometry() |> 
+  filter(!is.na(zoning)) |> 
+  mutate(
+    vacant = case_when(
+      impvalue < 1000 ~ "Vacant",
+      .default = "Not vacant"
+    ),
+    .before = impvalue
+  ) |>
+  mutate(
+    vacant_class = case_when(
+      vacant == "Vacant" & class == "Single-family" ~ "Vacant",
+      vacant == "Vacant" & class == "Multifamily" ~ "Vacant",
+      vacant == "Vacant" & class == "Church" ~ "Vacant",
+      vacant == "Vacant" & class == "Commercial" ~ "Vacant",
+      vacant == "Vacant" & class == "No data" ~ "Vacant",
+      vacant == "Vacant" & class == "Other" ~ "Vacant",
+      vacant == "Vacant" & class == "Vacant" ~ "Vacant",
+      .default = class
+    ),
+    .before = impvalue
+  ) |>
+  summarise(
+    parcels = n(),
+    acres = sum(area),
+    .by = c(zoning, vacant_class)
+  ) |> 
+  group_by(zoning) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    acres_pct = acres/sum(acres),
+  ) |> 
+  ungroup()
+
+bv_landuse_zoning |> 
+  mutate(
+    zoning = case_when(
+      zoning %in% c("R2", "R3") ~ zoning,
+      .default = "All other districts"
+    )
+  ) |> 
+  summarise(
+    parcels = sum(parcels),
+    acres = sum(acres),
+    .by = c(zoning, vacant_class)
+  ) |> 
+  group_by(zoning) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    acres_pct = acres/sum(acres),
+  ) |> 
+  slice_max(acres_pct, n = 5) |> 
+  ungroup() |> 
+  #filter(acres_pct > 0.01) |> 
+  mutate(vacant_class = str_replace_all(vacant_class, "-", "\n")) |> 
+  mutate(vacant_class = str_replace_all(vacant_class, "/", " or\n")) |> 
+  mutate(vacant_class = fct_reorder(vacant_class, acres_pct, .fun = sum)) |>
+  mutate(zoning = fct_relevel(zoning, "R2", "R3", "All other districts")) |>
+  ggplot(aes(x = acres_pct, y = vacant_class, fill = zoning)) +
+  facet_wrap(~zoning, scales = "free_y") +
+  geom_col() +
+  geom_text(
+    aes(
+      x = acres_pct + 0.02,
+      y = vacant_class,
+      label = label_percent(accuracy = 0.1)(acres_pct)
+    ),
+    color = "grey50",
+    hjust = 0
+  ) +
+  scale_x_continuous(
+    limits = c(0, 0.9),
+    expand = expansion(mult = c(0,0.05))
+  ) +
+  scale_fill_hfv() +
+  labs(
+    title = "Top five land uses for R2, R3, and all other zoning districts",
+    subtitle = "Percent of total area in zoning district by land use",
+    caption = "**Source:** City of Buena Vista GIS records.<br>**Note:** Uses less than 1 percent of area in each zoning district are excluded."
+  ) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.x = element_blank()
+  )
+
+```
+
+Within R2 and R3 districts, single-family residential use predominates, occupying roughly 60% of the land area. Notably, about a quarter of the land in these districts remains vacant or underutilized, suggesting significant potential for infill development. Institutional uses, including schools and churches, occupy approximately 10% of the land area, while multifamily development accounts for a relatively small percentage of these districts.
+
+::: callout-tip
+#### No "duplex" land use designation
+
+Duplexes are allowed with a permit in R2 and R3 by-right; however, the land use codes currently used by the City do not include a standalone duplex designation. According to the latest American Community Survey [estimates](https://censusreporter.org/data/table/?table=B25024&geo_ids=16000US5111032&primary_geo_id=16000US5111032#valueType|estimate), there are fewer than 30 2-unit dwellings in the city. It is possible these properties are included in the "Multifamily" land use code.
+:::
+
+## Undeveloped lots
+
+```{r}
+#| label: fig-bv-vacant
+#| fig-cap: "Percent of undeveloped land by zoning district"
+
+bv_area_vacant <- bv_landuse_zoning |> 
+  filter(vacant_class == "Vacant") |> 
+  mutate(
+    acres_pct = acres/sum(acres)
+  )
+
+bv_area_vacant |> 
+  mutate(zoning = fct_reorder(zoning, acres_pct)) |> 
+  filter(acres_pct > 0.01) |> 
+  ggplot(aes(y = zoning, x = acres_pct)) +
+  geom_col(
+    fill = "#011e41"
+    ) +
+  geom_text(
+    aes(label = label_percent(accuracy = 0.1)(acres_pct)),
+    color = "#011e41",
+    nudge_x = 0.015
+    ) +
+  scale_x_continuous(
+    limits = c(0, 0.35),
+    expand = expansion(mult = c(0,0.05))
+    ) +
+  labs(
+    title = "Percent of undeveloped land by zoning district",
+    subtitle = "Institutional, educational, and recreational parcels excluded",
+    caption = "**Source:** City of Buena Vista GIS records.<br>**Note:** Districts with less than 1% not shown."
+  ) +
+  add_zero_line("x") +
+  theme_hfv() +
+  theme(
+    axis.text.x = element_blank(),
+    strip.text = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+
+```
+
+Analysis of undeveloped land shows that a significant portion of Buena Vista's vacant parcels are concentrated in the R2 and R3 districts. This suggests that future residential development opportunities exist primarily in these moderate-density zones. The conservation district also contains substantial undeveloped land, though development restrictions limit its potential for housing.
+
+```{r}
+#| label: fig-bv-allowance
+#| fig-cap: "Undeveloped land by residential uses allowed"
+
+sub_vacant = paste0(
+  "Percent of undeveloped land where each residential use is ",
+  "<span style='color:#259591;'>**allowed**</span> by-right,<br>",
+  "<span style='color:#8b85ca;'>**conditional**</span> by-right, ",
+  "via <span style='color:#e0592a;'>**special exception**</span> only, ",
+  "or <span style='color:#b1005f;'>**prohibited**</span>"
+)
+
+bv_res_vacant <- bv_area_vacant |> 
+  left_join(bv_districts, by = join_by(zoning == zone)) |> 
+  select(1, 3, 4, 11:14) |> 
+  pivot_longer(4:7, names_to = "type", values_to = "allowance") |> 
+  select(4, 5, 2, 3) |>
+  summarize(
+    parcels = sum(parcels),
+    acres = sum(acres),
+    .by = c(type, allowance)
+  ) |> 
+  mutate(
+    parcels_pct = parcels/sum(parcels),
+    acres_pct = acres/sum(acres),
+    .by = type
+  ) |> 
+  mutate(
+    allowance = fct_relevel(
+      allowance,
+      "Allowed", 
+      "Conditional", 
+      "Special Exception"
+      ),
+    type = case_match(
+      type,
+      "treat_1fd" ~ "Single-family detached",
+      "treat_1fa" ~ "Townhome",
+      "treat_2f" ~ "Duplex",
+      "treat_mf" ~ "Multifamily"
+      ),
+    type = fct_relevel(
+      type, 
+      "Single-family detached", 
+      "Townhome",
+      "Duplex",
+      "Multifamily"
+      )
+  )
+
+bv_res_vacant |> 
+  filter(
+    acres_pct > 0.01
+    ) |> 
+  ggplot(
+    aes(
+      x = allowance,
+      y = acres_pct,
+      fill = allowance,
+      color = allowance
+      )
+    ) + 
+  facet_wrap(~type) +
+  geom_col(position = "dodge") +
+  geom_text(
+    aes(
+      y = acres_pct + 0.05,
+      label = label_percent(accuracy = 0.1)(acres_pct)
+      ),
+    position = position_dodge(1)
+  ) +
+  scale_fill_manual(values = allowance_cols) +
+  scale_color_manual(values = allowance_cols) +
+  labs(
+    title = "Undeveloped land by residential uses allowed",
+    subtitle = sub_vacant,
+    caption = "**Source:** City of Buena Vista GIS records."
+  ) +
+  add_zero_line("y") +
+  theme_hfv() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text = element_blank() 
+  )
+
+```
+
+The analysis of development potential by housing type reveals a stark contrast in what can be built on Buena Vista's vacant land. While single-family homes are permitted on nearly 80% of undeveloped parcels, opportunities for other housing types are much more limited. Townhomes and duplexes are allowed on roughly 30% of vacant land, while multifamily development is permitted on less than 20% of undeveloped parcels.
+
+This regulatory framework effectively channels most new residential development toward single-family homes, potentially limiting housing diversity and affordability options.
+
+The maps below show what types of residential uses are allowed across presently undeveloped properties in the city. Parcels with any existing improvements are excluded.
+
+```{r}
+
+bv_allow_map <- bv_parcels |> 
+  st_transform(4326) |>
+  select(zoning, class, impvalue, geometry) |> 
+  filter(!is.na(zoning)) |> 
+  mutate(
+    vacant = case_when(
+      impvalue < 1000 ~ "Vacant",
+      .default = "Not vacant"
+    ),
+    .before = impvalue
+  ) |>
+  mutate(
+    vacant_class = case_when(
+      vacant == "Vacant" & class == "Single-family" ~ "Vacant",
+      vacant == "Vacant" & class == "Multifamily" ~ "Vacant",
+      vacant == "Vacant" & class == "Church" ~ "Vacant",
+      vacant == "Vacant" & class == "Commercial" ~ "Vacant",
+      vacant == "Vacant" & class == "No data" ~ "Vacant",
+      vacant == "Vacant" & class == "Other" ~ "Vacant",
+      vacant == "Vacant" & class == "Vacant" ~ "Vacant",
+      .default = class
+    ),
+    .before = impvalue
+  ) |> 
+  left_join(bv_districts, by = join_by(zoning == zone)) |> 
+  filter(vacant_class == "Vacant") |> 
+  select(1, 10:13, 18)
+
+```
+
+
+```{r}
+#| label: map-1fd
+#| eval: false
+
+bv_allowance_1fd_map <- bv_allow_map |> 
+  filter(treat_1fd != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_1fd),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_1fd,
+            title = "Single-family detached") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(bv_allowance_1fd_map, "maps/bv_allowance_1fd_map.html")
+
+```
+
+```{r}
+#| label: map-1fa
+#| eval: false
+
+bv_allowance_1fa_map <- bv_allow_map |> 
+  filter(treat_1fa != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_1fa),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_1fa,
+            title = "Townhome") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(bv_allowance_1fa_map, "maps/bv_allowance_1fa_map.html")
+
+```
+
+```{r}
+#| label: map-2f
+#| eval: false
+
+bv_allowance_2f_map <- bv_allow_map |> 
+  filter(treat_2f != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_2f),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_2f,
+            title = "Duplex") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(bv_allowance_2f_map, "maps/bv_allowance_2f_map.html")
+
+```
+
+```{r}
+#| label: map-mf
+#| eval: false
+
+bv_allowance_mf_map <- bv_allow_map |> 
+  filter(treat_mf != "Prohibited") |> 
+  leaflet() |> 
+  addProviderTiles(providers$CartoDB.Positron,
+                   group = "Simple") |>
+  addProviderTiles(providers$Esri.WorldImagery,
+                   options = providerTileOptions(opacity = 0.6),
+                   group = "Imagery") |> 
+  addPolygons(fillColor = ~allowance_pal(treat_mf),
+              fillOpacity = 0.7,
+              weight = 0,
+              label = ~htmlEscape(zoning)) |> 
+  addLegend("topright",
+            pal = allowance_pal,
+            values = ~treat_mf,
+            title = "Multifamily") |> 
+  addLayersControl(
+    baseGroups = c("Simple", "Imagery"),
+    position = "bottomright",
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+saveWidget(bv_allowance_mf_map, "maps/bv_allowance_mf_map.html")
+
+```
+
+::: {#fig-lu-map}
+
+:::: {.panel-tabset}
+
+#### Single-family detached
+
+```{r}
+
+knitr::include_url("maps/bv_allowance_1fd_map.html")
+
+```
+
+#### Townhome
+
+```{r}
+
+knitr::include_url("maps/bv_allowance_1fa_map.html")
+
+```
+
+#### Duplex
+
+```{r}
+
+knitr::include_url("maps/bv_allowance_2f_map.html")
+
+```
+
+#### Multifamily
+
+```{r}
+
+knitr::include_url("maps/bv_allowance_mf_map.html")
+
+```
+
+::::
+
+Maps of residential use allowances on vacant parcels
+:::
+
+## Takeaways
+
+While Buena Vista's zoning code includes a variety of districts, including several mixed-use zones, it maintains significant restrictions on housing diversity through both use allowances and lot requirements.
+
+The city's developable land is heavily concentrated in R2 and R3 districts, but these zones have significant restrictions on housing types beyond single-family homes. With approximately 25% of R2/R3 land still vacant, there's substantial opportunity to revise these districts' regulations to allow more housing options.
+
+Current zoning creates a notable mismatch between allowances and actual development --- while duplexes are technically permitted (with special exception) in R2 and R3 zones, the city lacks a clear land use designation to track them, and fewer than 30 likely exist citywide.
+
+The code's treatment of different housing types reveals these hierarchies:
+
+-   Single-family homes are by-right in most residential and mixed-use zones
+-   Townhomes face restrictions in most zones except R4 and mixed-use districts
+-   Duplexes require special exceptions in most residential zones
+-   Multifamily is by-right in only two districts (R4 and MB)
+
+The data suggests several opportunities for code modernization:
+
+-   Create a specific land use designation for duplexes to better track this housing type
+-   Expand by-right permissions for townhomes and duplexes in R2 and R3 zones, where most developable land exists
+-   Consider reducing lot size requirements, particularly in R2 and R3, to enable more efficient use of available land
+-   Streamline the approval process for diverse housing types by replacing special exception requirements with clear by-right standards
+
+The presence of multiple mixed-use and planned development districts suggests openness to flexible development approaches, but these zones affect relatively few parcels. Consider expanding these districts or incorporating their more flexible standards into the primary residential zones.
+
+These changes would help align the code with contemporary housing needs while maintaining appropriate development standards for the city's character and infrastructure capacity.

@@ -1,20 +1,20 @@
-zone,locality,name,overlay,type,treat_1fd,treat_1fa,treat_2f,treat_mf,treat_gh,treat_adu,treat_mh,treat_mhp,frontage,minlot_1f,setback_1f,setback_side_1f,setback_rear_1f,parking_1f,height_1f,minlot_2f,setback_2f,setback_side_2f,setback_rear_2f,parking_1br_2f,parking_2br_2f,height_2f,minlot_4f,setback_4f,setback_side_4f,setback_rear_4f,parking_1br_4f,parking_2br_4f,height_4f,adu_max_pct,adu_max_sf,treat_prd,mhp,minlot_prd,maxdens_prd,notes
-C-1,Buena Vista,Conservation,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-R-1,Buena Vista,Low Density Residential,No,Primarily Residential,Allowed,Prohibited,Prohibited,Prohibited,Special Exception,Conditional,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-R-2,Buena Vista,Residential 2,No,Primarily Residential,Allowed,Prohibited,Special Exception,Prohibited,Special Exception,Conditional,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-R-3,Buena Vista,Residential Limited,No,Primarily Residential,Allowed,Prohibited,Special Exception,Prohibited,Special Exception,Conditional,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-R-4,Buena Vista,Medium Density Residential,No,Primarily Residential,Allowed,Allowed,Allowed,Allowed,Special Exception,Conditional,Special Exception,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-R-5,Buena Vista,Residential 5,No,Primarily Residential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Conditional,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-R-6,Buena Vista,Residential Planned Unit Development,No,Primarily Residential,Special Exception,Special Exception,Prohibited,Special Exception,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-B-1,Buena Vista,General Business,No,Mixed with Residential,Conditional,Prohibited,Conditional,Special Exception,Prohibited,Conditional,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-B-2,Buena Vista,Planned Business,No,Mixed with Residential,Conditional,Prohibited,Conditional,Special Exception,Prohibited,Conditional,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-LM,Buena Vista,Light Manufacturing,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-GM,Buena Vista,General Manufacturing,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-FH-1,Buena Vista,Flood Hazard,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-REC,Buena Vista,Recreational,No,Nonresidential,Special Exception,Prohibited,Special Exception,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-MU,Buena Vista,Mixed Use,No,Mixed with Residential,Allowed,Allowed,Prohibited,Conditional,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Seminary Hill,Buena Vista,Seminary Hill,Yes,Mixed with Residential,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-MB,Buena Vista,Mixed Business,No,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-INST,Buena Vista,Institutional,No,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-PUD-RES-HT,Buena Vista,Planned Unit Development-Residential-Hill Top,Yes,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-MUC,Buena Vista,Mixed Use Corridor,No,Mixed with Residential,Prohibited,Prohibited,Prohibited,Prohibited,Allowed,Prohibited,Prohibited,Prohibited,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+zone,locality,name,overlay,type,treat_1fd,treat_1fa,treat_2f,treat_mf,treat_gh,treat_adu,treat_mh,treat_mhp
+C1,Buena Vista,Conservation,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited
+R1,Buena Vista,Low Density Residential,No,Primarily Residential,Allowed,Prohibited,Prohibited,Prohibited,Special Exception,Conditional,Prohibited,Prohibited
+R2,Buena Vista,Residential,No,Primarily Residential,Allowed,Prohibited,Special Exception,Prohibited,Special Exception,Conditional,Prohibited,Prohibited
+R3,Buena Vista,Residential Limited,No,Primarily Residential,Allowed,Prohibited,Special Exception,Prohibited,Special Exception,Conditional,Prohibited,Prohibited
+R4,Buena Vista,Medium Density Residential,No,Primarily Residential,Allowed,Allowed,Allowed,Allowed,Special Exception,Conditional,Special Exception,Prohibited
+PUD-R6,Buena Vista,Residential Planned Unit Development,No,Primarily Residential,Special Exception,Special Exception,Prohibited,Special Exception,Prohibited,Prohibited,Prohibited,Prohibited
+B1,Buena Vista,General Business,No,Mixed with Residential,Conditional,Prohibited,Conditional,Special Exception,Prohibited,Conditional,Prohibited,Prohibited
+B2,Buena Vista,Planned Business,No,Mixed with Residential,Conditional,Prohibited,Conditional,Special Exception,Prohibited,Conditional,Prohibited,Prohibited
+LM,Buena Vista,Light Manufacturing,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited
+GM,Buena Vista,General Manufacturing,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited
+FH-1,Buena Vista,Flood Hazard,No,Nonresidential,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited
+REC,Buena Vista,Recreational,No,Nonresidential,Special Exception,Prohibited,Special Exception,Prohibited,Prohibited,Prohibited,Prohibited,Prohibited
+MU,Buena Vista,Mixed Use,No,Mixed with Residential,Allowed,Allowed,Prohibited,Conditional,Prohibited,Prohibited,Prohibited,Prohibited
+Seminary Hill,Buena Vista,Seminary Hill,Yes,Mixed with Residential,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay,Overlay
+MB,Buena Vista,Mixed Business,No,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited
+INST,Buena Vista,Institutional,No,Mixed with Residential,Allowed,Allowed,Allowed,Allowed,Prohibited,Prohibited,Prohibited,Prohibited
+PUD-RES-HT,Buena Vista,Planned Unit Development-Residential-Hill Top,No,Mixed with Residential,Special Exception,Special Exception,Special Exception,Special Exception,Prohibited,Prohibited,Prohibited,Prohibited
+MXB-HT,Buena Vista,Mixed Use Business-Hill Top,No,Mixed with Residential,Special Exception,Special Exception,Special Exception,Special Exception,Prohibited,Special Exception,Prohibited,Prohibited
+MUC,Buena Vista,Mixed Use Corridor,No,Mixed with Residential,Prohibited,Prohibited,Prohibited,Prohibited,Allowed,Prohibited,Prohibited,Prohibited
