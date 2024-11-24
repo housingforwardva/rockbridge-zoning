@@ -22,18 +22,10 @@ book:
       - existing-zoning.qmd
       - future-land-use.qmd
       - dev-potential.qmd
-      #- subdivisions.qmd
-      #- entitlements.qmd
-    #- part: "Lexington"
-    #  chapters: 
     - lexington.qmd
-    #- part: "Buena Vista"
-    #  chapters: 
     - buena-vista.qmd
-#    - summary.qmd
-#    - references.qmd
 
-bibliography: references.bib
+# bibliography: references.bib
 
 knitr:
   opts_chunk: 
