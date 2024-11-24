@@ -6,3 +6,9 @@
 /.quarto/
 
 /data/lexington/land-cover/
+
+summary.qmd
+subdivisions.qmd
+entitlements.qmd
+references.qmd
+references.bib
